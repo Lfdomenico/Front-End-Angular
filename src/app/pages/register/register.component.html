@@ -1,0 +1,45 @@
+<main class="login-container">
+  <section class="login-box">
+
+    <div class="logo">
+      <img src="/assets/BankFlow.png" alt="Logo BankFlow">
+    </div>
+
+    <form class="register-form">
+
+      <div class="form-group">
+        <input type="text" id="nomeCompleto" placeholder="Nome Completo" required>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="cpf" placeholder="CPF" maxlength="11" required>
+
+      </div>
+
+      <div class="form-group">
+        <input type="tel" id="telefone" placeholder="Telefone - (99) 99999-9999" maxlength="15" required>
+
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="agencia" placeholder="Agência" required>
+      </div>
+
+      <div class="form-group">
+        <input type="text" id="conta" placeholder="Conta" required>
+      </div>
+      
+      <div class="form-group">
+        <input [type]="hideRegisterPassword ? 'password' : 'text'" id="senha-cadastro" placeholder="Crie sua Senha" required>
+        <!-- <i (click)="toggleRegisterPasswordVisibility()" class="material-icons input-icon clickable">
+          {{ hideRegisterPassword ? 'visibility_off' : 'visibility' }}
+        </i> -->
+      </div>
+      
+      <button type="submit" class="login-button">Cadastrar</button>
+      <button type="reset" class="voltar-button">Limpar</button>
+      <button type="button" class="voltar-button" routerLink="/login">Voltar</button>
+
+    </form>
+  </section>
+</main>
