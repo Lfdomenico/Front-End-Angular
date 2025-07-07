@@ -7,6 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 
 import { RegisterComponent } from './pages/register/register.component';
 import { TesteComponent } from './pages/teste/teste';
+import { AgendamentoComponent } from './pages/agendamento/agendamento';
 
 export const routes: Routes = [
   // Quando o caminho for vazio ('/'), redireciona para a rota '/login'
@@ -16,6 +17,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
   {path: 'register', component: RegisterComponent},
+
+  {path: 'agendamento', component: AgendamentoComponent},
 
   {path: 'teste', component: TesteComponent}
 ];
