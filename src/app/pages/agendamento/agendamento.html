@@ -1,8 +1,8 @@
-<body class="pt-5 min-vh-100 d-flex align-items-start justify-content-center fs-5">
+<body class="pt-5 min-vh-100 d-flex align-items-start justify-content-center fs-6">
   <section class="container py-4 d-flex flex-column align-items-start">
     <div class="row mb-4 align-items-center w-100">
       <div class="col-12 col-md-3">
-        <label for="data" class="fw-bold">Escolha a data desejada:</label>
+        <label for="data" class="fw-bold fs-5">Escolha a data desejada:</label>
       </div>
       <div class="col-12 col-md-3">
         <input type="date" id="data" class="form-control" [(ngModel)]="selectedDate" (change)="onDateChange()" [min]="minDate">
@@ -10,18 +10,18 @@
     </div>
 
     <div class="table-responsive w-100">
-      <table class="table table-hover">
+      <table class="table table-hover text-center">
         <thead class="table-light">
-          <tr>
+          <tr class="fs-5">
             <th scope="col"></th>
             <th scope="col">Data</th>
             <th scope="col">Horário</th>
-            <th scope="col">Disponibilidade</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let time of availableTimes; let i = index">
-            <th scope="row"><input type="radio" name="selecao" [value]="time"></th>
+            <th scope="row"><input class="form-check-input" type="radio" name="selecao" [value]="time"></th>
             <td>{{ getFormattedDate(time) }}</td>
             <td>{{ getFormattedTime(time) }}</td>
             <td>Disponível</td>

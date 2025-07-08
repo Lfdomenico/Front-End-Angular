@@ -2,3 +2,9 @@
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/mixins";
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+body {
+    background-image: url(assets/Background/background.png);
+    background-position: center;
+    background-size: cover;
+}
