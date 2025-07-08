@@ -1,0 +1,111 @@
+/* src/app/pages/menu-cliente/menu-cliente.component.scss */
+
+/* Variáveis de cor iguais... */
+$primary: #000000;
+$primary-dark: #b71c1c;
+$bg-image: url('../../../assets/Background/background.png');
+$text-dark: #313131;
+$shadow: rgba(0, 0, 0, 0.08);
+
+/* Remove footer branco */
+footer { display: none !important; }
+
+/* Background e grid idem */
+section.menu-bg, .menu-container {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+section.menu-bg {
+  margin: 0;
+  padding: 4rem 1rem 5rem;
+  background: $bg-image center/cover no-repeat;
+  height: 100vh;
+}
+
+.menu-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 400px);
+  gap: 1.5rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card geral */
+.card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px $shadow;
+  text-decoration: none;
+  color: $text-dark;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+    background: $primary-dark;
+
+    .card-icon { transform: scale(1.1); }
+
+    .card-title,
+    .card-desc { color: #fff; }
+  }
+}
+
+/* Ícone */
+.card-icon {
+  flex-shrink: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+
+  i {
+    font-size: 2.5rem;
+    color: $primary;
+  }
+
+  /* ícone branco no hover */
+  .card:hover & i {
+    color: #fff;
+  }
+}
+
+.card-body {
+  flex: 1;
+  word-wrap: normal
+}
+.card-title {
+  margin: 0 0 0.5rem;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.card-desc {
+  margin: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}

@@ -1,44 +1,70 @@
 <main class="login-container">
   <section class="login-box">
-
     <div class="logo">
       <img src="/assets/BankFlow.png" alt="Logo BankFlow">
     </div>
 
-    <form class="register-form">
+    <!-- 
+      MUDANÇA 1: Conectamos a tag <form> ao nosso FormGroup 'registerForm'
+      e definimos que, ao ser submetido, ele chamará a função 'onSubmit()'.
+    -->
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
       <div class="form-group">
-        <input type="text" id="nomeCompleto" placeholder="Nome Completo" required>
+        <!-- MUDANÇA 2: Adicionamos 'formControlName' para vincular este input ao controle 'nome' no nosso FormGroup. -->
+        <input type="text" id="nome" placeholder="Nome Completo" formControlName="nome">
+        <div *ngIf="registerForm.get('nome')?.invalid && registerForm.get('nome')?.touched" class="error-message">
+          O nome é obrigatório.
+        </div>
       </div>
 
       <div class="form-group">
-        <input type="text" id="cpf" placeholder="CPF" maxlength="11" required>
+        <input type="text" id="cpf" placeholder="CPF (apenas números)" formControlName="cpf">
+        
+        <div *ngIf="registerForm.get('cpf')?.touched && registerForm.get('cpf')?.errors" class="error-message">
+            <div *ngIf="registerForm.get('cpf')?.errors?.['required']">O CPF é obrigatório.</div>
+            <div *ngIf="registerForm.get('cpf')?.errors?.['pattern']">O CPF deve ter 11 números.</div>
+        </div>
+    </div>
 
+      <div class="form-group">
+        <input type="tel" id="telefone" placeholder="Telefone - (99) 99999-9999" formControlName="telefone">
       </div>
 
       <div class="form-group">
-        <input type="tel" id="telefone" placeholder="Telefone - (99) 99999-9999" maxlength="15" required>
-
+        <input type="text" id="agencia" placeholder="Agência" formControlName="agencia">
       </div>
 
       <div class="form-group">
-        <input type="text" id="agencia" placeholder="Agência" required>
+        <input type="text" id="conta" placeholder="Conta" formControlName="conta">
       </div>
 
       <div class="form-group">
-        <input type="text" id="conta" placeholder="Conta" required>
+        <input type="email" id="email" placeholder="E-mail" formControlName="email">
       </div>
       
       <div class="form-group">
-        <input [type]="hideRegisterPassword ? 'password' : 'text'" id="senha-cadastro" placeholder="Crie sua Senha" required>
-        <!-- <i (click)="toggleRegisterPasswordVisibility()" class="material-icons input-icon clickable">
-          {{ hideRegisterPassword ? 'visibility_off' : 'visibility' }}
-        </i> -->
+        <input [type]="hideRegisterPassword ? 'password' : 'text'" id="senha-cadastro" placeholder="Crie sua Senha" formControlName="senha">
       </div>
       
+      <!-- 
+        MUDANÇA 3: O botão de Cadastrar agora será desabilitado ([disabled]) 
+        automaticamente se o formulário for inválido (registerForm.invalid).
+      -->
       <button type="submit" class="login-button">Cadastrar</button>
       <button type="reset" class="voltar-button">Limpar</button>
       <button type="button" class="voltar-button" routerLink="/login">Voltar</button>
+
+      <!-- 
+        MUDANÇA 4: Adicionamos divs para exibir as mensagens de sucesso ou erro.
+        Elas só aparecem (*ngIf) quando as variáveis 'mensagemSucesso' ou 'mensagemErro' têm algum conteúdo.
+      -->
+      <div *ngIf="mensagemSucesso" style="color: green; margin-top: 15px; font-weight: bold;">
+        {{ mensagemSucesso }}
+      </div>
+      <div *ngIf="mensagemErro" style="color: red; margin-top: 15px; font-weight: bold;">
+        {{ mensagemErro }}
+      </div>
 
     </form>
   </section>

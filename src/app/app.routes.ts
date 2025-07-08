@@ -1,24 +1,25 @@
-// import { Routes } from '@angular/router';
-
-// export const routes: Routes = [];
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
-// Assumindo que seu componente de login foi criado em pages/login
-import { LoginComponent } from './pages/login/login.component'; 
-
+import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { MenuClienteComponent } from './pages/menu-cliente/menu-cliente.component';
+import { AuthGuard } from './guards/auth.guard';
 import { TesteComponent } from './pages/teste/teste';
 import { AgendamentoComponent } from './pages/agendamento/agendamento';
 
 export const routes: Routes = [
-  // Quando o caminho for vazio ('/'), redireciona para a rota '/login'
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  
-  // Quando o caminho for '/login', renderiza o LoginComponent
   { path: 'login', component: LoginComponent },
 
   {path: 'register', component: RegisterComponent},
 
-  {path: 'agendamento', component: AgendamentoComponent},
+  {path: 'teste', component: TesteComponent},
 
-  {path: 'teste', component: TesteComponent}
+  {
+    path: 'menu-cliente',
+    component: MenuClienteComponent,
+    canActivate: [AuthGuard]
+  },
+
+  {path: 'agendamento', component: AgendamentoComponent},
 ];

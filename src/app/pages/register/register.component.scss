@@ -29,7 +29,12 @@
 
 }
 
-
+.error-message {
+    color: red;
+    font-size: 0.8rem;
+    text-align: left;
+    margin-top: 5px;
+  }
 
 .login-box {
 
@@ -41,6 +46,10 @@
     max-width: 400px;
     text-align: center;
 }
+
+input.ng-invalid.ng-touched {
+    border-bottom-color: red;
+  }
 
 .logo {
 
@@ -59,7 +68,7 @@
 
 input {
     width: 100%;
-    padding: 12px 40px 12px 5px; // Ajusta o padding
+    padding: 10px 7px 12px 5px; // Ajusta o padding
 
 
 
