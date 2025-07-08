@@ -1,4 +1,4 @@
-<main class="login-container">
+<!-- <main class="login-container">
   <section class="login-box">
 
    <div class="logo">
@@ -14,13 +14,41 @@
       <div class="form-group">
         <input [type]="hidePassword ? 'password' : 'text'" id="senha" placeholder="Senha" required>
         <i (click)="togglePasswordVisibility()" class="material-icons input-icon clickable">
-          <!-- {{ hidePassword ? 'visibility_off' : 'visibility' }} -->
-        </i>
+           {{ hidePassword ? 'visibility_off' : 'visibility' }} -->
+        <!-- </i>
       </div>
 
       <button type="submit" class="login-button">Login</button>
       <button type="button" class="register-button" routerLink="/register">Sign in</button>
     </form>
 
+  </section>
+</main> --> 
+
+
+<main class="login-container">
+  <section class="login-box">
+
+    <div class="logo">
+      <img src="/assets/BankFlow.png" alt="Logo BankFlow">
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <input type="email" placeholder="E-mail" formControlName="email">
+        </div>
+      
+        <div class="form-group">
+          <input [type]="hidePassword ? 'password' : 'text'" placeholder="Senha" formControlName="senha">
+          
+          <i (click)="togglePasswordVisibility()" class="material-icons input-icon clickable">
+            {{ hidePassword ? 'visibility_off' : 'visibility' }}
+          </i>
+        </div>
+
+        <button type="submit" class="login-button">Login</button>
+        <button type="button" class="register-button" routerLink="/register">Sign in</button>
+      
+      </form>
   </section>
 </main>

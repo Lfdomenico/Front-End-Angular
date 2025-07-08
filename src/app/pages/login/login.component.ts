@@ -1,33 +1,70 @@
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-
-// @Component({
-//   selector: 'app-login',
-//   standalone: true,
-//   imports: [CommonModule],
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.scss']
-// })
-// export class LoginComponent {
-//   // A lógica do seu componente virá aqui
-// }
-
-import { Component } from '@angular/core';
+// src/app/pages/login/login.component.ts
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router'; // 1. Importado aqui
+import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ClienteService, LoginRequest } from '../../services/cliente.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterLink], // Adicione CommonModule aqui para usar [type] e {{}}
+  imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'] // Note que aqui é styleUrls (plural)
+  styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  // Variável para controlar a visibilidade da senha
+export class LoginComponent implements OnInit {
+
+  loginForm!: FormGroup;
   hidePassword = true;
 
-  // Função que será chamada pelo clique no ícone
+  constructor(
+    private fb: FormBuilder,
+    private clienteService: ClienteService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', Validators.required]
+    });
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const credenciais: LoginRequest = this.loginForm.value;
+
+    this.clienteService.login(credenciais).subscribe({
+      next: (response) => {
+        // grava flag de login e redireciona ao menu-cliente
+        localStorage.setItem('isLoggedIn', 'true');
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Realizado com Sucesso!',
+          text: 'Carregando seu menu...',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          this.router.navigate(['/menu-cliente']);
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Falha no Login',
+          text: 'E-mail ou senha incorretos.',
+          confirmButtonColor: '#c62828'
+        });
+      }
+    });
+  }
+
   togglePasswordVisibility(): void {
     this.hidePassword = !this.hidePassword;
   }
