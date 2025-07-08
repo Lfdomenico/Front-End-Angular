@@ -1,11 +1,11 @@
-<body class="mt-5 min-vh-100 d-flex align-items-start justify-content-center fs-5">
+<body class="pt-5 min-vh-100 d-flex align-items-start justify-content-center fs-5">
   <section class="container py-4 d-flex flex-column align-items-start">
     <div class="row mb-4 align-items-center w-100">
       <div class="col-12 col-md-3">
         <label for="data" class="fw-bold">Escolha a data desejada:</label>
       </div>
       <div class="col-12 col-md-3">
-        <input type="date" id="data" class="form-control">
+        <input type="date" id="data" class="form-control" [(ngModel)]="selectedDate" (change)="onDateChange()" [min]="minDate">
       </div>
     </div>
 
@@ -20,17 +20,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row"><input type="radio" name="selecao"></th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
+          <tr *ngFor="let time of availableTimes; let i = index">
+            <th scope="row"><input type="radio" name="selecao" [value]="time"></th>
+            <td>{{ getFormattedDate(time) }}</td>
+            <td>{{ getFormattedTime(time) }}</td>
+            <td>Disponível</td>
           </tr>
-          <tr>
-            <th scope="row"><input type="radio" name="selecao"></th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
+          <tr *ngIf="availableTimes.length === 0 && selectedDate">
+            <td colspan="4" class="text-center">Nenhum horário disponível para a data selecionada ou data inválida.</td>
+          </tr>
+          <tr *ngIf="!selectedDate">
+            <td colspan="4" class="text-center">Selecione uma data para ver os horários disponíveis.</td>
           </tr>
         </tbody>
       </table>
