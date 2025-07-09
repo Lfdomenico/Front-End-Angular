@@ -23,14 +23,14 @@
         <div class="dropdown-user-photo">
           <img *ngIf="userPhoto; else defaultPhoto2" [src]="userPhoto" alt="Foto de perfil">
           <ng-template #defaultPhoto2>
-            <img src="/assets/user-default.png" alt="Foto default">
+            <img src="../../../assets/user-default.png" alt="Foto default">
           </ng-template>
           <input type="file" (change)="onPhotoSelected($event)" hidden #fileInput>
           <span class="edit-icon" (click)="fileInput.click()">
             <i class="fa fa-pencil-alt"></i>
           </span>
         </div>
-        <h3 class="greeting-text">Olá, {{ nome }}!</h3>
+        <h3 class="greeting-text">Olá, {{ userName }}!</h3>
         <p class="userEmail-text">{{ userEmail }}</p>
       </div>
 
