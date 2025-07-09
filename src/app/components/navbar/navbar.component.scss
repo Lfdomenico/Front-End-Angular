@@ -1,10 +1,6 @@
-/* Crie este arquivo em: src/app/components/navbar/navbar.component.scss */
 $primary-text: #333;
 $bg-light: #ffffff;
-$border-color: #eee;
 $shadow: rgba(0, 0, 0, 0.1);
-$user-icon-bg: #f5f5f5; // Um verde azulado, como no exemplo
-$user-icon-text: #0e0e0e;
 
 .navbar {
   display: flex;
@@ -18,138 +14,108 @@ $user-icon-text: #0e0e0e;
   left: 0;
   width: 100%;
   z-index: 1000;
-  overflow: visible;
 }
 
 .navbar-logo img {
-  height: 40px; // Ajuste a altura da sua logo
+  height: 40px;
 }
 
 .navbar-user {
   position: relative;
-}
-
-.user-icon {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background-color: $user-icon-bg;
-  color: $user-icon-text;
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border: 2px solid #ddd;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  gap: 0.5rem;
 
-  &:hover {
-    transform: scale(1.05);
+  .user-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #ddd;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .edit-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2px;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
   }
-}
 
-.dropdown-menu {
-  position: absolute;
-  top: 120%; // Um pouco abaixo do ícone
-  right: 0;
-  background-color: $bg-light;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px $shadow;
-  min-width: 220px;
-  overflow: hidden; // Garante que os cantos fiquem arredondados
-  animation: fadeIn 0.2s ease-out;
-  z-index: 1001;
-}
-
-.dropdown-header {
-  padding: 1rem;
-  border-bottom: 1px solid $border-color;
-
-  .email-text {
-    margin: 0;
-    font-size: 0.9rem;
+  .arrow-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
     color: $primary-text;
-    font-weight: 500;
-    word-break: break-all;
-  }
-}
-
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  color: $primary-text;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #f5f5f5;
   }
 
-  i {
-    width: 20px;
+  .dropdown-menu {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    width: 220px;
+    background: $bg-light;
+    box-shadow: 0 2px 8px $shadow;
+    border-radius: 8px;
+    padding: 1rem;
+    z-index: 999;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  .dropdown-header {
     text-align: center;
-    color: #c62828; // Cor para o ícone de logout
+
+    .dropdown-user-photo img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .greeting-text {
+      margin: 0;
+      font-size: 1.1rem;
+      color: $primary-text;
+    }
+
+    .userEmail-text {
+      font-size: 0.9rem;
+      color: gray;
+    }
+  }
+
+  .logout-button {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
   }
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-5px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-
-.dropdown-header {
-    padding: 1.5rem 1rem; // Aumenta o espaçamento
-    border-bottom: 1px solid $border-color;
-    display: flex;
-    flex-direction: column;
-    align-items: center; // Centraliza tudo
-    gap: 0.5rem; // Espaço entre os itens
-  }
-  
-  // Estilo para o ícone que fica DENTRO do dropdown
-  .dropdown-user-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: $user-icon-bg;
-    color: $user-icon-text;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  
-  // Estilo para a saudação "Olá, Luiz!"
-  .greeting-text {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: $primary-text;
-  }
-  
-  // Ajuste no estilo do e-mail
-  .email-text {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #666; // Um cinza mais suave
-    font-weight: 400;
-    word-break: break-all;
-  }
-  
-  .dropdown-item {
-    // ... (estilos existentes)
-    justify-content: center; // Centraliza o texto e ícone do botão Sair
-  }
