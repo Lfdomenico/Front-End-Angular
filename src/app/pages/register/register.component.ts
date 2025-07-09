@@ -3,11 +3,25 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ClienteService, ClienteRequest, ClienteResponse } from '../../services/cliente.service';
 
 // 1. IMPORTE O SWEETALERT AQUI
 import Swal from 'sweetalert2';
+
+function senhasCorrespondemValidator(control: AbstractControl): ValidationErrors | null{
+  const senha = control.get('senha');
+  const confirmarSenha = control.get('confirmarSenha');
+
+  // Se os campos ainda não foram criados, não faça nada
+  if (!senha || !confirmarSenha) {
+    return null;
+  }
+  
+  // Retorna um erro se os valores forem diferentes
+  return senha.value === confirmarSenha.value ? null : { senhasNaoCorrespondem: true };
+}
+
 
 @Component({
   selector: 'app-register',
@@ -41,7 +55,10 @@ export class RegisterComponent implements OnInit {
       agencia: ['', Validators.required],
       conta: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]], // Adicionei a validação de email
-      senha: ['', [Validators.required, Validators.minLength(6)]]
+      senha: ['', [Validators.required, Validators.minLength(6)]],
+      confirmarSenha: ['', Validators.required]
+    },{
+      validators:senhasCorrespondemValidator
     });
   }
 
@@ -62,6 +79,8 @@ export class RegisterComponent implements OnInit {
       
       return;
     }
+
+
   
     const clienteParaCadastrar: ClienteRequest = this.registerForm.value;
     this.clienteService.cadastrar(clienteParaCadastrar).subscribe({
@@ -77,22 +96,36 @@ export class RegisterComponent implements OnInit {
             this.router.navigate(['/login']);
         });
       },
-      error: (err: any) => {
-        console.error('Erro ao cadastrar:', err);
-
-        // 4. SUBSTITUA O alert() DE ERRO NO SERVIDOR
-        Swal.fire({
-          icon: 'error',
-          title: 'Erro no Servidor',
-          text: 'Não foi possível realizar o cadastro no momento. Tente novamente mais tarde.',
-          confirmButtonColor: '#c62828',
-          confirmButtonText: 'OK'
-        });
+      error: (err) => {
+        // VERIFICA SE O ERRO É DE DADO DUPLICADO (CONFLICT)
+        if (err.status === 409) { 
+          Swal.fire({
+            icon: 'error',
+            title: 'Falha no Cadastro',
+            // A mensagem de erro específica virá do seu backend
+            text: err.error, 
+            confirmButtonColor: '#c62828'
+          });
+        } else {
+          // PARA TODOS OS OUTROS ERROS (EX: 500)
+          console.error('Erro ao cadastrar:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erro Inesperado',
+            text: 'Ocorreu uma falha no servidor. Por favor, tente novamente mais tarde.',
+            confirmButtonColor: '#c62828'
+          });
+        }
       }
     });
   }
 
   private getErrorMessage(): string {
+    
+    if(this.registerForm.hasError('senhasNaoCorrespondem')){
+      return 'As senhas não correspondem. Por favor, verifique.';
+    }
+
     if (this.hasRequiredErrors()) {
       return 'Todos os campos são obrigatórios. Por favor, preencha todos.';
     }
@@ -127,4 +160,6 @@ export class RegisterComponent implements OnInit {
   toggleRegisterPasswordVisibility(): void {
     this.hideRegisterPassword = !this.hideRegisterPassword;
   }
+
+  
 }

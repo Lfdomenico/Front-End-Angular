@@ -23,17 +23,32 @@
 
     // Deixe apenas estas propriedades de background
 
-    background: url('/assets/Background/Imagem-1.png') no-repeat center center;
+    background: url('/assets/Background/background.png') no-repeat center center;
 
     background-size: cover;
 
 }
 
 .error-message {
-    color: red;
+    color: #c62828; // Um vermelho mais forte
     font-size: 0.8rem;
+    font-weight: 500; // Levemente mais grossa
     text-align: left;
     margin-top: 5px;
+  }
+
+  .options-container {
+    text-align: right;
+    margin-bottom: 20px;
+  }
+  
+  .forgot-password-link {
+    font-size: 0.9rem;
+    color: #555;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
 .login-box {
@@ -210,4 +225,15 @@ input {
         box-shadow: 0 4px 15px rgba(229, 57, 53, 0.4);
     }
 
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+      
+      // Modifique a classe de erro do input
+      input.ng-invalid.ng-touched {
+        border-bottom-color: red;
+        animation: shake 0.3s; // Aplica a animação
+      }
 }

@@ -12,12 +12,14 @@
 // }
 
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
   standalone: true, // <-- ADICIONE ESTA LINHA
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html', // Corrigido para o padrão
   styleUrls: ['./app.component.scss']  // Corrigido para o padrão
 })
