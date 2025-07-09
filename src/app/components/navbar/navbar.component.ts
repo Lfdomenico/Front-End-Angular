@@ -11,14 +11,14 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   isDropdownOpen = false;
-  nome: string | null = null;
+  userName: string | null = null;
   userEmail: string | null = null;
   userPhoto: string | null = null;
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.nome = localStorage.getItem('nome');
+    this.userName = localStorage.getItem('userName');
     this.userEmail = localStorage.getItem('userEmail');
     this.userPhoto = localStorage.getItem('userPhoto');
   }
