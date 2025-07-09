@@ -1,0 +1,25 @@
+<nav class="navbar">
+    <div class="navbar-logo">
+      <img src="/assets/BankFlow.png" alt="Logo da Empresa">
+    </div>
+  
+    <div class="navbar-user">
+      <button (click)="toggleDropdown()" class="user-icon">
+        <span>{{ userInitial }}</span>
+      </button>
+  
+      <div *ngIf="isDropdownOpen" class="dropdown-menu">
+        <div class="dropdown-header">
+          <div class="dropdown-user-icon">
+            <span>{{ userInitial }}</span>
+          </div>
+          <h3 class="greeting-text">Olá, {{ userName }}!</h3>
+          <p class="email-text">{{ userEmail }}</p>
+        </div>
+  
+        <a (click)="logout()" class="dropdown-item">
+          <i class="fa fa-sign-out-alt"></i> Sair
+        </a>
+      </div>
+    </div>
+  </nav>

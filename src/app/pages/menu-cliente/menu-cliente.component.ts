@@ -1,6 +1,7 @@
 // src/app/pages/menu-cliente/menu-cliente.component.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 interface Setor {
   nome: string;
@@ -11,7 +12,7 @@ interface Setor {
 @Component({
   selector: 'app-menu-cliente',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NavbarComponent],
   templateUrl: './menu-cliente.component.html',
   styleUrls: ['./menu-cliente.component.scss']
 })
