@@ -1,44 +1,69 @@
 <div class="landing-body">
-    <header class="landing-header">
-        <div class="logo">
-            <img src="/assets/BankFlow.png" alt="Logo BankFlow">
-          </div>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="#">Sobre</a></li>
-          <li><a href="#">Contato</a></li>
-          <li><a routerLink="/login" class="btn btn-login">Login</a></li>
-        </ul>
-      </nav>
-    </header>
-  
-    <main class="hero-section">
-      <div class="hero-text">
-        <h1>Otimize seu Atendimento.<br>Transforme a Experiência.</h1>
-        <p>A solução inteligente para o gerenciamento de filas bancárias, que direciona cada cliente para o atendimento certo, sem espera desnecessária.</p>
-        <a routerLink="/register" class="btn btn-cta">Comece Agora</a>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <img src="/assets/BankFlow.png" alt="Logo BankFlow">
+    </div>
+
+    <div class="navbar-links">
+      <div class="nav-item">
+        <a href="#" (click)="$event.preventDefault()">Sobre</a>
+        <button class="arrow-toggle"
+                (click)="toggleSobre()">
+          <i [class]="showSobreDesc ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+        </button>
+        <div *ngIf="showSobreDesc" class="dropdown-menu">
+          Nós somos uma equipe formada por um time de 5 desenvolvedores empenhados a diminuir o tempo das filas em bancos.
+        </div>
       </div>
-      <div class="hero-image">
-        <img src="/assets/LandingPage-Image.jpg" alt="Ilustração do App">
+
+      <div class="nav-item">
+        <a href="#" (click)="$event.preventDefault()">Contato</a>
+        <button class="arrow-toggle"
+                (click)="toggleContato()">
+          <i [class]="showContatoDesc ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+        </button>
+        <div *ngIf="showContatoDesc" class="dropdown-menu">
+          (43) 9 9844-1269
+        </div>
       </div>
-    </main>
-  
-    <footer class="stats-bar">
-      <div class="stat-item">
-        <span class="stat-value">+1M</span>
-        <span class="stat-label">Atendimentos Gerenciados</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-value">-30%</span>
-        <span class="stat-label">No Tempo de Espera</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-value">99.9%</span>
-        <span class="stat-label">Disponibilidade (Uptime)</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-value">Nível A</span>
-        <span class="stat-label">Segurança Bancária</span>
-      </div>
-    </footer>
-  </div>
+
+      <a routerLink="/login" class="btn btn-login">Login</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <main class="hero-section">
+    <div class="hero-text">
+      <h1>Otimize seu Atendimento.<br>Transforme a Experiência.</h1>
+      <p>
+        A solução inteligente para o gerenciamento de filas bancárias, que
+        direciona cada cliente para o atendimento certo, sem espera desnecessária.
+      </p>
+      <a routerLink="/register" class="btn btn-cta">Comece Agora</a>
+    </div>
+    <div class="hero-image">
+      <img src="/assets/LandingPage-Image.jpg" alt="Ilustração do App">
+    </div>
+  </main>
+
+  <!-- STATS -->
+  <footer class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-value">+1M</span>
+      <span class="stat-label">Atendimentos Gerenciados</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">-30%</span>
+      <span class="stat-label">No Tempo de Espera</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">99.9%</span>
+      <span class="stat-label">Disponibilidade (Uptime)</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-value">Nível A</span>
+      <span class="stat-label">Segurança Bancária</span>
+    </div>
+  </footer>
+</div>
