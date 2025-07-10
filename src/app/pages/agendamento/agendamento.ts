@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AgendamentoApiService } from '../../services/agendamento-api.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-agendamento',
@@ -18,13 +19,18 @@ export class AgendamentoComponent implements OnInit {
   availableTimes: string[] = [];
   minDate: string;
   selectedRadioTime: string = '';
+  public setorSelecionado: string = '';
 
-  constructor(private agendamentoApiService: AgendamentoApiService) {
+  constructor(
+    private agendamentoApiService: AgendamentoApiService,
+    private route: ActivatedRoute
+  ) {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
   }
 
   ngOnInit(): void {
+    this.setorSelecionado = this.route.snapshot.paramMap.get('setorNome') || 'Agendamento';
     if (!this.selectedDate) {
       this.selectedDate = this.minDate;
       this.onDateChange();
