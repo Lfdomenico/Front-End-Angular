@@ -7,6 +7,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { TesteComponent } from './pages/teste/teste';
 import { AgendamentoComponent } from './pages/agendamento/agendamento';
 import { LandingComponent } from './pages/landing-page/landing.component';
+import { EsperaAtendimentoComponent } from './pages/espera-atendimento1/espera-atendimento1.component'; 
 
 export const routes: Routes = [
 
@@ -25,6 +26,11 @@ export const routes: Routes = [
   {
     path: 'menu-cliente',
     component: MenuClienteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'espera/:setorNome',
+    component: EsperaAtendimentoComponent,
     canActivate: [AuthGuard]
   },
 

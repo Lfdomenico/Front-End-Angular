@@ -10,16 +10,16 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent {
-  showSobreDesc   = false;
-  showContatoDesc = false;
+  // showSobreDesc   = false;
+  // showContatoDesc = false;
 
-  toggleSobre(): void {
-    this.showSobreDesc   = !this.showSobreDesc;
-    this.showContatoDesc = false;
-  }
+  // toggleSobre(): void {
+  //   this.showSobreDesc   = !this.showSobreDesc;
+  //   this.showContatoDesc = false;
+  // }
 
-  toggleContato(): void {
-    this.showContatoDesc = !this.showContatoDesc;
-    this.showSobreDesc   = false;
-  }
+  // toggleContato(): void {
+  //   this.showContatoDesc = !this.showContatoDesc;
+  //   this.showSobreDesc   = false;
+  // }
 }
