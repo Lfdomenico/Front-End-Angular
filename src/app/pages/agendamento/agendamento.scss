@@ -21,3 +21,7 @@ body {
     background: no-repeat center url(../../../assets/Background/background.png);
     background-size: cover;
 }
+
+tbody tr {
+    cursor: pointer;
+}

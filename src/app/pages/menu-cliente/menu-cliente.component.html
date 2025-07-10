@@ -1,8 +1,10 @@
-<!-- src/app/pages/menu-cliente/menu-cliente.component.html -->
+<!-- src/app/pages/menu-cliente/menu-cliente.component.html
+<app-navbar></app-navbar>
+
 <section class="menu-bg">
   <div class="menu-container">
     <div class="menu-grid">
-      <a *ngFor="let setor of setores" class="card-menu" href="#">
+      <a *ngFor="let setor of setores" class="card-menu" [routerLink]="['/espera', setor.nome]">
         <div class="card-icon">
           <i [ngClass]="setor.iconClass"></i>
         </div>
@@ -11,6 +13,24 @@
           <p class="card-desc">{{ setor.descricao }}</p>
         </div>
       </a>
+    </div>
+  </div>
+</section> -->
+
+<app-navbar></app-navbar>
+
+<section class="menu-bg">
+  <div class="menu-container">
+    <div class="menu-grid">
+      <div *ngFor="let setor of setores" class="card-menu" (click)="selecionarSetor(setor)">
+        <div class="card-icon">
+          <i [ngClass]="setor.iconClass"></i>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ setor.nome }}</h3>
+          <p class="card-desc">{{ setor.descricao }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>

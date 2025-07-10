@@ -2,9 +2,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators'; // 1. IMPORTE O 'tap' DO RXJS
+
+export interface LoginResponse{
+  nome: string;
+  email: string
+}
 
 // Interface que representa o corpo da requisição que o back-end espera
-// (baseado no seu formulário e no ClienteRequest do back-end)
 export interface ClienteRequest {
   nome: string;
   cpf: string;
@@ -26,7 +31,7 @@ export interface ClienteResponse {
 export interface LoginRequest {
     email: string;
     senha: string;
-  }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +46,24 @@ export class ClienteService {
   cadastrar(cliente: ClienteRequest): Observable<ClienteResponse> {
     return this.http.post<ClienteResponse>(this.apiUrl, cliente);
   }
-   // --- NOVO MÉTODO DE LOGIN ---
-  // Note que o retorno é um Observable<string>, pois seu backend retorna apenas texto
-  login(credenciais: LoginRequest): Observable<string> {
-    return this.http.post(`${this.apiUrl}/login`, credenciais, { responseType: 'text' });
+
+  // --- MÉTODO DE LOGIN CORRIGIDO ---
+  login(credenciais: LoginRequest): Observable<LoginResponse> {
+    // Note que removemos o `{ responseType: 'text' }` e esperamos um LoginResponse
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credenciais)
+      .pipe(
+        tap(response => {
+          // Agora salvamos o nome e o e-mail recebidos da API
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userName', response.nome);
+          localStorage.setItem('userEmail', response.email);
+        })
+      );
+  }
+
+  // Adicione um método de logout para ser um bom cidadão digital :)
+  logout(): void {
+    localStorage.removeItem('isLoggedIn');
+    // Aqui você pode também redirecionar o usuário para a tela de login.
   }
 }

@@ -2,7 +2,7 @@
 
 /* Variáveis de cor iguais... */
 $primary: #000000;
-$primary-dark: #b71c1c;
+$primary-dark: #b13f3f;
 $bg-image: url('../../../assets/Background/background.png');
 $text-dark: #313131;
 $shadow: rgba(0, 0, 0, 0.08);
@@ -44,6 +44,7 @@ section.menu-bg {
 
 /* Card geral */
 .card-menu {
+  cursor: pointer;
   display: flex;
   align-items: center;
   background: #fff;
@@ -108,4 +109,10 @@ section.menu-bg {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
+}
+
+section.menu-bg {
+  padding-top: 100px; /* Aumenta o padding superior para dar espaço para a navbar (70px da navbar + 30px de respiro) */
+  height: auto; /* Remove a altura fixa */
+  min-height: 100vh; /* Garante que o fundo ocupe a tela toda */
 }
