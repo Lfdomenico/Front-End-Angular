@@ -11,7 +11,7 @@
   justify-content: center;
   align-items: center;
   // Deixe apenas estas propriedades de background
-  background: url('/assets/Background/Imagem-1.png') no-repeat center center;
+  background: url('/assets/Background/background.png') no-repeat center center;
   background-size: cover;
 }
 
@@ -118,6 +118,8 @@ input {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(229, 57, 53, 0.4); 
   }
+
+  
 }
 
 .logo img {
