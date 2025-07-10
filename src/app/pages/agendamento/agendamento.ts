@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AgendamentoApiService } from '../../services/agendamento-api.service';
-import { ActivatedRoute } from '@angular/router';
+import { AgendamentoApiService } from '../../services/agendamento-api.service'; // Caminho corrigido
 
 @Component({
   selector: 'app-agendamento',
@@ -19,7 +18,6 @@ export class AgendamentoComponent implements OnInit {
   availableTimes: string[] = [];
   minDate: string;
   selectedRadioTime: string = '';
-  public setorSelecionado: string = '';
 
   // IDs fictícios para teste
   readonly fictitiousUsuarioId: string = '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d';
@@ -27,15 +25,13 @@ export class AgendamentoComponent implements OnInit {
   readonly fictitiousAtendenteId: string = '3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f';
 
 
-  constructor(
-    private agendamentoApiService: AgendamentoApiService,
-    private route: ActivatedRoute
-  ) {
+  constructor(private agendamentoApiService: AgendamentoApiService) {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
   }
 
   ngOnInit(): void {
+    // Ao iniciar, se não houver data selecionada, define a data mínima e busca os horários
     if (!this.selectedDate) {
       this.selectedDate = this.minDate;
       this.onDateChange();
