@@ -15,10 +15,10 @@ export interface UploadStatus {
   providedIn: 'root'
 })
 export class DocumentoUploadApiService {
-  private documentoServiceBaseUrl = 'http://localhost:8085/api/documentos'; // Seu serviço de documentos
-  private agendamentoServiceBaseUrl = 'http://localhost:8082/api/agendamentos'; // Seu serviço de agendamentos
-  private triagemServiceBaseUrl = 'http://localhost:8081/api/triagens'; // Seu serviço de triagem (exemplo)
-  private catalogoServiceBaseUrl = 'http://localhost:8084/api/documentos-catalogo'; // Seu serviço de catálogo (exemplo)
+  private documentoServiceBaseUrl = 'http://localhost:9000/api/documentacao'; // Seu serviço de documentos
+  private agendamentoServiceBaseUrl = 'http://localhost:9000/api/agendamentos'; // Seu serviço de agendamentos
+  private triagemServiceBaseUrl = 'http://localhost:9000/api/triagens'; // Seu serviço de triagem (exemplo)
+  private catalogoServiceBaseUrl = 'http://localhost:9000/api/documentos'; // Seu serviço de catálogo (exemplo)
 
 
   constructor(private http: HttpClient) { }
