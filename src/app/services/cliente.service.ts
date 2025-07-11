@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators';
 export interface LoginResponse{
   nome: string;
   email: string;
-  id: string;
+  accessToken: string;
 }
 
 export interface ClienteRequest {
@@ -35,7 +35,8 @@ export interface LoginRequest {
 export class ClienteService {
 
   private readonly apiUrl = 'http://localhost:9000/api/cliente';
-
+  private readonly authUrl = 'http://localhost:9000/api/auth';
+  
   constructor(private http: HttpClient) { }
 
   cadastrar(cliente: ClienteRequest): Observable<ClienteResponse> {
@@ -43,19 +44,30 @@ export class ClienteService {
   }
 
   login(credenciais: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credenciais)
+    return this.http.post<LoginResponse>(`${this.authUrl}/login`, credenciais)
       .pipe(
         tap(response => {
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('userName', response.nome);
           localStorage.setItem('userEmail', response.email);
-          localStorage.setItem('userId', response.id);
+          localStorage.setItem('jwtToken', response.accessToken);
         })
       );
   }
   
   logout(): void {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('jwtToken');
+  }
+
+  getJwtToken(): string | null {
+    return localStorage.getItem('jwtToken');
+  }
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem('isLoggedIn') === 'true';
   }
 
   getId(): string | null{

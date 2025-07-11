@@ -1,4 +1,5 @@
 body {
+    padding-top: 100px;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -14,14 +15,15 @@ table thead tr th:last-child {
 }
 
 table thead tr th {
-    background-color: #f0bebe;
-}
-
-body {
-    background: no-repeat center url(../../../assets/Background/background.png);
-    background-size: cover;
+    background-color: #0947a2;
+    color: #fefefe;
 }
 
 tbody tr {
     cursor: pointer;
+}
+
+button{
+    background-color: #0d55c1;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
 }

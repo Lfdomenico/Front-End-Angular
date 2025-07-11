@@ -1,14 +1,10 @@
 $primary: #c62828; 
 $text-dark: #313131;
 $text-light: #6c757d;
-$bg-image: url('../../../assets/Background/background.png');
 $shadow: rgba(0, 0, 0, 0.08);
 
 section.menu-bg {
-  margin: 0;
-  padding: 4rem 1rem;
-  background: $bg-image center/cover no-repeat;
-  min-height: 100vh;
+  padding-top: 100px;
   display: flex;
   justify-content: center;
   align-items: center;

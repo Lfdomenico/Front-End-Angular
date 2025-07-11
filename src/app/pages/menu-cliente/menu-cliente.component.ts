@@ -58,7 +58,7 @@ export class MenuClienteComponent implements OnInit {
       rota = '/agendamento';
     } else if (servico.nome.includes('Dívidas')) {
       iconClass = 'fa fa-money-bill-alt';
-      rota = '/espera';
+      rota = '/agendamento';
     } else if (servico.nome.includes('App') || servico.nome.includes('Banking')) {
       iconClass = 'fa fa-headset';
       rota = '/espera';
@@ -76,10 +76,9 @@ export class MenuClienteComponent implements OnInit {
 
   selecionarSetor(setor: ServicoDisplay): void {
     if (setor.rota === '/agendamento') {
-      // Passa o ID do serviço e o tempo médio em minutos para a tela de agendamento
       this.router.navigate([setor.rota], { queryParams: { servicoId: setor.id, tempo: setor.tempoMedioMinutos } });
     } else {
-      this.router.navigate([setor.rota], { queryParams: { nomeSetor: setor.nome, tempo: setor.tempoMedioMinutos } });
+      this.router.navigate(['/espera', setor.nome], { queryParams: { tempo: setor.tempoMedioMinutos } });
     }
   }
 }

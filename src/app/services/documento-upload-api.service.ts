@@ -14,10 +14,10 @@ export interface UploadStatus {
   providedIn: 'root'
 })
 export class DocumentoUploadApiService {
-  private documentoServiceBaseUrl = 'http://localhost:8085/api/documentos'; 
-  private agendamentoServiceBaseUrl = 'http://localhost:8082/api/agendamentos'; 
-  private triagemServiceBaseUrl = 'http://localhost:8081/api/triagens'; 
-  private catalogoServiceBaseUrl = 'http://localhost:8084/api/documentos-catalogo'; 
+  private documentoServiceBaseUrl = 'http://localhost:9000/api/documentacao'; 
+  private agendamentoServiceBaseUrl = 'http://localhost:9000/api/agendamentos'; 
+  private triagemServiceBaseUrl = 'http://localhost:9000/api/triagens'; 
+  private catalogoServiceBaseUrl = 'http://localhost:9000/api/documentos'; 
 
 
   constructor(private http: HttpClient) { }
@@ -71,7 +71,7 @@ export class DocumentoUploadApiService {
 
 
   getAgendamentosDoUsuario(clienteId: string): Observable<Agendamento[]> {
-    const url = `${this.agendamentoServiceBaseUrl}/cliente/${clienteId}`;
+    const url = `${this.agendamentoServiceBaseUrl}/cliente`;
     return this.http.get<Agendamento[]>(url);
   }
 
@@ -91,7 +91,7 @@ export class DocumentoUploadApiService {
   }
 
   getTriagensEmAbertoDoUsuario(clienteId: string): Observable<Triagem[]> {
-    const url = `${this.triagemServiceBaseUrl}/cliente/${clienteId}`;
+    const url = `${this.triagemServiceBaseUrl}/cliente`;
     console.log(`[DocumentoUploadApiService] Buscando triagem ÚNICA para cliente em: ${url}`);
     return this.http.get<Triagem>(url).pipe( 
       map(triagem => {

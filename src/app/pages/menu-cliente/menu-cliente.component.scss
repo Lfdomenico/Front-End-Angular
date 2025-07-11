@@ -1,21 +1,20 @@
 $primary: #3b3b3b;
 $primary-dark: #b13f3f;
-$bg-image: url('../../../assets/Background/background.png');
 $text-dark: #3b3b3b;
 $shadow: rgba(0, 0, 0, 0.08);
 
 footer { display: none !important; }
 
-section.menu-bg, .menu-container {
+.menu-container {
   display:flex;
   justify-content: center;
   align-items: center;
 }
 section.menu-bg {
-  margin: 0;
+  display:flex;
+  justify-content: center;
+  align-items: center;
   padding: 4rem 1rem 5rem;
-  background: $bg-image center/cover no-repeat;
-  height: 100vh;
 }
 
 .menu-container {
@@ -43,7 +42,7 @@ section.menu-bg {
   align-items: center;
   background: #fff;
   border-radius: 0.75rem;
-  padding: 1.5rem;
+  padding: 2.0rem;
   box-shadow: 0 8px 20px $shadow;
   text-decoration: none;
   color: $text-dark;
