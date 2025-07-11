@@ -1,14 +1,10 @@
-
-// A regra @use deve vir primeiro.
-// O bloco `with` é a nova forma de sobrescrever as variáveis padrão do Bootstrap.
+@use "bootstrap-icons/font/bootstrap-icons.css";
 @use "bootstrap/scss/bootstrap" with (
-  // Fontes
   $font-family-sans-serif: "'Inter', sans-serif",
 
-  // Cores (mapeando suas cores para as variáveis do Bootstrap)
   $primary:       #c62828,
   $secondary:     #e53935,
-  $dark:          #2c3e50,
+  $dark:          #502c2c,
   $light:         #f8f9fa,
   $text-muted:    #7f8c8d,
 
@@ -17,8 +13,6 @@
   $btn-padding-y: 0.75rem,
   $btn-padding-x: 1.8rem 
 );
-
-@use "bootstrap-icons/font/bootstrap-icons.css";
 
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";
@@ -35,14 +29,11 @@
 html {
 scroll-behavior: smooth;
 }
-
-// Estilo de fundo do Hero que é muito específico
+ 
 .hero-gradient {
-    // Acesse a variável através do namespace 'bootstrap'
     background: linear-gradient(135deg, #ffffff 60%, bootstrap.$primary 60%);
   }
 
-// animações personalizadas continuam funcionando normalmente
 @keyframes slideInUp {
   from {
     opacity: 0;
@@ -59,7 +50,6 @@ scroll-behavior: smooth;
   to { opacity: 1; }
 }
 
-// animação
 .animate-slide-in-up {
   animation: slideInUp 0.8s ease-out;
 }

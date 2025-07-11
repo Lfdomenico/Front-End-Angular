@@ -11,18 +11,13 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withInMemoryScrolling({
-        anchorScrolling: 'enabled', // Habilita a rolagem para âncoras (#)
-        scrollPositionRestoration: 'enabled' // Opcional, mas recomendado: restaura a posição da rolagem ao voltar/avançar no histórico
+        anchorScrolling: 'enabled',
+        scrollPositionRestoration: 'enabled' 
       })
     ),
 
     provideHttpClient(),
     importProvidersFrom(FormsModule)
-    // provideBrowserGlobalErrorListeners(),
-    // provideRouter(routes, { anchorScrolling: 'enabled' }),
-    // // provideZoneChangeDetection({ eventCoalescing: true }),
-    // provideRouter(routes),
-    // provideHttpClient(), 
-    // importProvidersFrom(FormsModule)
+    
   ]
 };

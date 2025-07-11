@@ -5,8 +5,8 @@ export interface Triagem {
   clienteId: string;
   servicoId: string;
   nomeClienteSnapshot: string;
-  nomeServicoSnapshot: string; // Adicionado para exibir no select
-  status: string; // "AGUARDANDO", "EM_ATENDIMENTO", etc.
+  nomeServicoSnapshot: string; 
+  status: string; 
   horarioSolicitacao: string;
   horarioEstimadoAtendimento: string;
   tempoEstimadoMinutos: number;
