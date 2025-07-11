@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators';
 export interface LoginResponse{
   nome: string;
   email: string;
-  accessToken1: string;
+  accessToken: string;
 }
 
 export interface ClienteRequest {
@@ -50,7 +50,7 @@ export class ClienteService {
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('userName', response.nome);
           localStorage.setItem('userEmail', response.email);
-          localStorage.setItem('jwtToken', response.accessToken1);
+          localStorage.setItem('jwtToken', response.accessToken);
         })
       );
   }
