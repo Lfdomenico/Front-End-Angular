@@ -1,6 +1,6 @@
 $primary-text: #333;
-$bg-light: #ffffff;
-$shadow: rgba(0, 0, 0, 0.1);
+$bg-light:   #ffffff;
+$shadow:     rgba(0, 0, 0, 0.1);
 
 .navbar {
   display: flex;
@@ -67,14 +67,14 @@ $shadow: rgba(0, 0, 0, 0.1);
     position: absolute;
     right: 0;
     top: 60px;
-    width: 220px;
+    width: 300px;
     background: $bg-light;
     box-shadow: 0 2px 8px $shadow;
     border-radius: 8px;
     padding: 1rem;
     z-index: 999;
     animation: fadeIn 0.2s ease-in-out;
-  }
+  } 
 
   .dropdown-header {
     text-align: center;

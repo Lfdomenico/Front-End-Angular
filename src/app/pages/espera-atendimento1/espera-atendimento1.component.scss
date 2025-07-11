@@ -1,11 +1,9 @@
-// Reutilizando variáveis de cor do seu projeto
-$primary: #c62828; // Seu vermelho
+$primary: #c62828; 
 $text-dark: #313131;
 $text-light: #6c757d;
 $bg-image: url('../../../assets/Background/background.png');
 $shadow: rgba(0, 0, 0, 0.08);
 
-// Fundo principal (reaproveitado do menu-cliente)
 section.menu-bg {
   margin: 0;
   padding: 4rem 1rem;
@@ -16,7 +14,6 @@ section.menu-bg {
   align-items: center;
 }
 
-// Card central de espera
 .espera-card {
   background: #ffffff;
   padding: 3rem 4rem;
@@ -49,7 +46,6 @@ section.menu-bg {
   }
 }
 
-// Container do timer
 .timer-container {
   border: 2px solid #f0f0f0;
   border-radius: 0.75rem;
@@ -78,7 +74,6 @@ section.menu-bg {
   color: $text-light;
 }
 
-// Animação para o contador
 @keyframes pulso {
   0% { transform: scale(1); }
   50% { transform: scale(1.03); }

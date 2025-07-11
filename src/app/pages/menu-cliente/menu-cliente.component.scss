@@ -1,16 +1,11 @@
-/* src/app/pages/menu-cliente/menu-cliente.component.scss */
-
-/* Variáveis de cor iguais... */
-$primary: #000000;
+$primary: #3b3b3b;
 $primary-dark: #b13f3f;
 $bg-image: url('../../../assets/Background/background.png');
-$text-dark: #313131;
+$text-dark: #3b3b3b;
 $shadow: rgba(0, 0, 0, 0.08);
 
-/* Remove footer branco */
 footer { display: none !important; }
 
-/* Background e grid idem */
 section.menu-bg, .menu-container {
   display:flex;
   justify-content: center;
@@ -42,7 +37,6 @@ section.menu-bg {
   }
 }
 
-/* Card geral */
 .card-menu {
   cursor: pointer;
   display: flex;
@@ -64,14 +58,16 @@ section.menu-bg {
     box-shadow: 0 16px 40px rgba(0,0,0,0.12);
     background: $primary-dark;
 
-    .card-icon { transform: scale(1.1); }
+    .card-icon { 
+      transform: scale(1.1);      i {
+        color: #fff; 
+      } }
 
     .card-title,
     .card-desc { color: #fff; }
   }
 }
 
-/* Ícone */
 .card-icon {
   flex-shrink: 0;
   width: 4.5rem;
@@ -87,7 +83,6 @@ section.menu-bg {
     color: $primary;
   }
 
-  /* ícone branco no hover */
   .card:hover & i {
     color: #fff;
   }
@@ -112,7 +107,7 @@ section.menu-bg {
 }
 
 section.menu-bg {
-  padding-top: 100px; /* Aumenta o padding superior para dar espaço para a navbar (70px da navbar + 30px de respiro) */
-  height: auto; /* Remove a altura fixa */
-  min-height: 100vh; /* Garante que o fundo ocupe a tela toda */
+  padding-top: 100px; 
+  height: auto; 
+  min-height: 100vh; 
 }

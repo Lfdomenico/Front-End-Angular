@@ -1,4 +1,3 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -17,7 +16,7 @@ export const routes: Routes = [
 
   {path: 'home', component: LandingComponent},
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+ // { path: '', redirectTo: 'login', pathMatch: 'full' },
   
   { path: 'login', component: LoginComponent },
 
@@ -30,15 +29,27 @@ export const routes: Routes = [
     component: MenuClienteComponent,
     canActivate: [AuthGuard]
   },
-  {
-    path: 'espera/:setorNome',
-    component: EsperaAtendimentoComponent,
-    canActivate: [AuthGuard]
-  },
+  // {
+  //   path: 'espera/:setorNome',
+  //   component: EsperaAtendimentoComponent,
+  //   canActivate: [AuthGuard]
+  // },
 
   {path: 'agendamento', component: AgendamentoComponent},
 
-  { path: 'documentos/upload', component: DocumentoUploadPageComponent },
+  // // ALTERAÇÃO 1: A rota de espera agora espera um 'id'
+  // {
+  //   path: 'espera/:id',
+  //   component: EsperaAtendimentoComponent,
+  //   canActivate: [AuthGuard]
+  // },
+  // // ALTERAÇÃO 2: A rota de agendamento agora também espera um 'id'
+  // {
+  //   path: 'agendamento/:id',
+  //   component: AgendamentoComponent,
+  //   canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
+  // },
 
-  
+  // { path: 'documentos/upload', component: DocumentoUploadPageComponent },
+
 ];

@@ -10,16 +10,13 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent {
-  // showSobreDesc   = false;
-  // showContatoDesc = false;
 
-  // toggleSobre(): void {
-  //   this.showSobreDesc   = !this.showSobreDesc;
-  //   this.showContatoDesc = false;
-  // }
-
-  // toggleContato(): void {
-  //   this.showContatoDesc = !this.showContatoDesc;
-  //   this.showSobreDesc   = false;
-  // }
+  /**
+   * Rola suavemente até a section com o ID passado
+   */
+  scrollTo(sectionId: string): void {
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
