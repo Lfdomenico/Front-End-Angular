@@ -114,7 +114,7 @@ export class AgendamentoComponent implements OnInit {
   }
 
   agendarHorario(): void {
-    if (!this.selectedRadioTime || !this.servicoId || !this.usuarioId) {
+    if (!this.selectedRadioTime || !this.servicoId ) {
       alert('Selecione um horário, serviço e usuário antes de continuar.');
       return;
     }

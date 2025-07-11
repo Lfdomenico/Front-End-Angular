@@ -50,6 +50,7 @@ export class ClienteService {
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('userName', response.nome);
           localStorage.setItem('userEmail', response.email);
+          localStorage.setItem('jwtToken', response.accessToken);
         })
       );
   }
