@@ -10,7 +10,8 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    NavbarComponent
   ],
   templateUrl: './agendamento.html',
   styleUrl: './agendamento.scss'
