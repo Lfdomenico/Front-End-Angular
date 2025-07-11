@@ -18,6 +18,8 @@
   $btn-padding-x: 1.8rem 
 );
 
+@use "bootstrap-icons/font/bootstrap-icons.css";
+
 @import "../node_modules/bootstrap/scss/functions";
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/mixins";
@@ -33,9 +35,6 @@
 html {
 scroll-behavior: smooth;
 }
-
-// Para arquivos .css, você pode continuar usando @import ou usar @use.
-// @use "bootstrap-icons/font/bootstrap-icons.css";
 
 // Estilo de fundo do Hero que é muito específico
 .hero-gradient {
