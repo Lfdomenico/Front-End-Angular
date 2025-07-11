@@ -1,12 +1,11 @@
 $primary: #3b3b3b;
 $primary-dark: #b13f3f;
-$bg-image: url('../../../assets/Background/background.png');
 $text-dark: #3b3b3b;
 $shadow: rgba(0, 0, 0, 0.08);
 
 footer { display: none !important; }
 
-section.menu-bg, .menu-container {
+.menu-container {
   display:flex;
   justify-content: center;
   align-items: center;
@@ -14,8 +13,6 @@ section.menu-bg, .menu-container {
 section.menu-bg {
   margin: 0;
   padding: 4rem 1rem 5rem;
-  background: $bg-image center/cover no-repeat;
-  height: 100vh;
 }
 
 .menu-container {
