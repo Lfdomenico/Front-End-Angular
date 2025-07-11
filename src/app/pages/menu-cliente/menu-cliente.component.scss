@@ -1,112 +1,198 @@
-$primary: #3b3b3b;
-$primary-dark: #b13f3f;
+$bg-image:  url('../../../assets/Background/background.png');
+$acc-red:   #b13f3f;
+$acc-blue:  #007bff;
+$card-bg:   #fff;
 $text-dark: #3b3b3b;
-$shadow: rgba(0, 0, 0, 0.08);
+$shadow:    rgba(0, 0, 0, 0.08);
 
-footer { display: none !important; }
+footer {
+  display: none !important;
+}
 
+/* -------------------------------------------------
+   Layout de Página (fundo e centralização)
+   ------------------------------------------------- */
+section.menu-bg,
 .menu-container {
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
+
 section.menu-bg {
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  padding: 4rem 1rem 5rem;
+  padding: 5rem 1rem;
+  padding-top: 100px;
+  min-height: 100vh;
+  background: $bg-image center/cover no-repeat;
 }
 
 .menu-container {
+  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
   padding: 0 1rem;
 }
 
+/* -------------------------------------------------
+   Grid de Cartões
+   ------------------------------------------------- */
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(2, 400px);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
 
-  @media (max-width: 900px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 901px) {
+    grid-template-columns: repeat(2, 400px);
   }
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
 }
 
+/* -------------------------------------------------
+   Cartão Base (fundo claro + efeitos do modo escuro)
+   ------------------------------------------------- */
 .card-menu {
+  position: relative;
+  background: $card-bg;
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  box-shadow:
+    0 4px 12px $shadow,
+    0 2px 6px $shadow;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 0.75rem;
-  padding: 2.0rem;
-  box-shadow: 0 8px 20px $shadow;
-  text-decoration: none;
-  color: $text-dark;
+  overflow: hidden;
   transition:
-    transform 0.2s ease,
+    transform 0.3s ease,
     box-shadow 0.3s ease,
-    background 0.3s ease,
-    color 0.3s ease;
+    border-color 0.3s ease;
+
+  /* Overlay diagonal sutil */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 150%;
+    height: 150%;
+    background: rgba(0, 0, 0, 0.05);
+    transform: rotate(45deg);
+    transition: background 0.3s ease;
+    z-index: 0;
+  }
 
   &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
-    background: $primary-dark;
+    transform: translateY(-5px);
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.12),
+      0 4px 12px rgba(0, 0, 0, 0.08);
+  }
 
-    .card-icon { 
-      transform: scale(1.1);      i {
-        color: #fff; 
-      } }
+  /* Garante que o conteúdo fique acima do overlay */
+  .card-icon,
+  .card-body {
+    position: relative;
+    z-index: 1;
+  }
 
-    .card-title,
-    .card-desc { color: #fff; }
+  .card-icon {
+    flex-shrink: 0;
+    width: 5rem;
+    height: 5rem;
+    margin-right: 1.25rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background 0.3s ease,
+      transform 0.3s ease;
+
+    i {
+      font-size: 2.5rem;
+      color: currentColor;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Leve ‘zoom’ no ícone ao passar o mouse */
+    .card-menu:hover & {
+      transform: scale(1.1);
+    }
+  }
+
+  .card-title {
+    margin: 0 0 0.5rem;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $text-dark;
+    position: relative;
+    transition: color 0.3s ease;
+
+    /* Barra de destaque abaixo do título */
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -0.25rem;
+      left: 0;
+      width: 3rem;
+      height: 0.25rem;
+      background: currentColor;
+      border-radius: 2px;
+      z-index: 1;
+      transition: background 0.3s ease;
+    }
+  }
+
+  .card-desc {
+    margin: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba($text-dark, 0.8);
+    transition: color 0.3s ease;
   }
 }
 
-.card-icon {
-  flex-shrink: 0;
-  width: 4.5rem;
-  height: 4.5rem;
-  margin-right: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
+/* -------------------------------------------------
+   Ajustes de cor para pares e ímpares
+   ------------------------------------------------- */
+.menu-grid {
+  /* Cartões 1, 3, 5 (ímpares) em azul */
+  .card-menu:nth-child(odd) {
+    color: $acc-blue;
 
-  i {
-    font-size: 2.5rem;
-    color: $primary;
+    &::before {
+      background: rgba($acc-blue, 0.1);
+    }
+    &:hover::before {
+      background: rgba($acc-blue, 0.2);
+    }
+
+    .card-icon {
+      background: rgba($acc-blue, 0.1);
+    }
+    &:hover .card-icon {
+      background: rgba($acc-blue, 0.2);
+    }
   }
 
-  .card:hover & i {
-    color: #fff;
+  /* Cartões 2, 4, 6 (pares) em vermelho */
+  .card-menu:nth-child(even) {
+    color: $acc-red;
+
+    &::before {
+      background: rgba($acc-red, 0.1);
+    }
+    &:hover::before {
+      background: rgba($acc-red, 0.2);
+    }
+
+    .card-icon {
+      background: rgba($acc-red, 0.1);
+    }
+    &:hover .card-icon {
+      background: rgba($acc-red, 0.2);
+    }
   }
-}
-
-.card-body {
-  flex: 1;
-  word-wrap: normal
-}
-.card-title {
-  margin: 0 0 0.5rem;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.card-desc {
-  margin: 0;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-section.menu-bg {
-  padding-top: 100px; 
-  height: auto; 
-  min-height: 100vh; 
 }
