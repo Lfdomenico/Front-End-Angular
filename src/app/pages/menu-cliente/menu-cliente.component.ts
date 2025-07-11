@@ -71,7 +71,7 @@ export class MenuClienteComponent {
  
     setores: Setor[] = [
       { id: "0ddad861-48c2-40c2-9df5-5e656cbc0938", nome: "Informações Gerais", descricao: "Dúvidas sobre produtos, taxas, horários de funcionamento, etc.", tempoMedioMinutos: 5, iconClass: 'fa fa-info-circle' },
-      { id: "c40e4730-68ca-46aa-bbb9-8cb90800ed6a", nome: "Abertura e Encerramento de Conta", descricao: "Procedimentos para novos e antigos clientes.", tempoMedioMinutos: 20, iconClass: 'fa fa-university' },
+      { id: "be344120-a46b-443b-8916-9d7fb792eeea", nome: "Abertura e Encerramento de Conta", descricao: "Procedimentos para novos e antigos clientes.", tempoMedioMinutos: 20, iconClass: 'fa fa-university' },
       { id: "38147608-1c1d-4d87-9360-7d2aa9516035", nome: "Bloqueio/Desbloqueio de Cartão", descricao: "Cliente solicita o bloqueio por perda/roubo ou desbloqueio de um novo cartão.", tempoMedioMinutos: 15, iconClass: 'fa fa-credit-card' },
       { id: "16ad5e5f-1061-4e09-b290-00bb1cbe3d99", nome: "Análise de Fraude", descricao: "Investigação de transações não reconhecidas pelo cliente.", tempoMedioMinutos: 30, iconClass: 'fa fa-search' },
       { id: "1c371b01-4f4d-49af-998a-aae9aeb388a1", nome: "Renegociação de Dívidas", descricao: "Clientes buscando negociar débitos, parcelamentos ou obter descontos.", tempoMedioMinutos: 25, iconClass: 'fa fa-money-bill-alt' },
