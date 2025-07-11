@@ -1,7 +1,6 @@
-// :host permite que os estilos se apliquem ao componente como um todo
 :host {
   display: block;
-  height: 100vh; // Garante que o componente ocupe toda a altura da tela
+  height: 100vh; 
 }
 
 .login-container {
@@ -10,14 +9,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  // Deixe apenas estas propriedades de background
   background: url('/assets/Background/background.png') no-repeat center center;
   background-size: cover;
 }
 
 
 .login-box {
-  background: rgba(255, 255, 255, 0.95); // Fundo branco com leve transparência
+  background: rgba(255, 255, 255, 0.95); 
   padding: 40px 30px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -28,7 +26,6 @@
 
 .logo {
   margin-bottom: 30px;
-  // O text-align: center que já existe no .login-box vai ajudar a centralizar
 }
 
 
@@ -39,21 +36,19 @@
 
 input {
   width: 100%;
-  padding: 12px 1px 12px 5px; // Ajusta o padding
+  padding: 12px 1px 12px 5px; 
   
-  // --- Alterações Principais ---
-  border: none; // Remove todas as bordas
-  border-bottom: 2px solid #ddd; // Adiciona apenas a borda inferior
-  border-radius: 0; // Remove o arredondamento dos cantos
-  background-color: transparent; // Remove o fundo cinza
-  // --- Fim das Alterações ---
+  border: none; 
+  border-bottom: 2px solid #ddd; 
+  border-radius: 0; 
+  background-color: transparent; 
 
   font-size: 1rem;
   transition: border-color 0.3s;
 
   &:focus {
     outline: none;
-    border-bottom-color: #e53935; // Muda a cor da linha ao focar
+    border-bottom-color: #e53935; 
   }
 }
 
@@ -95,24 +90,21 @@ input {
 
 .register-button {
   width: 100%;
-  padding: 13px; // Um pouco menos de padding para compensar a borda
+  padding: 13px; 
   border-radius: 30px;
   
-  // --- Alterações Principais ---
-  border: 2px solid #e53935; // Adiciona a borda vermelha
-  background-color: transparent; // Deixa o fundo transparente
-  color: #e53935; // Cor do texto vermelha
-  // --- Fim das Alterações ---
+  border: 2px solid #e53935;
+  background-color: transparent;
+  color: #e53935; 
 
   font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.3s ease; // Transição mais suave para tudo
-  margin-top: 15px; // Um pouco mais de espaço
+  transition: all 0.3s ease; 
+  margin-top: 15px; 
 
   &:hover {
-    // Inverte as cores no hover para um efeito legal
     background-color: #ffffff;
     color: rgb(255, 0, 0);
     transform: translateY(-2px);
@@ -123,8 +115,8 @@ input {
 }
 
 .logo img {
-  display: block;    // Trata a imagem como um bloco
-  margin: 0 auto;    // Centraliza a imagem horizontalmente dentro do .logo
-  width: 180px;      // Define uma largura fixa
-  height: auto;      // Mantém a proporção da imagem
+  display: block;   
+  margin: 0 auto;    
+  width: 180px;      
+  height: auto;      
 }

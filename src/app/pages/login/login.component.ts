@@ -1,4 +1,3 @@
-// Em: src/app/pages/login/login.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -9,24 +8,21 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   standalone: true,
-  // 1. ADICIONE ReactiveFormsModule para formulários
   imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit { // 2. IMPLEMENTE OnInit
+export class LoginComponent implements OnInit {
 
-  loginForm!: FormGroup; // 3. Variável para o formulário
+  loginForm!: FormGroup; 
   hidePassword = true;
 
-  // 4. INJETE os serviços necessários
   constructor(
     private fb: FormBuilder,
     private clienteService: ClienteService,
     private router: Router
   ) {}
 
-  // 5. CRIE o formulário quando o componente iniciar
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -34,10 +30,8 @@ export class LoginComponent implements OnInit { // 2. IMPLEMENTE OnInit
     });
   }
 
-  // 6. MÉTODO para lidar com a submissão do formulário
   onSubmit(): void {
     if (this.loginForm.invalid) {
-      // Marca os campos como "tocados" para exibir erros, se houver
       this.loginForm.markAllAsTouched(); 
       return;
     }
@@ -45,19 +39,16 @@ export class LoginComponent implements OnInit { // 2. IMPLEMENTE OnInit
     const credenciais: LoginRequest = this.loginForm.value;
 
     this.clienteService.login(credenciais).subscribe({
-      // CÓDIGO MODIFICADO
 next: (response) => {
-  console.log('Resposta do servidor:', response); // "Login bem-sucedido"
+  console.log('Resposta do servidor:', response);
   
-  // Exibe um pop-up de sucesso que fecha sozinho
   Swal.fire({
     icon: 'success',
     title: 'Login Realizado com Sucesso!',
     text: 'Redirecionando para o painel...',
-    timer: 1500, // O pop-up fecha após 1.5 segundos
-    showConfirmButton: false // Esconde o botão "OK"
+    timer: 1500,
+    showConfirmButton: false
   }).then(() => {
-    // Após o pop-up fechar, redireciona o usuário
     this.router.navigate(['/menu-cliente']);
   });
 },

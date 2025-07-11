@@ -1,10 +1,9 @@
 <nav class="navbar">
-  <div class="navbar-logo">
+  <div class="navbar-logo" (click)="navigateToMenu()" style="cursor:pointer">
     <img src="/assets/BankFlow.png" alt="Logo da Empresa">
   </div>
 
   <div class="navbar-user">
-    <!-- Imagem de perfil com ícone editável -->
     <label class="user-icon">
       <img *ngIf="userPhoto; else defaultPhoto" [src]="userPhoto" alt="Foto de perfil">
       <ng-template #defaultPhoto>
@@ -12,12 +11,10 @@
       </ng-template>
     </label>
 
-    <!-- Seta para abrir dropdown -->
     <button class="arrow-toggle" (click)="toggleDropdown()">
       <i [class]="isDropdownOpen ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
     </button>
 
-    <!-- Menu dropdown -->
     <div *ngIf="isDropdownOpen" class="dropdown-menu">
       <div class="dropdown-header">
         <div class="dropdown-user-photo">
@@ -30,7 +27,7 @@
             <i class="fa fa-pencil-alt"></i>
           </span>
         </div>
-        <h3 class="greeting-text">Olá, {{ userName }}!</h3>
+        <h3 class="greeting-text">Olá, {{ userFirstName }}!</h3>
         <p class="userEmail-text">{{ userEmail }}</p>
       </div>
 
