@@ -20,13 +20,23 @@ export class EsperaAtendimentoComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.setorSelecionado = this.route.snapshot.paramMap.get('setorNome') || 'Serviço Solicitado';
+    // --- CÓDIGO CORRIGIDO ---
+
+    // 1. Pega o nome do setor do query parameter 'setorNome'
+    this.setorSelecionado = this.route.snapshot.queryParamMap.get('setorNome') || 'Serviço Solicitado';
     
-    const tempoDaRota = this.route.snapshot.queryParamMap.get('tempo');
-    if (tempoDaRota) {
-      this.tempoRestante = +tempoDaRota; 
+    // 2. Pega o tempo em minutos do query parameter 'tempo'
+    const tempoEmMinutos = this.route.snapshot.queryParamMap.get('tempo');
+    
+    if (tempoEmMinutos) {
+      // 3. CONVERTE OS MINUTOS PARA SEGUNDOS! (Ex: '5' * 60 = 300)
+      this.tempoRestante = +tempoEmMinutos * 60;
+    } else {
+      // 4. Se nenhum tempo for passado, usa um valor padrão (2 minutos)
+      this.tempoRestante = 120;
     }
     
+    // O resto do seu código que inicia o timer permanece igual
     this.formatTime(); 
     this.startTimer();
   }

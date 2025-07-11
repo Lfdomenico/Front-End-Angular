@@ -2,13 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AgendamentoApiService } from '../../services/agendamento-api.service'; 
+import { ActivatedRoute } from '@angular/router'; // Importacao adicionada
+import { NavbarComponent } from '../../components/navbar/navbar.component'; // 1. IMPORTE O NAVBARCOMPONENT
 
 @Component({
   selector: 'app-agendamento',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    NavbarComponent
   ],
   templateUrl: './agendamento.html',
   styleUrl: './agendamento.scss'
@@ -18,6 +21,8 @@ export class AgendamentoComponent implements OnInit {
   availableTimes: string[] = [];
   minDate: string;
   selectedRadioTime: string = '';
+  // variavel para guardar o ID do serviço vindo da rota.
+  servicoId: string | null = null;
 
   // IDs fictícios para teste
   readonly fictitiousUsuarioId: string = '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d';
@@ -25,13 +30,23 @@ export class AgendamentoComponent implements OnInit {
   readonly fictitiousAtendenteId: string = '3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f';
 
 
-  constructor(private agendamentoApiService: AgendamentoApiService) {
+  constructor(private agendamentoApiService: AgendamentoApiService, private route: ActivatedRoute) {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
   }
 
   ngOnInit(): void {
-    
+    // 4. CAPTURE O ID DA URL QUANDO O COMPONENTE INICIAR
+    this.servicoId = this.route.snapshot.paramMap.get('id');
+
+    if (!this.servicoId) {
+      console.error("ID do serviço não foi encontrado na URL!");
+      alert("Erro: Serviço não especificado.");
+      // Opcional: redirecionar de volta para o menu
+      // this.router.navigate(['/menu-cliente']);
+      return;
+    }
+
     if (!this.selectedDate) {
       this.selectedDate = this.minDate;
       this.onDateChange();
@@ -40,7 +55,7 @@ export class AgendamentoComponent implements OnInit {
 
   
   onDateChange(): void {
-    if (this.selectedDate) {
+    if (this.selectedDate && this.servicoId) {
       const selectedLocalDate = new Date(this.selectedDate + 'T00:00:00');
       const dayOfWeek = selectedLocalDate.getDay();
 
@@ -52,7 +67,7 @@ export class AgendamentoComponent implements OnInit {
         return;
       }
 
-      this.agendamentoApiService.getHorariosDisponiveis(this.selectedDate, this.fictitiousServicoId).subscribe({
+      this.agendamentoApiService.getHorariosDisponiveis(this.selectedDate, this.servicoId).subscribe({
         next: (times) => {
           const today = new Date();
           const selectedDateOnly = new Date(this.selectedDate + 'T00:00:00');
@@ -102,18 +117,25 @@ export class AgendamentoComponent implements OnInit {
     console.log('Horário selecionado:', this.selectedRadioTime);
   }
 
+  
+
   agendarHorario(): void {
-    console.log('Valor de selectedRadioTime ao clicar em Agendar:', this.selectedRadioTime);
     if (!this.selectedRadioTime) {
       alert('Por favor, selecione um horário disponível para agendar.');
       return;
     }
 
+    // Esta verificação agora está no lugar certo.
+    if (!this.servicoId) {
+      alert('Erro: Não foi possível identificar o serviço para agendamento.');
+      return;
+    }
+
     const agendamentoData = {
       usuarioId: this.fictitiousUsuarioId,
-      servicoId: this.fictitiousServicoId,
+      servicoId: this.servicoId, // Usa o ID real vindo da rota
       atendenteId: this.fictitiousAtendenteId,
-      dataHora: this.selectedRadioTime 
+      dataHora: this.selectedRadioTime
     };
 
     console.log('Tentando agendar:', agendamentoData);
