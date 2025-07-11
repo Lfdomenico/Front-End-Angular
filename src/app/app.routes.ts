@@ -51,6 +51,6 @@ export const routes: Routes = [
   //   canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
   // },
 
-  // { path: 'documentos/upload', component: DocumentoUploadPageComponent },
+ { path: 'documentos/upload', component: DocumentoUploadPageComponent },
 
 ];

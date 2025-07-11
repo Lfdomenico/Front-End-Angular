@@ -5,11 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DocumentoUploadApiService, UploadStatus } from '../../services/documento-upload-api.service';
 import { Agendamento, DocumentoPendente, TipoDocumentoCatalogo } from '../../models/agendamento.model'; 
 import { Triagem } from '../../models/triagem.model'; 
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-documento-upload-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgIf, NgFor, DatePipe, TitleCasePipe], 
+  imports: [CommonModule, FormsModule, DatePipe, TitleCasePipe,NavbarComponent], 
   templateUrl: './documento-upload-page.component.html',
   styleUrls: ['./documento-upload-page.component.scss']
 })
