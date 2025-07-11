@@ -24,8 +24,8 @@
         <input
           type="text"
           mask="000.000.000-00"
-          [showMaskTyped]="true"
-          placeholder="___.___.___-__"
+          [showMaskTyped]="false"
+          placeholder="CPF"
           formControlName="cpf">
         <div *ngIf="registerForm.get('cpf')?.touched && registerForm.get('cpf')?.errors"
              class="error-message">
@@ -39,8 +39,8 @@
         <input
           type="tel"
           mask="(00) 00000-0000"
-          [showMaskTyped]="true"
-          placeholder="(__) _____-____"
+          [showMaskTyped]="false"
+          placeholder="Telefone"
           formControlName="telefone">
         <div *ngIf="registerForm.get('telefone')?.touched && registerForm.get('telefone')?.errors"
              class="error-message">
@@ -52,8 +52,8 @@
         <input
           type="text"
           mask="0000"
-          [showMaskTyped]="true"
-          placeholder="____"
+          [showMaskTyped]="false"
+          placeholder="Agência"
           formControlName="agencia">
         <div *ngIf="registerForm.get('agencia')?.touched && registerForm.get('agencia')?.errors"
              class="error-message">
@@ -67,8 +67,8 @@
         <input
           type="text"
           mask="00000000-0"
-          [showMaskTyped]="true"
-          placeholder="________-_"
+          [showMaskTyped]="false"
+          placeholder="Conta"
           formControlName="conta">
         <div *ngIf="registerForm.get('conta')?.touched && registerForm.get('conta')?.errors"
              class="error-message">
