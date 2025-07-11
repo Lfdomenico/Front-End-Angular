@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router'; // Importe ActivatedRoute
 import { AgendamentoApiService } from '../../services/agendamento-api.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component'; 
+import { ClienteService } from '../../services/cliente.service';
 
 @Component({
   selector: 'app-agendamento',
@@ -24,7 +25,9 @@ export class AgendamentoComponent implements OnInit {
 
   servicoId: string | null = null;
   tempoEstimadoServico: number | null = null;
-  usuarioId: string = '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d'; // Mantendo um usuário fictício por enquanto
+
+  clienteService = inject(ClienteService);
+  usuarioId = this.clienteService.getId(); // Mantendo um usuário fictício por enquanto
 
 
   constructor(

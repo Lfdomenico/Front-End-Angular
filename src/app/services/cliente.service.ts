@@ -5,7 +5,8 @@ import { tap } from 'rxjs/operators';
 
 export interface LoginResponse{
   nome: string;
-  email: string
+  email: string;
+  id: string;
 }
 
 export interface ClienteRequest {
@@ -48,11 +49,16 @@ export class ClienteService {
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('userName', response.nome);
           localStorage.setItem('userEmail', response.email);
+          localStorage.setItem('userId', response.id);
         })
       );
   }
   
   logout(): void {
     localStorage.removeItem('isLoggedIn');
+  }
+
+  getId(): string | null{
+    return localStorage.getItem('userId');
   }
 }

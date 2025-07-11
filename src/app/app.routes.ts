@@ -16,7 +16,7 @@ export const routes: Routes = [
 
   {path: 'home', component: LandingComponent},
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+ // { path: '', redirectTo: 'login', pathMatch: 'full' },
   
   { path: 'login', component: LoginComponent },
 
@@ -35,22 +35,21 @@ export const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
 
-  // {path: 'agendamento', component: AgendamentoComponent},
+  {path: 'agendamento', component: AgendamentoComponent},
 
-  // ALTERAÇÃO 1: A rota de espera agora espera um 'id'
-  {
-    path: 'espera/:id',
-    component: EsperaAtendimentoComponent,
-    canActivate: [AuthGuard]
-  },
-  // ALTERAÇÃO 2: A rota de agendamento agora também espera um 'id'
-  {
-    path: 'agendamento/:id',
-    component: AgendamentoComponent,
-    canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
-  },
+  // // ALTERAÇÃO 1: A rota de espera agora espera um 'id'
+  // {
+  //   path: 'espera/:id',
+  //   component: EsperaAtendimentoComponent,
+  //   canActivate: [AuthGuard]
+  // },
+  // // ALTERAÇÃO 2: A rota de agendamento agora também espera um 'id'
+  // {
+  //   path: 'agendamento/:id',
+  //   component: AgendamentoComponent,
+  //   canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
+  // },
 
-  { path: 'documentos/upload', component: DocumentoUploadPageComponent },
+  // { path: 'documentos/upload', component: DocumentoUploadPageComponent },
 
-  
 ];
