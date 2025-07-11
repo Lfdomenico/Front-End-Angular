@@ -50,7 +50,6 @@ export class ClienteService {
           localStorage.setItem('isLoggedIn', 'true');
           localStorage.setItem('userName', response.nome);
           localStorage.setItem('userEmail', response.email);
-          localStorage.setItem('jwtToken', response.accessToken);
         })
       );
   }
@@ -68,5 +67,9 @@ export class ClienteService {
 
   isLoggedIn(): boolean {
     return localStorage.getItem('isLoggedIn') === 'true';
+  }
+
+  getId(): string | null{
+    return localStorage.getItem('userId');
   }
 }
