@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // ActivatedRoute para ler parâmetros
 import { AgendamentoApiService } from '../../services/agendamento-api.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { ClienteService } from '../../services/cliente.service';
@@ -31,7 +31,7 @@ export class AgendamentoComponent implements OnInit {
 
   constructor(
     private agendamentoApiService: AgendamentoApiService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute, // ActivatedRoute já está injetado, ótimo!
     private router: Router
   ) {
     const today = new Date();
@@ -39,30 +39,42 @@ export class AgendamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.servicoId = params['servicoId'] || null;
-      this.tempoEstimadoServico = params['tempo'] ? +params['tempo'] : null;
+    // 1. Ler o servicoId do PARAMETRO DE ROTA (:id)
+    this.route.paramMap.subscribe(params => {
+      this.servicoId = params.get('id'); // <-- Use params.get('id') para ler o parâmetro de rota
+      console.log('AgendamentoComponent: servicoId lido do paramMap:', this.servicoId);
 
+      // Se o servicoId não for encontrado aqui, você pode alertar ou redirecionar
       if (!this.servicoId) {
-        alert('Serviço não especificado. Por favor, selecione um serviço na tela anterior.');
-        return;
+        alert('ID do serviço não especificado na URL. Por favor, selecione um serviço na tela anterior.');
+        // Opcional: redirecionar de volta se o ID for crítico
+        // this.router.navigate(['/menu-cliente']);
+        return; // Retorna para evitar continuar sem o ID
       }
 
+      // Se a data não estiver selecionada, defina a data mínima e carregue os horários
+      // Isso deve ser feito APÓS ter certeza de que o servicoId foi obtido
       if (!this.selectedDate) {
         this.selectedDate = this.minDate;
-        this.onDateChange();
+        this.onDateChange(); // Chama onDateChange para carregar os horários iniciais
       }
     });
+
+    // 2. Ler o tempoEstimadoServico dos QUERY PARAMS (?tempo=...)
+    this.route.queryParams.subscribe(params => {
+      this.tempoEstimadoServico = params['tempo'] ? +params['tempo'] : null;
+      console.log('AgendamentoComponent: tempoEstimadoServico lido do queryParams:', this.tempoEstimadoServico);
+    });
+
+    // A lógica de onDateChange() aqui dentro do queryParams.subscribe()
+    // pode causar problemas de timing se o servicoId não estiver disponível ainda.
+    // Movi a chamada de onDateChange() para dentro do paramMap.subscribe()
+    // para garantir que o servicoId já foi lido.
   }
 
   onDateChange(): void {
-    if (!this.servicoId) {
-      this.availableTimes = [];
-      this.selectedRadioTime = '';
-      return;
-    }
-
-    if (!this.selectedDate) {
+    // Verificações de servicoId e selectedDate são importantes antes de chamar a API
+    if (!this.servicoId || !this.selectedDate) {
       this.availableTimes = [];
       this.selectedRadioTime = '';
       return;
@@ -72,7 +84,7 @@ export class AgendamentoComponent implements OnInit {
     const dayOfWeek = selectedLocalDate.getDay();
     if (dayOfWeek === 0 || dayOfWeek === 6) {
       alert('Fins de semana não estão disponíveis para agendamento. Escolha um dia de semana.');
-      this.selectedDate = '';
+      this.selectedDate = ''; // Limpa a data selecionada para forçar o usuário a escolher novamente
       this.availableTimes = [];
       this.selectedRadioTime = '';
       return;
@@ -115,14 +127,14 @@ export class AgendamentoComponent implements OnInit {
 
   agendarHorario(): void {
     if (!this.selectedRadioTime || !this.servicoId ) {
-      alert('Selecione um horário, serviço e usuário antes de continuar.');
+      alert('Selecione um horário e um serviço antes de continuar.'); // Removi "usuário" da mensagem, pois usuarioId é injetado
       return;
     }
 
     const agendamentoData = {
       usuarioId: this.usuarioId,
       servicoId: this.servicoId,
-      atendenteId: '3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f',
+      atendenteId: '3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f', // Este ID parece ser fixo, confirme se é isso mesmo
       dataHora: this.selectedRadioTime
     };
 
