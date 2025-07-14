@@ -49,6 +49,10 @@ $primary-hover: #c82333;
   cursor: pointer;
 }
 
+#sobre {
+  background-color: #fff;
+}
+
 /* fixa margem para scroll com header sticky */
 section[id] {
   scroll-margin-top: 80px;

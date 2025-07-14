@@ -1,11 +1,22 @@
+/* Container com imagem de fundo e centralização iguais ao Agendamento */
+:host {
+  display: flex;
+  min-height: 100vh;
+  align-items: start;
+  justify-content: center;
+  padding-top: 5rem;
+
+  background: no-repeat center url('../../../assets/Background/background.png');
+  background-size: cover;
+}
+
 .upload-container {
+  width: 100%;
   max-width: 600px;
-  margin: 50px auto;
+  margin: 0 15px;
   padding: 30px;
-  border: 1px solid #ddd;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  background-color: #fff;
 
   h2 {
     text-align: center;
@@ -29,8 +40,7 @@
   }
 
   .document-list {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px 0;
 
     h3 {
       font-size: 1.1em;
@@ -67,24 +77,12 @@
         font-weight: bold;
         text-transform: uppercase;
         margin-left: 10px;
-        white-space: nowrap; // Evita quebra de linha
+        white-space: nowrap;
 
-        &.status-pendente {
-          background-color: #ffc107; // Amarelo
-          color: #333;
-        }
-        &.status-aprovado {
-          background-color: #28a745; // Verde
-          color: white;
-        }
-        &.status-rejeitado {
-          background-color: #dc3545; // Vermelho
-          color: white;
-        }
-        &.status-aguardando {
-          background-color: #17a2b8; // Azul claro
-          color: white;
-        }
+        &.status-pendente { background-color: #ffc107; color: #333; }
+        &.status-aprovado { background-color: #28a745; color: #fff; }
+        &.status-rejeitado { background-color: #dc3545; color: #fff; }
+        &.status-aguardando { background-color: #17a2b8; color: #fff; }
       }
 
       .view-link {
@@ -101,10 +99,10 @@
       .validation-note {
         font-size: 0.8em;
         color: #6c757d;
-        margin-left: auto; // Alinha à direita
+        margin-left: auto;
         margin-top: 5px;
         padding-left: 10px;
-        flex-basis: 100%; // Ocupa a largura total abaixo do nome/status
+        flex-basis: 100%;
       }
     }
   }
@@ -123,21 +121,16 @@
       font-weight: bold;
       color: #555;
 
-      .required {
-        color: red;
-      }
+      .required { color: red; }
     }
 
-    .form-control {
+    .form-control,
+    .form-control-file {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
-    }
-
-    .form-control-file {
-      padding: 3px 0;
     }
   }
 
@@ -146,21 +139,15 @@
     width: 100%;
     padding: 12px;
     background-color: #007bff;
-    color: white;
+    color: #fff;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 
-    &:hover {
-      background-color: #0056b3;
-    }
-
-    &:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
-    }
+    &:hover { background-color: #0056b3; }
+    &:disabled { background-color: #ccc; cursor: not-allowed; }
   }
 
   .progress {
@@ -173,7 +160,7 @@
       height: 100%;
       background-color: #28a745;
       text-align: center;
-      color: white;
+      color: #fff;
       transition: width 0.6s ease;
     }
   }
@@ -184,26 +171,14 @@
     margin-top: 15px;
     font-size: 0.9em;
 
-    &.alert-success {
-      background-color: #d4edda;
-      color: #155724;
-      border-color: #c3e6cb;
-    }
-
-    &.alert-danger {
-      background-color: #f8d7da;
-      color: #721c24;
-      border-color: #f5c6cb;
-    }
-    &.alert-warning {
-        background-color: #fff3cd;
-        color: #664d03;
-        border-color: #ffecb5;
-    }
-    &.alert-info {
-        background-color: #cff4fc;
-        color: #055160;
-        border-color: #b6effb;
-    }
+    &.alert-success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+    &.alert-danger  { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+    &.alert-warning { background-color: #fff3cd; color: #664d03; border-color: #ffecb5; }
+    &.alert-info    { background-color: #cff4fc; color: #055160; border-color: #b6effb; }
+    
   }
+  
+}
+.upload-container{
+  margin-top: 100px;
 }
