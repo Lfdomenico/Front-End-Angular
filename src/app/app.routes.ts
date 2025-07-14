@@ -8,6 +8,8 @@ import { AgendamentoComponent } from './pages/agendamento/agendamento';
 import { LandingComponent } from './pages/landing-page/landing.component';
 import { EsperaAtendimentoComponent } from './pages/espera-atendimento1/espera-atendimento1.component'; 
 import { DocumentoUploadPageComponent } from './pages/documentos-upload/documento-upload-page.component';
+import { MenuFuncionarioComponent } from './pages/menu-funcionario/menu-funcionario.component';
+
 
 
 export const routes: Routes = [
@@ -29,28 +31,33 @@ export const routes: Routes = [
     component: MenuClienteComponent,
     canActivate: [AuthGuard]
   },
-  
   {
-    path: 'espera/:setorNome',
-    component: EsperaAtendimentoComponent,
-    canActivate: [AuthGuard]
+    path: 'menu-funcionario',
+    component: MenuFuncionarioComponent,
+    canActivate: [AuthGuard] // trocar depois para o token do JWT
   },
-
-  {path: 'agendamento', component: AgendamentoComponent},
-
-  // // ALTERAÇÃO 1: A rota de espera agora espera um 'id'
   // {
-  //   path: 'espera/:id',
+  //   path: 'espera/:setorNome',
   //   component: EsperaAtendimentoComponent,
   //   canActivate: [AuthGuard]
   // },
-  // // ALTERAÇÃO 2: A rota de agendamento agora também espera um 'id'
-  // {
-  //   path: 'agendamento/:id',
-  //   component: AgendamentoComponent,
-  //   canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
-  // },
 
- { path: 'documentos/upload', component: DocumentoUploadPageComponent },
+  // {path: 'agendamento', component: AgendamentoComponent},
 
+  // ALTERAÇÃO 1: A rota de espera agora espera um 'id'
+  {
+    path: 'espera/:id',
+    component: EsperaAtendimentoComponent,
+    canActivate: [AuthGuard]
+  },
+  // ALTERAÇÃO 2: A rota de agendamento agora também espera um 'id'
+  {
+    path: 'agendamento/:id',
+    component: AgendamentoComponent,
+    canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
+  },
+
+  { path: 'documentos/upload', component: DocumentoUploadPageComponent },
+
+  
 ];
