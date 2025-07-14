@@ -18,6 +18,11 @@ export class MenuFuncionarioComponent implements OnInit {
 
   ngOnInit(): void {
     this.carregarTarefas();
+    document.body.classList.add('menu-funcionario-bg');
+  }
+
+  ngOnDestroy(): void{
+    document.body.classList.remove('menu-funcionario-bg');
   }
 
   carregarTarefas(): void {
