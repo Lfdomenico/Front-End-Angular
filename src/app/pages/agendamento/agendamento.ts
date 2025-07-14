@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; 
 import { AgendamentoApiService } from '../../services/agendamento-api.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { ClienteService } from '../../services/cliente.service';
@@ -31,7 +31,7 @@ export class AgendamentoComponent implements OnInit {
 
   constructor(
     private agendamentoApiService: AgendamentoApiService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute, 
     private router: Router
   ) {
     const today = new Date();
@@ -39,30 +39,29 @@ export class AgendamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.servicoId = params['servicoId'] || null;
-      this.tempoEstimadoServico = params['tempo'] ? +params['tempo'] : null;
+    this.route.paramMap.subscribe(params => {
+      this.servicoId = params.get('id');
+      console.log('AgendamentoComponent: servicoId lido do paramMap:', this.servicoId);
 
       if (!this.servicoId) {
-        alert('Serviço não especificado. Por favor, selecione um serviço na tela anterior.');
-        return;
+        alert('ID do serviço não especificado na URL. Por favor, selecione um serviço na tela anterior.');
+        return; 
       }
 
       if (!this.selectedDate) {
         this.selectedDate = this.minDate;
-        this.onDateChange();
+        this.onDateChange(); 
       }
+    });
+
+    this.route.queryParams.subscribe(params => {
+      this.tempoEstimadoServico = params['tempo'] ? +params['tempo'] : null;
+      console.log('AgendamentoComponent: tempoEstimadoServico lido do queryParams:', this.tempoEstimadoServico);
     });
   }
 
   onDateChange(): void {
-    if (!this.servicoId) {
-      this.availableTimes = [];
-      this.selectedRadioTime = '';
-      return;
-    }
-
-    if (!this.selectedDate) {
+    if (!this.servicoId || !this.selectedDate) {
       this.availableTimes = [];
       this.selectedRadioTime = '';
       return;
@@ -72,7 +71,7 @@ export class AgendamentoComponent implements OnInit {
     const dayOfWeek = selectedLocalDate.getDay();
     if (dayOfWeek === 0 || dayOfWeek === 6) {
       alert('Fins de semana não estão disponíveis para agendamento. Escolha um dia de semana.');
-      this.selectedDate = '';
+      this.selectedDate = ''; 
       this.availableTimes = [];
       this.selectedRadioTime = '';
       return;
@@ -115,7 +114,7 @@ export class AgendamentoComponent implements OnInit {
 
   agendarHorario(): void {
     if (!this.selectedRadioTime || !this.servicoId ) {
-      alert('Selecione um horário, serviço e usuário antes de continuar.');
+      alert('Selecione um horário e um serviço antes de continuar.'); 
       return;
     }
 
@@ -129,7 +128,6 @@ export class AgendamentoComponent implements OnInit {
     this.agendamentoApiService.salvarAgendamento(agendamentoData).subscribe({
       next: response => {
         alert('Agendamento realizado com sucesso!');
-        // redireciona passando o ID criado
         this.router.navigate(['/documentos/upload'], {
           queryParams: { agendamentoId: response.id }
         });
