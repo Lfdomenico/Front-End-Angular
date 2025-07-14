@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // ActivatedRoute para ler parâmetros
 import { AgendamentoApiService } from '../../services/agendamento-api.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { ClienteService } from '../../services/cliente.service';
@@ -59,7 +59,7 @@ export class AgendamentoComponent implements OnInit {
 
       if (!this.selectedDate) {
         this.selectedDate = this.minDate;
-        this.onDateChange();
+        this.onDateChange(); // Chama onDateChange para carregar os horários iniciais
       }
     });
 
