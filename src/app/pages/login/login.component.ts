@@ -94,6 +94,8 @@ onSubmit(): void {
     this.funcionarioService.login(credenciais).subscribe({
       next: (response) => {
         console.log('Resposta do login de funcionário:', response);
+        localStorage.setItem('jwt_token', response.token); 
+        localStorage.setItem('isLoggedIn', 'true');
         Swal.fire({
           icon: 'success', title: 'Login Realizado!', timer: 1500, showConfirmButton: false
         }).then(() => {
@@ -108,6 +110,8 @@ onSubmit(): void {
     this.clienteService.login(credenciais).subscribe({
       next: (response) => {
         console.log('Resposta do login de cliente:', response);
+       // localStorage.setItem('jwt_token', response.token); 
+        localStorage.setItem('isLoggedIn', 'true');
         Swal.fire({
           icon: 'success', title: 'Login Realizado!', timer: 1500, showConfirmButton: false
         }).then(() => {

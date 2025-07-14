@@ -64,8 +64,8 @@ html {
 
   
 
-  body {
-    background: no-repeat center url(assets/Background/background.png);
+  body.menu-funcionario-bg {
+    background: no-repeat center url(assets/Background/darkBackground.png);
     background-size: cover;
     background-attachment: fixed;
     z-index: -1;
