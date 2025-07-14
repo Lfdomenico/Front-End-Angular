@@ -3,7 +3,7 @@
 <section class="menu-bg">
   <div class="menu-container">
     <div class="menu-grid">
-      <div *ngFor="let setor of setores" class="card-menu" (click)="selecionarSetor(setor)">
+      <div *ngFor="let setor of setores" class="card-menu" (click)="confirmarSelecao(setor)">
         <div class="card-icon">
           <i [ngClass]="setor.iconClass"></i>
         </div>
