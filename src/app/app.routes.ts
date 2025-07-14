@@ -34,7 +34,7 @@ export const routes: Routes = [
   {
     path: 'menu-funcionario',
     component: MenuFuncionarioComponent,
-    canActivate: [AuthGuard] // trocar depois para o token do JWT
+    //canActivate: [AuthGuard] // trocar depois para o token do JWT
   },
   // {
   //   path: 'espera/:setorNome',
