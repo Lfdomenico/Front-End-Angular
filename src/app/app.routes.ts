@@ -9,6 +9,7 @@ import { LandingComponent } from './pages/landing-page/landing.component';
 import { EsperaAtendimentoComponent } from './pages/espera-atendimento1/espera-atendimento1.component'; 
 import { DocumentoUploadPageComponent } from './pages/documentos-upload/documento-upload-page.component';
 import { MenuFuncionarioComponent } from './pages/menu-funcionario/menu-funcionario.component';
+import { AgendamentoFuncionarioComponent } from './pages/agendamento-funcionario/agendamento-funcionario';
 
 
 
@@ -59,5 +60,9 @@ export const routes: Routes = [
 
   { path: 'documentos/upload', component: DocumentoUploadPageComponent },
 
-  
+  { 
+    path: 'menu-funcionario/agendamentos', 
+    component: AgendamentoFuncionarioComponent,
+    // canActivate: [AuthGuard]
+   }
 ];
