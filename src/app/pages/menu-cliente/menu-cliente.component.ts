@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CatalogoApiService, ServicoBackend, TriagemResponse } from '../../services/catalogo-api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../components/confirmationmodal/confirmationmodal';
+import { TriagemApiService } from '../../services/triagem-api.service';
 
 interface ServicoDisplay extends ServicoBackend {
   iconClass: string;
@@ -25,6 +26,7 @@ export class MenuClienteComponent implements OnInit {
   constructor(
     private router: Router,
     private catalogoApiService: CatalogoApiService,
+    private triagemApiService: TriagemApiService,
     private modalService: NgbModal
   ) { }
 
@@ -80,7 +82,7 @@ export class MenuClienteComponent implements OnInit {
   confirmarSelecao(setor: ServicoDisplay): void {
     this.setorParaConfirmar = setor;
     let horario: TriagemResponse;
-    this.catalogoApiService.getHorarioDisponivel().subscribe((response: TriagemResponse) => {
+    this.triagemApiService.getHorarioDisponivel().subscribe((response: TriagemResponse) => {
       horario = response;
       const horaFormatada = new Intl.DateTimeFormat('pt-BR', {
         hour: '2-digit',
@@ -118,7 +120,23 @@ export class MenuClienteComponent implements OnInit {
     if (setor.rota === '/agendamento') {
       this.router.navigate([setor.rota, setor.id], { queryParams: { tempo: setor.tempoMedioMinutos } });
     } else {
-      this.router.navigate(['/espera', setor.nome], { queryParams: { tempo: setor.tempoMedioMinutos } });
+      const triagemData = {
+        servicoId: setor.id,
+        prioridade: 1
+      };
+      this.triagemApiService.salvarTriagem(triagemData).subscribe({
+      next: response => {
+        this.router.navigate(['/espera', setor.nome], { queryParams: { tempo: setor.tempoMedioMinutos } });
+      },
+      error: error => {
+        console.error('Erro ao agendar:', error);
+        const msg = error.error?.message
+          ? `Erro ao entrar na fila: ${error.error.message}`
+          : 'Erro ao entrar na fila. Tente novamente.';
+        alert(msg);
+      }
+    });
+      
     }
   }
 }
