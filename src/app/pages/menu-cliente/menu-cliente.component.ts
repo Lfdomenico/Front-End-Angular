@@ -103,9 +103,9 @@ export class MenuClienteComponent implements OnInit {
     );
   }
 
-  private executarSelecaoSetor(setor: ServicoDisplay): void { 
+  private executarSelecaoSetor(setor: ServicoDisplay): void {
     if (setor.rota === '/agendamento') {
-      this.router.navigate([setor.rota], { queryParams: { servicoId: setor.id, tempo: setor.tempoMedioMinutos } });
+      this.router.navigate([setor.rota, setor.id], { queryParams: { tempo: setor.tempoMedioMinutos } });
     } else {
       this.router.navigate(['/espera', setor.nome], { queryParams: { tempo: setor.tempoMedioMinutos } });
     }
