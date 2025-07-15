@@ -1,120 +1,96 @@
+$bankflow-red: #e53935;
+$bankflow-dark-red: #c62828;
+
 :host {
-  display: block;
-  height: 100vh; 
+//deixar assim
 }
 
-.login-container {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.login-box-custom {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px 30px; 
+  border-radius: 12px; 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
+  max-width: 400px; 
 }
 
-
-.login-box {
-  background: rgba(255, 255, 255, 0.95); 
-  padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
+.logo-custom {
+  margin-bottom: 30px; 
+  img {
+    display: block; 
+    margin: 0 auto; 
+    width: 180px; 
+  }
 }
 
-.logo {
-  margin-bottom: 30px;
+.form-group-custom {
+
 }
 
-
-.form-group {
-  position: relative;
-  margin-bottom: 25px;
-}
-
-input {
-  width: 100%;
+.form-control-underline {
   padding: 12px 1px 12px 5px; 
-  
-  border: none; 
+  border: none;
   border-bottom: 2px solid #ddd; 
   border-radius: 0; 
   background-color: transparent; 
-
   font-size: 1rem;
   transition: border-color 0.3s;
 
   &:focus {
     outline: none;
-    border-bottom-color: #e53935; 
+    border-bottom-color: $bankflow-red; 
+    box-shadow: none; 
   }
 }
 
-.input-icon {
+.input-icon-custom {
   position: absolute;
   top: 50%;
   right: 12px;
   transform: translateY(-50%);
-  color: #999;
-}
-
-.input-icon.clickable {
-  cursor: pointer;
-  transition: color 0.3s;
-  &:hover {
-    color: #333;
+  color: var(--bs-gray-600);
+  &.clickable {
+    cursor: pointer;
+    transition: color 0.3s;
+    &:hover {
+      color: var(--bs-gray-900); 
+    }
   }
 }
 
-.login-button {
-  width: 100%;
-  padding: 15px;
-  border-radius: 30px;
-  border: none;
-  background: linear-gradient(45deg, #e53935, #c62828);
-  color: rgb(255, 255, 255);
-  font-size: 1rem;
+.login-button-custom {
+  background: linear-gradient(45deg, $bankflow-red, $bankflow-dark-red); 
+  border: none; 
+  color: #fff; 
   font-weight: 600;
   text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 10px;
+  transition: transform 0.2s, box-shadow 0.2s; 
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(229, 57, 53, 0.4);
+    box-shadow: 0 4px 15px rgba($bankflow-red, 0.4); 
+    background: linear-gradient(45deg, $bankflow-dark-red, $bankflow-red); 
+  }
+
+  &:active {
+    transform: translateY(0); 
   }
 }
 
-.register-button {
-  width: 100%;
-  padding: 13px; 
-  border-radius: 30px;
-  
-  border: 2px solid #e53935;
-  background-color: transparent;
-  color: #e53935; 
-
-  font-size: 1rem;
+.register-button-custom {
+  border: 2px solid $bankflow-red; 
+  color: $bankflow-red; 
   font-weight: 600;
   text-transform: uppercase;
-  cursor: pointer;
   transition: all 0.3s ease; 
-  margin-top: 15px; 
 
   &:hover {
-    background-color: #ffffff;
-    color: rgb(255, 0, 0);
+    background-color: #ffffff; 
+    color: $bankflow-red; 
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(229, 57, 53, 0.4); 
+    box-shadow: 0 4px 15px rgba($bankflow-red, 0.4); 
   }
 
-  
-}
-
-.logo img {
-  display: block;   
-  margin: 0 auto;    
-  width: 180px;      
-  height: auto;      
+  &:active {
+    transform: translateY(0); 
+  }
 }

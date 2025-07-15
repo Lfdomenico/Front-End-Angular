@@ -1,20 +1,19 @@
 <app-navbar></app-navbar>
 
-<section class="menu-bg">
-  <div class="espera-container">
-    <div class="espera-card">
-      <div class="espera-icon">
-        <i class="fa fa-hourglass-half"></i>
-      </div>
-      <h2>Sua Senha Foi Gerada!</h2>
-      <p class="subtitle">Aguarde um instante para o atendimento de<br><strong>{{ setorSelecionado }}</strong></p>
-      
-      <div class="timer-container">
-        <p class="timer-label">Tempo estimado de espera:</p>
-        <h1 class="timer-display">{{ displayTempo }}</h1>
-      </div>
-
-      <p class="footer-note">Por favor, permaneça atento à chamada no painel.</p>
+<section class="d-flex justify-content-center align-items-center vh-100 pt-5">
+  <div class="card p-5 shadow-lg text-center espera-card-custom">
+    <div class="mb-4">
+      <i class="fa-solid fa-hourglass-half fa-spin-pulse text-danger fs-1"></i>
+      <!-- <i class="fa fa-hourglass-half fs-1 text-danger"></i> -->
     </div>
+    <h2 class="fs-2 fw-bold text-dark mb-0">Sua Senha Foi Gerada!</h2>
+    <p class="lead text-muted mt-2 mb-4 lh-base">Aguarde um instante para o atendimento de<br><strong class="text-dark">{{ setorSelecionado }}</strong></p>
+
+    <div class="border rounded-4 p-4 mb-4 timer-container-custom">
+      <p class="text-muted text-uppercase small fw-normal mb-2 ls-1">Tempo estimado de espera:</p>
+      <h1 class="display-3 fw-bold text-danger mb-0 timer-display-custom">{{ displayTempo }}</h1>
+    </div>
+
+    <p class="text-muted small">Por favor, permaneça atento à chamada no painel.</p>
   </div>
 </section>

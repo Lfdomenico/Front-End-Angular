@@ -10,16 +10,23 @@ export interface ServicoBackend {
   documentosObrigatoriosIds: string[];
   icon: string; 
 }
+export interface TriagemResponse {
+  disponibilidade: Date;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogoApiService {
   private apiUrl = 'http://localhost:9000/api/setor'; 
+  private triagemUrl = 'http://localhost:9000/api/triagens'; 
 
   constructor(private http: HttpClient) { }
 
   getTodosOsServicos(): Observable<ServicoBackend[]> {
     return this.http.get<ServicoBackend[]>(this.apiUrl); 
+  }
+  getHorarioDisponivel(): Observable<TriagemResponse> {
+    return this.http.get<TriagemResponse>(`${this.triagemUrl}/disponibilidade`); 
   }
 }

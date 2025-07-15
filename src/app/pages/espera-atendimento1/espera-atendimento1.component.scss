@@ -1,73 +1,40 @@
-$primary: #c62828; 
-$text-dark: #313131;
-$text-light: #6c757d;
-$shadow: rgba(0, 0, 0, 0.08);
+$primary-custom: #c62828; 
+$text-dark-custom: #313131; 
+$text-light-custom: #6c757d; 
 
-section.menu-bg {
-  padding-top: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.espera-card {
-  background: #ffffff;
-  padding: 3rem 4rem;
-  border-radius: 1rem;
+.espera-card-custom {
   box-shadow: 0 16px 40px rgba(0,0,0,0.12);
-  text-align: center;
   max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .espera-icon i {
-    font-size: 3rem;
-    color: $primary;
-    margin-bottom: 1.5rem;
-  }
-
-  h2 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: $text-dark;
-    margin: 0;
-  }
-
-  .subtitle {
-    font-size: 1.1rem;
-    color: $text-light;
-    margin: 0.5rem 0 2.5rem 0;
-    line-height: 1.6;
-  }
 }
 
-.timer-container {
-  border: 2px solid #f0f0f0;
-  border-radius: 0.75rem;
-  padding: 1.5rem 3rem;
-  margin-bottom: 2.5rem;
-  
+.espera-card-custom h2 {
+  color: $text-dark-custom; 
+}
+
+.espera-card-custom .lead {
+  color: $text-light-custom; 
+  line-height: 1.6; 
+}
+
+.timer-container-custom {
+  border-color: #f0f0f0 !important; 
+  padding: 1.5rem 3rem; 
+
   .timer-label {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.9rem;
-    color: $text-light;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 0.9rem; 
+    letter-spacing: 1px; 
+    color: $text-light-custom; 
   }
   
-  .timer-display {
-    font-size: 4.5rem;
-    font-weight: 700;
-    color: $primary;
-    margin: 0;
-    animation: pulso 2s infinite ease-in-out;
+  .timer-display-custom {
+    font-size: 4.5rem; 
+    color: $primary-custom; 
+    animation: pulso 2s infinite ease-in-out; 
   }
 }
 
-.footer-note {
-  font-size: 0.9rem;
-  color: $text-light;
+.espera-card-custom .small {
+  color: $text-light-custom; 
 }
 
 @keyframes pulso {

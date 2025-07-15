@@ -25,7 +25,7 @@ h1 {
 
 .tarefas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, minmax(300px, 1fr));
   gap: 2rem;
 }
 
@@ -36,6 +36,8 @@ h1 {
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none; 
+  color: inherit;
 
   &:hover {
     transform: translateY(-5px);
@@ -54,6 +56,7 @@ h1 {
     color: var(--text-secondary);
     flex-grow: 1; /* Faz a descrição ocupar o espaço disponível */
     margin-bottom: 1.5rem;
+    color: #DDDDDD; 
   }
 }
 
@@ -72,3 +75,4 @@ h1 {
     opacity: 0.9;
   }
 }
+

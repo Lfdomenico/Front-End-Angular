@@ -9,7 +9,8 @@ import { LandingComponent } from './pages/landing-page/landing.component';
 import { EsperaAtendimentoComponent } from './pages/espera-atendimento1/espera-atendimento1.component'; 
 import { DocumentoUploadPageComponent } from './pages/documentos-upload/documento-upload-page.component';
 import { MenuFuncionarioComponent } from './pages/menu-funcionario/menu-funcionario.component';
-
+import { AgendamentoFuncionarioComponent } from './pages/agendamento-funcionario/agendamento-funcionario';
+import { RegisterFuncionarioComponent } from './pages/register/funcionario/registerFuncionario.component';
 
 
 export const routes: Routes = [
@@ -31,34 +32,43 @@ export const routes: Routes = [
     component: MenuClienteComponent,
     canActivate: [AuthGuard]
   },
-
   {
     path: 'menu-funcionario',
     component: MenuFuncionarioComponent,
-    canActivate: [AuthGuard] // trocar depois para o token do JWT
+    //canActivate: [AuthGuard] // trocar depois para o token do JWT
   },
-
   // {
   //   path: 'espera/:setorNome',
   //   component: EsperaAtendimentoComponent,
   //   canActivate: [AuthGuard]
   // },
 
-  {path: 'agendamento', component: AgendamentoComponent},
+  // {path: 'agendamento', component: AgendamentoComponent},
 
-  // // ALTERAÇÃO 1: A rota de espera agora espera um 'id'
-  // {
-  //   path: 'espera/:id',
-  //   component: EsperaAtendimentoComponent,
-  //   canActivate: [AuthGuard]
-  // },
-  // // ALTERAÇÃO 2: A rota de agendamento agora também espera um 'id'
-  // {
-  //   path: 'agendamento/:id',
-  //   component: AgendamentoComponent,
-  //   canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
-  // },
+  // ALTERAÇÃO 1: A rota de espera agora espera um 'id'
+  {
+    path: 'espera/:id',
+    component: EsperaAtendimentoComponent,
+    canActivate: [AuthGuard]
+  },
+  // ALTERAÇÃO 2: A rota de agendamento agora também espera um 'id'
+  {
+    path: 'agendamento/:id',
+    component: AgendamentoComponent,
+    canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
+  },
 
-  // { path: 'documentos/upload', component: DocumentoUploadPageComponent },
+  { path: 'documentos/upload', component: DocumentoUploadPageComponent },
 
+  { 
+    path: 'menu-funcionario/agendamentos', 
+    component: AgendamentoFuncionarioComponent,
+    // canActivate: [AuthGuard]
+   },
+
+   {
+    path: 'menu-funcionario/register',
+    component: RegisterFuncionarioComponent,
+    // canActivate: [AuthGuard] // Proteja esta rota se necessário
+  }
 ];

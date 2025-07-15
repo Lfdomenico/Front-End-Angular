@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // ActivatedRoute para ler parâmetros
 import { AgendamentoApiService } from '../../services/agendamento-api.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { ClienteService } from '../../services/cliente.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationModalComponent } from '../../components/confirmationmodal/confirmationmodal';
 
 @Component({
   selector: 'app-agendamento',
@@ -32,37 +34,43 @@ export class AgendamentoComponent implements OnInit {
   constructor(
     private agendamentoApiService: AgendamentoApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.servicoId = params['servicoId'] || null;
-      this.tempoEstimadoServico = params['tempo'] ? +params['tempo'] : null;
+    this.route.paramMap.subscribe(params => {
+      this.servicoId = params.get('id');
+      console.log('AgendamentoComponent: servicoId lido do paramMap:', this.servicoId);
 
       if (!this.servicoId) {
-        alert('Serviço não especificado. Por favor, selecione um serviço na tela anterior.');
+        this.showInfoModal(
+          'Serviço Não Encontrado',
+          'O ID do serviço não foi especificado na URL. Por favor, selecione um serviço na tela anterior para continuar.',
+          'Entendi'
+        ).then(() => {
+          this.router.navigate(['/menu-cliente']);
+        });
         return;
       }
 
       if (!this.selectedDate) {
         this.selectedDate = this.minDate;
-        this.onDateChange();
+        this.onDateChange(); // Chama onDateChange para carregar os horários iniciais
       }
+    });
+
+    this.route.queryParams.subscribe(params => {
+      this.tempoEstimadoServico = params['tempo'] ? +params['tempo'] : null;
+      console.log('AgendamentoComponent: tempoEstimadoServico lido do queryParams:', this.tempoEstimadoServico);
     });
   }
 
   onDateChange(): void {
-    if (!this.servicoId) {
-      this.availableTimes = [];
-      this.selectedRadioTime = '';
-      return;
-    }
-
-    if (!this.selectedDate) {
+    if (!this.servicoId || !this.selectedDate) {
       this.availableTimes = [];
       this.selectedRadioTime = '';
       return;
@@ -71,7 +79,11 @@ export class AgendamentoComponent implements OnInit {
     const selectedLocalDate = new Date(this.selectedDate + 'T00:00:00');
     const dayOfWeek = selectedLocalDate.getDay();
     if (dayOfWeek === 0 || dayOfWeek === 6) {
-      alert('Fins de semana não estão disponíveis para agendamento. Escolha um dia de semana.');
+      this.showInfoModal(
+        'Dia Inválido',
+        'Fins de semana não estão disponíveis para agendamento. Escolha um dia de semana.',
+        'Ok'
+      );
       this.selectedDate = '';
       this.availableTimes = [];
       this.selectedRadioTime = '';
@@ -104,7 +116,11 @@ export class AgendamentoComponent implements OnInit {
           console.error('Erro ao buscar horários:', err);
           this.availableTimes = [];
           this.selectedRadioTime = '';
-          alert('Erro ao buscar horários disponíveis. Veja o console.');
+          this.showInfoModal(
+            'Erro ao Buscar Horários',
+            'Ocorreu um erro ao buscar horários disponíveis. Por favor, tente novamente mais tarde.',
+            'Fechar'
+          );
         }
       });
   }
@@ -115,33 +131,73 @@ export class AgendamentoComponent implements OnInit {
 
   agendarHorario(): void {
     if (!this.selectedRadioTime || !this.servicoId ) {
-      alert('Selecione um horário, serviço e usuário antes de continuar.');
+      this.showInfoModal(
+        'Dados Incompletos',
+        'Por favor, selecione um horário e um serviço antes de continuar.',
+        'Ok'
+      );
       return;
     }
 
-    const agendamentoData = {
-      usuarioId: this.usuarioId,
-      servicoId: this.servicoId,
-      atendenteId: '3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f',
-      dataHora: this.selectedRadioTime
-    };
+    const modalRef = this.modalService.open(ConfirmationModalComponent, { centered: true });
+    modalRef.componentInstance.title = 'Confirmar Agendamento';
+    modalRef.componentInstance.message = `Você deseja <strong>confirmar</strong> o agendamento para o dia ${this.getFormattedDate(this.selectedRadioTime)} às ${this.getFormattedTime(this.selectedRadioTime)}?`;
+    modalRef.componentInstance.confirmButtonText = 'Sim, Agendar';
+    modalRef.componentInstance.cancelButtonText = 'Cancelar'; 
+    modalRef.componentInstance.showCancelButton = true; 
 
-    this.agendamentoApiService.salvarAgendamento(agendamentoData).subscribe({
-      next: response => {
-        alert('Agendamento realizado com sucesso!');
-        // redireciona passando o ID criado
-        this.router.navigate(['/documentos/upload'], {
-          queryParams: { agendamentoId: response.id }
-        });
+    modalRef.result.then(
+      (result) => {
+        if (result === true) { 
+          const agendamentoData = {
+            usuarioId: this.usuarioId,
+            servicoId: this.servicoId,
+            atendenteId: '3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f',
+            dataHora: this.selectedRadioTime
+          };
+
+          this.agendamentoApiService.salvarAgendamento(agendamentoData).subscribe({
+            next: response => {
+              this.showInfoModal(
+                'Agendamento Confirmado',
+                'Seu agendamento foi realizado com sucesso!',
+                'Continuar'
+              ).then(() => {
+                this.router.navigate(['/documentos/upload'], {
+                  queryParams: { agendamentoId: response.id }
+                });
+              });
+            },
+            error: error => {
+              console.error('Erro ao agendar:', error);
+              const msg = error.error?.message
+                ? `Erro ao agendar: ${error.error.message}`
+                : 'Erro ao agendar. Tente novamente.';
+              this.showInfoModal(
+                'Falha no Agendamento',
+                msg,
+                'Fechar'
+              );
+            }
+          });
+        } else {
+          console.log('Agendamento cancelado pelo usuário.');
+          this.showInfoModal(
+            'Agendamento Cancelado',
+            'O agendamento foi cancelado.',
+            'Ok'
+          );
+        }
       },
-      error: error => {
-        console.error('Erro ao agendar:', error);
-        const msg = error.error?.message
-          ? `Erro ao agendar: ${error.error.message}`
-          : 'Erro ao agendar. Tente novamente.';
-        alert(msg);
+      (reason) => {
+        console.log(`Modal de agendamento fechada por: ${reason}. Ação não confirmada.`);
+        this.showInfoModal(
+          'Agendamento Cancelado',
+          'O agendamento foi cancelado ou não confirmado.',
+          'Ok'
+        );
       }
-    });
+    );
   }
 
   getFormattedDate(slot: string): string {
@@ -153,5 +209,16 @@ export class AgendamentoComponent implements OnInit {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  private showInfoModal(title: string, message: string, buttonText: string): Promise<any> {
+    const modalRef = this.modalService.open(ConfirmationModalComponent, { centered: true });
+    modalRef.componentInstance.title = title;
+    modalRef.componentInstance.message = message;
+    modalRef.componentInstance.confirmButtonText = buttonText;
+    if (modalRef.componentInstance.hasOwnProperty('showCancelButton')) {
+      modalRef.componentInstance.showCancelButton = false;
+    }
+    return modalRef.result;
   }
 }
