@@ -23,25 +23,19 @@ export class AgendamentoApiService {
   }
 
   getAgendamentosPorData(data: string): Observable<AgendamentoCompleto[]> {
-    // O backend precisará de um endpoint como GET /api/agendamentos/data?data=YYYY-MM-DD
-    // ou se você for usar o listarTodos e filtrar no front, essa chamada seria apenas this.http.get<AgendamentoCompleto[]>(this.apiUrl);
-    // Mas para eficiência, é melhor que o backend filtre.
     const params = new HttpParams().set('data', data);
     return this.http.get<AgendamentoCompleto[]>(`${this.apiUrl}/data`, { params });
   }
 
-  // NOVO MÉTODO: Deleta um agendamento pelo ID
-  /**
-   * Deleta um agendamento pelo seu ID.
-   * @param id O ID do agendamento a ser deletado.
-   * @returns Um Observable vazio (ou com a resposta de sucesso).
-   */
   deletarAgendamento(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Método para atualizar um agendamento (PUT ou PATCH) - Opcional para agora, mas útil para o botão "Alterar"
-  updateAgendamento(id: string, agendamentoData: any): Observable<AgendamentoCompleto> {
+  getAgendamentoPorId(id: string): Observable<AgendamentoCompleto> {
+    return this.http.get<AgendamentoCompleto>(`${this.apiUrl}/${id}`);
+  }
+
+  atualizarAgendamento(id: string, agendamentoData: AgendamentoRequest): Observable<AgendamentoCompleto> {
     return this.http.put<AgendamentoCompleto>(`${this.apiUrl}/${id}`, agendamentoData);
   }
 }
@@ -68,4 +62,12 @@ export interface DocumentoPendente {
   status: string; 
   observacao: string | null;
   urlDocumento: string | null;
+}
+
+export interface AgendamentoRequest {
+  usuarioId: string;
+  servicoId: string;
+  atendenteId: string | null; 
+  dataHora: string; 
+  observacoes?: string | null;
 }

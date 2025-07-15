@@ -64,14 +64,15 @@ html {
 
   body {
     background: no-repeat center url(assets/Background/background.png);
-    background-size: cover;
-    background-attachment: fixed;
-    z-index: -1;
   }
   
   body.menu-funcionario-bg {
     background: no-repeat center url(assets/Background/darkBackground.png);
+  }
+
+  body, body.menu-funcionario-bg{
     background-size: cover;
     background-attachment: fixed;
     z-index: -1;
+    height: 100%;
   }
