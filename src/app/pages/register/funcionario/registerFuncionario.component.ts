@@ -14,6 +14,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { FuncionarioService, FuncionarioRequest, FuncionarioResponse } from '../../../services/funcionario.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { NavbarComponent } from '../../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-register-funcionario',
@@ -22,7 +23,8 @@ import Swal from 'sweetalert2';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    NavbarComponent
   ],
   providers: [provideNgxMask()],
   templateUrl: './registerFuncionario.component.html',
@@ -44,7 +46,10 @@ export class RegisterFuncionarioComponent implements OnInit, OnDestroy {
       nome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       cpf: ['', [Validators.required, this.cpfInvalidoValidator]],
-      senha: ['', Validators.required]
+      senha: ['', Validators.required],
+      confirmarSenha: ['', Validators.required]
+    }, {
+      validators: this.senhasCorrespondemValidator
     });
     document.body.classList.add('menu-funcionario-bg');
   }
@@ -58,15 +63,42 @@ export class RegisterFuncionarioComponent implements OnInit, OnDestroy {
     return raw.length === 11 ? null : { cpfInvalido: true };
   }
 
+  funcionarioEmailValidator(ctrl: AbstractControl): ValidationErrors | null{
+    const email: string = ctrl.value ||''
+    return email.endsWith('@bankflow.com') ? null : {invalidFuncionarioEmail: true}
+  }
+
+  senhasCorrespondemValidator(formGroup: AbstractControl): ValidationErrors | null {
+    const senha = formGroup.get('senha')?.value;
+    const confirmarSenha = formGroup.get('confirmarSenha')?.value;
+
+    if (senha !== confirmarSenha) {
+      
+      return { senhasNaoCorrespondem: true };
+    }
+    
+    return null;
+  }
+
   onSubmit(): void {
     if (this.registerForm.invalid || this.isLoading) {
       this.registerForm.markAllAsTouched();
       return;
     }
+    const dto: FuncionarioRequest = this.registerForm.value;
+
+    if (!dto.email.endsWith('@bankflow.com')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'E-mail Inválido',
+        text: 'O e-mail do funcionário deve terminar com @bankflow.com.',
+        confirmButtonColor: '#c62828'
+      });
+      return;  // interrompe o fluxo de cadastro
+    }
+
 
     this.isLoading = true;
-
-    const dto: FuncionarioRequest = this.registerForm.value;
     this.funcionarioService.cadastrar(dto).subscribe({
       next: (res: FuncionarioResponse) => {
         this.isLoading = false;
@@ -92,5 +124,9 @@ export class RegisterFuncionarioComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  onCancel(): void {
+    this.router.navigate(['/menu-funcionario']);
   }
 }

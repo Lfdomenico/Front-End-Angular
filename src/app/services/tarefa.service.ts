@@ -28,7 +28,7 @@ export class TarefaService {
     {
       nome: 'Acompanhamento de Triagens',
       descricao: 'Visualizar filas e status das triagens em andamento.',
-       rota: '/menu-funcionario/register' // trocar essa rota para a de triagens.
+       rota: '/menu-funcionario/triagens' // trocar essa rota para a de triagens.
     },
   ];
 

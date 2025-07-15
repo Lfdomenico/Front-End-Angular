@@ -8,6 +8,7 @@
 }
 
 .menu-container {
+  margin-top: 56px;
   padding: 2rem 4rem;
 }
 
@@ -15,12 +16,17 @@ h1 {
   color: var(--accent);
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  text-align: center;
+}
+.menu-funcionario-bg {
+  padding-top: 56px;
 }
 
 .subtitle {
   color: var(--text-secondary);
   font-size: 1.1rem;
   margin-bottom: 3rem;
+  text-align: center;
 }
 
 .tarefas-grid {
@@ -57,6 +63,7 @@ h1 {
     flex-grow: 1; /* Faz a descrição ocupar o espaço disponível */
     margin-bottom: 1.5rem;
     color: #DDDDDD; 
+    
   }
 }
 

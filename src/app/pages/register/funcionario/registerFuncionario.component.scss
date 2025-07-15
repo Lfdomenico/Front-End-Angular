@@ -6,6 +6,7 @@
   position: relative;
   }
   
+  
   .register-container {
     width: 100%;
     max-width: 380px;
@@ -96,5 +97,12 @@
       color: rgba(255, 255, 255, 0.6);
     }
   }
+
+  register-page-bg {
+    padding-top: 80px;  
+  }
   
+  :host-context(.menu-funcionario-bg) .register-container {
+    padding-top: 80px;
+  }
   

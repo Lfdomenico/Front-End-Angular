@@ -1,3 +1,5 @@
+<app-navbar></app-navbar>
+<div class="register-page-bg">
 <form 
   class="register-container" 
   [formGroup]="registerForm" 
@@ -58,17 +60,30 @@
       class="form-control form-control-underline"
     />
     <label for="email">E-mail</label>
-    <div
-      *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors"
-      class="text-danger small text-start mt-1"
-    >
-      <div *ngIf="registerForm.get('email')?.hasError('required')">
+  
+
+    <ng-container *ngIf="registerForm.get('email')?.touched">
+      <div
+        *ngIf="registerForm.get('email')?.hasError('invalidFuncionarioEmail')"
+        class="text-danger small text-start mt-1"
+      >
+        E-mail de funcionário deve terminar com &#64;bankflow.com.
+      </div>
+  
+      <div
+        *ngIf="registerForm.get('email')?.hasError('required')"
+        class="text-danger small text-start mt-1"
+      >
         O e-mail é obrigatório.
       </div>
-      <div *ngIf="registerForm.get('email')?.hasError('email')">
+
+      <div
+        *ngIf="registerForm.get('email')?.hasError('email')"
+        class="text-danger small text-start mt-1"
+      >
         Insira um e-mail válido.
       </div>
-    </div>
+    </ng-container>
   </div>
 
   <div class="form-floating mb-3 position-relative">
@@ -130,22 +145,18 @@
     <button type="button" class="btn btn-outline-primary">Cancelar</button>
   </div> -->
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-
-    <div class="d-grid gap-2 mb-3">
-      
-      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-        {{ isLoading ? 'Salvando...' : 'Salvar' }}
-      </button>
-      
-      <button type="reset" class="btn btn-primary">Limpar</button>
-  
-      <button type="button" class="btn btn-outline-primary" routerLink="/menu-funcionario">Cancelar</button>
-  
-    </div>
-  </form>
+  <div class="d-grid gap-2 mb-3">
+    <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+      {{ isLoading ? 'Salvando...' : 'Salvar' }}
+    </button>
+    <button type="reset" class="btn btn-primary">Limpar</button>
+    <button type="button" class="btn btn-outline-primary" (click)="onCancel()">
+      Cancelar
+    </button>
+  </div>
 
   <p class="mt-3 small text-center">
     Já fez o registro? <a routerLink="/">Clique aqui</a>
   </p>
 </form>
+</div>

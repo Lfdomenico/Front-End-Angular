@@ -4,10 +4,11 @@ import {RouterModule} from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { Tarefa, TarefaService } from '../../services/tarefa.service';
 
+
 @Component({
   selector: 'app-menu-funcionario',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NavbarComponent],
   templateUrl: './menu-funcionario.component.html',
   styleUrls: ['./menu-funcionario.component.scss']
 })

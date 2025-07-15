@@ -11,7 +11,7 @@ import { DocumentoUploadPageComponent } from './pages/documentos-upload/document
 import { MenuFuncionarioComponent } from './pages/menu-funcionario/menu-funcionario.component';
 import { AgendamentoFuncionarioComponent } from './pages/agendamento-funcionario/agendamento-funcionario';
 import { RegisterFuncionarioComponent } from './pages/register/funcionario/registerFuncionario.component';
-
+import { TriagensFuncionarioComponent } from './pages/triagens-funcionario/triagens-funcionario.component';
 
 export const routes: Routes = [
 
@@ -70,5 +70,11 @@ export const routes: Routes = [
     path: 'menu-funcionario/register',
     component: RegisterFuncionarioComponent,
     // canActivate: [AuthGuard] // Proteja esta rota se necessário
+  },
+  {
+
+  path: 'menu-funcionario/triagens',
+  component: TriagensFuncionarioComponent,
+  // canActivate: [AuthGuard]
   }
 ];

@@ -1,0 +1,38 @@
+<app-navbar></app-navbar>
+<div class="triagens-page" >
+     
+
+<div class="triagens-container">
+  <h1>Acompanhamento de Triagens</h1>
+
+  <div *ngIf="isLoading" class="text-center mt-4">
+    Carregando triagens...
+  </div>
+  <div *ngIf="errorMsg" class="text-danger mt-4">
+    {{ errorMsg }}
+  </div>
+
+  <table
+    *ngIf="!isLoading && !errorMsg"
+    class="table table-striped mt-4"
+  >
+    <thead class="table-dark">
+        
+      <tr>
+        <th>Cliente</th>
+        <th>Status</th>
+        <th>Serviço Solicitado</th>
+        <th>Solicitação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of triagens">
+        <td>{{ t.nomeClienteSnapshot }}</td>
+        <td>{{ t.status }}</td>
+        <td>{{ t.nomeServicoSnapshot }}</td>
+        <td>{{ t.horarioSolicitacao | date:'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
