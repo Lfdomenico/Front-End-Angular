@@ -23,13 +23,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let time of availableTimes; let i = index"
-              (click)="selectRow(time)"                                     [class.table-primary]="time === selectedRadioTime">             <th scope="row">
-              <input class="form-check-input selecao-data"
-                     type="radio"
-                     name="selecao"
-                     [value]="time"
-                     [(ngModel)]="selectedRadioTime">                        </th>
+          <tr *ngFor="let time of availableTimes; let i = index" (click)="selectRow(time)"
+            [class.table-primary]="time === selectedRadioTime">
+            <th scope="row">
+              <input class="form-check-input selecao-data" type="radio" name="selecao" [value]="time"
+                [(ngModel)]="selectedRadioTime">
+            </th>
             <td>{{ getFormattedDate(time) }}</td>
             <td>{{ getFormattedTime(time) }}</td>
             <td>Disponível</td>
