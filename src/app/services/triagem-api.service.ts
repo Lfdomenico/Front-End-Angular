@@ -33,6 +33,10 @@ export class TriagemApiService {
     return this.http.get<Triagem[]>(this.triagemUrl);
   }
 
+  buscarProximaTriagem(): Observable<Triagem> {
+    return this.http.get<Triagem>(`${this.triagemUrl}/proxima`);
+  }
+
   getHorarioDisponivel(): Observable<TriagemResponse> {
       return this.http.get<TriagemResponse>(`${this.triagemUrl}/disponibilidade`); 
     }
@@ -40,4 +44,9 @@ export class TriagemApiService {
   salvarTriagem(triagemData: any): Observable<any> {
     return this.http.post<any>(this.triagemUrl, triagemData);
   }
+
+  getByClienteId(clienteId: string): Observable<Triagem[]> {
+    return this.http.get<Triagem[]>(`${this.triagemUrl}/cliente/${clienteId}`);
+  }
 }
+
