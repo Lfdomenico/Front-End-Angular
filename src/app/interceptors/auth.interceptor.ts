@@ -16,7 +16,8 @@ export const authInterceptor: HttpInterceptorFn = (request: HttpRequest<unknown>
 
   const clienteService = inject(ClienteService);
   const router = inject(Router);
-  const authToken = clienteService.getJwtToken();
+  //const authToken = clienteService.getJwtToken();
+  const authToken = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQ0xJRU5URSIsImZ1bGxOYW1lIjoiZ2FicmllbCIsImVtYWlsIjoiYmFjaGVnYUBlbWFpbC5jb20iLCJzdWIiOiI5ZDJlNmExYS1lYzFhLTQ3NzQtOWExMS1mNWRhYWRjMDA5ZTAiLCJpYXQiOjE3NTI1OTI1OTAsImV4cCI6MTc1MjY3ODk5MH0.mHnhfqL5b5ZPYMqCa96_3b7W2Qa7WfhHTX4huO_5Arw';
 
   if (authToken) {
     console.log('AuthInterceptor: Token JWT encontrado, adicionando cabeçalho Authorization.');

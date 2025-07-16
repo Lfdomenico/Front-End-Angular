@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AgendamentoFuncionarioComponent } from './agendamento-funcionario';
+import { AgendamentoFuncionarioComponent } from './agendamento-funcionario.component';
 
 describe('AgendamentoFuncionario', () => {
   let component: AgendamentoFuncionarioComponent;

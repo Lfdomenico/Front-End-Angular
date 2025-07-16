@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+<body class="menu-funcionario-bg vh-100">
+  <section class="container py-4">
+    <h2 class="mb-4 titulo">Agendamentos do Dia</h2>
+
+    <div class="row mb-4 align-items-center">
+      <div class="col-12 col-md-3">
+        <label for="dataFuncionario" class="form-label fw-bold fs-5">Escolha a Data:</label>
+      </div>
+      <div class="col-12 col-md-4">
+        <input type="date" id="dataFuncionario" class="form-control" [(ngModel)]="selectedDate"
+          (change)="onDateChange()" [min]="minDate">
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-hover text-center">
+        <thead class="table-dark">
+          <tr class="fs-5">
+            <th>Horário</th>
+            <th>Cliente</th>
+            <th>Serviço</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let agendamento of agendamentosDoDia">
+            <td>{{ getFormattedTime(agendamento.dataHora) }}</td>
+            <td>{{ agendamento.nomeClienteSnapshot }}</td>
+            <td>{{ agendamento.nomeServicoSnapshot }}</td>
+            <td>{{ agendamento.status }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-secondary m-1" (click)="alterarAgendamento(agendamento)"><i class="fa-solid fa-pencil"></i> Editar</button>
+              <button class="btn btn-sm btn-danger m-1" (click)="cancelarAgendamento(agendamento)"><i class="fa-solid fa-trash"></i> Excluir</button>
+            </td>
+          </tr>
+          <tr *ngIf="agendamentosDoDia.length === 0 && selectedDate">
+            <td colspan="5" class="text-center">Nenhum agendamento encontrado para a data selecionada.</td>
+          </tr>
+          <tr *ngIf="!selectedDate">
+            <td colspan="5" class="text-center">Selecione uma data para ver os agendamentos.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</body>

@@ -30,6 +30,12 @@ export class TarefaService {
       descricao: 'Visualizar filas e status das triagens em andamento.',
        rota: '/menu-funcionario/triagens' // trocar essa rota para a de triagens.
     },
+
+    {
+      nome: 'Verificação de Documentos',
+      descricao: 'Analisar de validar os documentos dos clientes.',
+       rota: '/menu-funcionario/triagens' // trocar essa rota para a de triagens.
+    },
   ];
 
   getTarefas(): Observable<Tarefa[]> {

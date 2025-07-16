@@ -21,4 +21,54 @@ export class AgendamentoApiService {
   salvarAgendamento(agendamentoData: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, agendamentoData);
   }
+
+  getAgendamentosPorData(data: string): Observable<AgendamentoCompleto[]> {
+    const params = new HttpParams().set('data', data);
+    return this.http.get<AgendamentoCompleto[]>(`${this.apiUrl}/data`, { params });
+  }
+
+  deletarAgendamento(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getAgendamentoPorId(id: string): Observable<AgendamentoCompleto> {
+    return this.http.get<AgendamentoCompleto>(`${this.apiUrl}/${id}`);
+  }
+
+  atualizarAgendamento(id: string, agendamentoData: AgendamentoRequest): Observable<AgendamentoCompleto> {
+    return this.http.put<AgendamentoCompleto>(`${this.apiUrl}/${id}`, agendamentoData);
+  }
 }
+
+export interface AgendamentoCompleto {
+  id: string;
+  usuarioId: string;
+  nomeClienteSnapshot: string;
+  atendenteId: string;
+  servicoId: string;
+  nomeServicoSnapshot: string;
+  dataHora: string; // Formato ISO 8601 (ex: "2025-07-09T10:00:00")
+  atendidoEm: string | null; // Pode ser nulo
+  observacoes: string | null; // Pode ser nulo
+  criadoEm: string;
+  status: string; // Ou um enum se você tiver um para status no frontend
+  documentosPendentes: DocumentoPendente[]; // Adapte esta interface também se necessário
+}
+
+export interface DocumentoPendente {
+  id: string;
+  documentoCatalogoId: string;
+  nomeDocumentoSnapshot: string;
+  status: string; 
+  observacao: string | null;
+  urlDocumento: string | null;
+}
+
+export interface AgendamentoRequest {
+  usuarioId: string;
+  servicoId: string;
+  atendenteId: string | null; 
+  dataHora: string; 
+  observacoes?: string | null;
+}
+

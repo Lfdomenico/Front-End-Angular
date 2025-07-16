@@ -9,7 +9,8 @@ import { LandingComponent } from './pages/landing-page/landing.component';
 import { EsperaAtendimentoComponent } from './pages/espera-atendimento1/espera-atendimento1.component'; 
 import { DocumentoUploadPageComponent } from './pages/documentos-upload/documento-upload-page.component';
 import { MenuFuncionarioComponent } from './pages/menu-funcionario/menu-funcionario.component';
-import { AgendamentoFuncionarioComponent } from './pages/agendamento-funcionario/agendamento-funcionario';
+import { AgendamentoFuncionarioComponent } from './pages/agendamento-funcionario/agendamento-funcionario.component';
+import { AgendamentoEditarComponent } from './pages/agendamento-editar.component/agendamento-editar.component';
 import { RegisterFuncionarioComponent } from './pages/register/funcionario/registerFuncionario.component';
 import { TriagensFuncionarioComponent } from './pages/triagens-funcionario/triagens-funcionario.component';
 
@@ -65,6 +66,12 @@ export const routes: Routes = [
     component: AgendamentoFuncionarioComponent,
     // canActivate: [AuthGuard]
    },
+   
+   {
+    path: 'menu-funcionario/agendamentos/editar/:id',
+    component: AgendamentoEditarComponent,
+    //canActivate: [AuthGuard]
+  },
 
    {
     path: 'menu-funcionario/register',
