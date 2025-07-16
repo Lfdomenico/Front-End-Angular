@@ -71,3 +71,4 @@ export interface AgendamentoRequest {
   dataHora: string; 
   observacoes?: string | null;
 }
+

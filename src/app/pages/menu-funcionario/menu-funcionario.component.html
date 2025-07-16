@@ -5,18 +5,22 @@
         - Listagem. 
         - Cadastro (de funcionário)
  -->
-<body class="menu-funcionario-bg">
+ <app-navbar></app-navbar>
+<div class="menu-funcionario-bg">
   <div class="menu-container">
     <h1>Painel do Funcionário</h1>
     <p class="subtitle">Selecione uma das opções abaixo para gerenciar o sistema.</p>
   
     <div class="tarefas-grid">
-      <div *ngFor="let tarefa of tarefas" class="tarefa-card">
+      <a *ngFor="let tarefa of tarefas" 
+         [routerLink]="tarefa.rota" 
+         class="tarefa-card">
         <h2>{{ tarefa.nome }}</h2>
         <p>{{ tarefa.descricao }}</p>
-        <button class="card-button">Acessar</button>
-      </div>
+        <span class="card-button">Acessar</span>
+      </a>
+    
     </div>
   </div>
-</body>
+</div>
  

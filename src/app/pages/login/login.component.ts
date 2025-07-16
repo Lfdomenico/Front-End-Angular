@@ -92,17 +92,20 @@ onSubmit(): void {
   if (email.endsWith('@bankflow.com')) {
     // É um funcionário, chame o FuncionarioService
     this.funcionarioService.login(credenciais).subscribe({
-      next: (response) => {
-        console.log('Resposta do login de funcionário:', response);
-        localStorage.setItem('jwt_token', response.token); 
+      next: (token: string) => {
+        console.log('Resposta do login de funcionário:', token);
+        localStorage.setItem('jwt_token', token); 
         localStorage.setItem('isLoggedIn', 'true');
         Swal.fire({
-          icon: 'success', title: 'Login Realizado!', timer: 1500, showConfirmButton: false
-        }).then(() => {
-          this.router.navigate(['/menu-funcionario']);
-        });
-      },
-      error: (err) => this.handleLoginError(err, 'funcionário')
+          icon: 'success',
+        title: 'Login Realizado!',
+        timer: 1500,
+        showConfirmButton: false
+      }).then(() => {
+        this.router.navigate(['/menu-funcionario']);
+      });
+    },
+    error: (err: any) => this.handleLoginError(err, 'funcionário')
     });
 
   } else {

@@ -76,7 +76,19 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  // navigateToMenu(): void {
+  //   this.router.navigate(['/menu-cliente']);
+  // }
+
   navigateToMenu(): void {
-    this.router.navigate(['/menu-cliente']);
+    const url = this.router.url;
+  
+    // Se estiver em qualquer rota que comece com '/menu-funcionario'
+    if (url.startsWith('/menu-funcionario')) {
+      this.router.navigate(['/menu-funcionario']);
+    } else {
+      // Para outras telas, segue para menu-cliente (ou outra rota desejada)
+      this.router.navigate(['/menu-cliente']);
+    }
   }
 }

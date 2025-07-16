@@ -11,7 +11,8 @@ import { DocumentoUploadPageComponent } from './pages/documentos-upload/document
 import { MenuFuncionarioComponent } from './pages/menu-funcionario/menu-funcionario.component';
 import { AgendamentoFuncionarioComponent } from './pages/agendamento-funcionario/agendamento-funcionario.component';
 import { AgendamentoEditarComponent } from './pages/agendamento-editar.component/agendamento-editar.component';
-
+import { RegisterFuncionarioComponent } from './pages/register/funcionario/registerFuncionario.component';
+import { TriagensFuncionarioComponent } from './pages/triagens-funcionario/triagens-funcionario.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -29,30 +30,50 @@ export const routes: Routes = [
     component: MenuFuncionarioComponent,
     //canActivate: [AuthGuard] // trocar depois para o token do JWT
   },
+  // {
+  //   path: 'espera/:setorNome',
+  //   component: EsperaAtendimentoComponent,
+  //   canActivate: [AuthGuard]
+  // },
+
+  // {path: 'agendamento', component: AgendamentoComponent},
+
+  // ALTERAÇÃO 1: A rota de espera agora espera um 'id'
   {
-    path: 'espera/:id', 
+    path: 'espera/:id',
     component: EsperaAtendimentoComponent,
     canActivate: [AuthGuard]
   },
+  // ALTERAÇÃO 2: A rota de agendamento agora também espera um 'id'
   {
-    path: 'agendamento/:id', 
+    path: 'agendamento/:id',
     component: AgendamentoComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard] // É uma boa prática proteger esta rota também
   },
+
   { path: 'documentos/upload', component: DocumentoUploadPageComponent },
 
-  {
-    path: 'menu-funcionario/agendamentos',
+  { 
+    path: 'menu-funcionario/agendamentos', 
     component: AgendamentoFuncionarioComponent,
     // canActivate: [AuthGuard]
-  },
-
-  {
+   },
+   
+   {
     path: 'menu-funcionario/agendamentos/editar/:id',
     component: AgendamentoEditarComponent,
     //canActivate: [AuthGuard]
   },
 
-  // Rota curinga para qualquer URL não encontrada (sempre por último)
-  //{ path: '**', redirectTo: 'home' } 
+   {
+    path: 'menu-funcionario/register',
+    component: RegisterFuncionarioComponent,
+    // canActivate: [AuthGuard] // Proteja esta rota se necessário
+  },
+  {
+
+  path: 'menu-funcionario/triagens',
+  component: TriagensFuncionarioComponent,
+  // canActivate: [AuthGuard]
+  }
 ];

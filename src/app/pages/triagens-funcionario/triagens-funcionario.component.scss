@@ -1,0 +1,30 @@
+// .triagens-page {
+//   background: url('/assets/Background/darkBackground.png') center/cover no-repeat fixed;
+//   min-height: 100vh;
+// }
+
+// .triagens-container {
+//   padding: 80px 2rem 2rem;
+//   background: rgba(4,15,29,0.85);  // um tom escuro só 85% opaco
+//   color: #fff;
+// }
+
+.triagens-page {
+    position: relative;
+  
+    .chamar-btn {
+      position: fixed;       // ou absolute, conforme preferir
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 10;
+  
+      // deixa o botão retangular (sem ser circular)
+      padding: 0.5rem 1.5rem;
+      border-radius: 0.25rem; // use 0 para cantos 100% retos
+  
+      // opcional: remova width/height se tiver
+      width: auto;
+      height: auto;
+    }
+  }
+  

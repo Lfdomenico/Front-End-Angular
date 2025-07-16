@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {RouterModule} from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { Tarefa, TarefaService } from '../../services/tarefa.service';
+
 
 @Component({
   selector: 'app-menu-funcionario',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, NavbarComponent],
   templateUrl: './menu-funcionario.component.html',
   styleUrls: ['./menu-funcionario.component.scss']
 })
-export class MenuFuncionarioComponent implements OnInit { 
+export class MenuFuncionarioComponent implements OnInit, OnDestroy { 
 
   tarefas: Tarefa[] = [];
 
