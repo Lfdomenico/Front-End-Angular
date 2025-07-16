@@ -1,5 +1,5 @@
-<app-navbar></app-navbar>
 <body class="menu-funcionario-bg vh-100">
+  <app-navbar></app-navbar>
   <section class="container py-4">
     <h2 class="mb-4 titulo">Agendamentos do Dia</h2>
 
@@ -31,8 +31,10 @@
             <td>{{ agendamento.nomeServicoSnapshot }}</td>
             <td>{{ agendamento.status }}</td>
             <td>
-              <button class="btn btn-sm btn-outline-secondary m-1" (click)="alterarAgendamento(agendamento)"><i class="fa-solid fa-pencil"></i> Editar</button>
-              <button class="btn btn-sm btn-danger m-1" (click)="cancelarAgendamento(agendamento)"><i class="fa-solid fa-trash"></i> Excluir</button>
+              <button class="btn btn-sm btn-outline-secondary m-1" (click)="alterarAgendamento(agendamento)"><i
+                  class="fa-solid fa-pencil"></i> Editar</button>
+              <button class="btn btn-sm btn-danger m-1" (click)="cancelarAgendamento(agendamento)"><i
+                  class="fa-solid fa-trash"></i> Excluir</button>
             </td>
           </tr>
           <tr *ngIf="agendamentosDoDia.length === 0 && selectedDate">

@@ -13,6 +13,7 @@ import { AgendamentoFuncionarioComponent } from './pages/agendamento-funcionario
 import { AgendamentoEditarComponent } from './pages/agendamento-editar.component/agendamento-editar.component';
 import { RegisterFuncionarioComponent } from './pages/register/funcionario/registerFuncionario.component';
 import { TriagensFuncionarioComponent } from './pages/triagens-funcionario/triagens-funcionario.component';
+import { ClienteAtualComponent } from './pages/cliente-atual.component/cliente-atual.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -53,27 +54,32 @@ export const routes: Routes = [
 
   { path: 'documentos/upload', component: DocumentoUploadPageComponent },
 
-  { 
-    path: 'menu-funcionario/agendamentos', 
+  {
+    path: 'menu-funcionario/agendamentos',
     component: AgendamentoFuncionarioComponent,
     // canActivate: [AuthGuard]
-   },
-   
-   {
+  },
+
+  {
     path: 'menu-funcionario/agendamentos/editar/:id',
     component: AgendamentoEditarComponent,
     //canActivate: [AuthGuard]
   },
 
-   {
+  {
     path: 'menu-funcionario/register',
     component: RegisterFuncionarioComponent,
     // canActivate: [AuthGuard] // Proteja esta rota se necessário
   },
   {
 
-  path: 'menu-funcionario/triagens',
-  component: TriagensFuncionarioComponent,
-  // canActivate: [AuthGuard]
+    path: 'menu-funcionario/triagens',
+    component: TriagensFuncionarioComponent,
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'menu-funcionario/cliente-atual/:id', // Esta é a rota fixa que você mencionou
+    component: ClienteAtualComponent
+    // Opcional: canActivate: [AuthGuard]
   }
 ];
