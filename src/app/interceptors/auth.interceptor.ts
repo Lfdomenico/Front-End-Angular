@@ -16,8 +16,8 @@ export const authInterceptor: HttpInterceptorFn = (request: HttpRequest<unknown>
 
   const clienteService = inject(ClienteService);
   const router = inject(Router);
-  //const authToken = clienteService.getJwtToken();
-  const authToken = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQ0xJRU5URSIsImZ1bGxOYW1lIjoidGVzdGUiLCJlbWFpbCI6InRlc3RlZUBnbWFpbC5jb20iLCJzdWIiOiI3YTFmNDFkOS01NWRlLTQ4ZWItOGJhYS0yNmEwNWM5MWRhZWYiLCJpYXQiOjE3NTI2NzI1MDIsImV4cCI6MTc1Mjc1ODkwMn0.lDWirlgUBIB1JXZfCzzhIagrIV1ayLDT-ZJ44jZ4-w4';
+  const authToken = clienteService.getJwtToken();
+ // const authToken = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQ0xJRU5URSIsImZ1bGxOYW1lIjoidGVzdGUiLCJlbWFpbCI6InRlc3RlZUBnbWFpbC5jb20iLCJzdWIiOiI3YTFmNDFkOS01NWRlLTQ4ZWItOGJhYS0yNmEwNWM5MWRhZWYiLCJpYXQiOjE3NTI2NzI1MDIsImV4cCI6MTc1Mjc1ODkwMn0.lDWirlgUBIB1JXZfCzzhIagrIV1ayLDT-ZJ44jZ4-w4';
 
   if (authToken) {
     console.log('AuthInterceptor: Token JWT encontrado, adicionando cabeçalho Authorization.');
