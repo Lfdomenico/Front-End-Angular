@@ -50,6 +50,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule }                  from '@angular/common';
 import { Triagem, TriagemApiService }    from '../../services/triagem-api.service';
 import { NavbarComponent }               from '../../components/navbar/navbar.component';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-triagens-funcionario',
@@ -64,7 +65,7 @@ export class TriagensFuncionarioComponent implements OnInit, OnDestroy {
   isChamando = false;
   errorMsg: string | null  = null;
 
-  constructor(private triagemService: TriagemApiService) {}
+  constructor(private triagemService: TriagemApiService, private router: Router) {}
 
   ngOnInit(): void {
     document.body.classList.add('menu-funcionario-bg');
@@ -77,39 +78,61 @@ export class TriagensFuncionarioComponent implements OnInit, OnDestroy {
 
   /** Carrega todas as triagens do back-end */
   private loadTriagens(): void {
-    this.isLoading = true;
-    this.triagemService.getAll().subscribe({
-      next: list => {
-        this.triagens = list;
-        this.isLoading = false;
-      },
-      error: err => {
-        console.error('Erro ao carregar triagens', err);
-        this.errorMsg = 'Falha ao carregar triagens. Tente novamente.';
-        this.isLoading = false;
-      }
-    });
-  }
+  this.isLoading = true;
+  this.triagemService.getAll().subscribe({
+    next: list => {
+      // AQUI A MUDANÇA: Filtramos a lista para mostrar apenas os status relevantes
+      this.triagens = list.filter(t => t.status === 'AGUARDANDO' || t.status === 'EM_ATENDIMENTO');
+      this.isLoading = false;
+    },
+    error: err => {
+      console.error('Erro ao carregar triagens', err);
+      this.errorMsg = 'Falha ao carregar triagens. Tente novamente.';
+      this.isLoading = false;
+    }
+  });
+}
 
   /** Chama o próximo cliente AGUARDANDO */
-  onChamarProximo(): void {
-    this.isChamando = true;
-    this.triagemService.buscarProximaTriagem().subscribe({
-      next: updated => {
-        // 1. Atualiza em memória o status daquele item
-        const idx = this.triagens.findIndex(t => t.id === updated.id);
-        if (idx > -1) {
-          this.triagens[idx] = updated;
-        }
-        // 2. (Opcional) Recarrega toda a lista
-        // this.loadTriagens();
-        this.isChamando = false;
-      },
-      error: err => {
-        console.error('Erro ao chamar próximo cliente', err);
-        alert('Não foi possível chamar o próximo. Tente novamente.');
-        this.isChamando = false;
-      }
-    });
-  }
+//   onChamarProximo(): void {
+//     this.isChamando = true;
+//     this.triagemService.buscarProximaTriagem().subscribe({
+//       next: updated => {
+//         // 1. Atualiza em memória o status daquele item
+//         const idx = this.triagens.findIndex(t => t.id === updated.id);
+//         if (idx > -1) {
+//           this.triagens[idx] = updated;
+//         }
+//         // 2. (Opcional) Recarrega toda a lista
+//         // this.loadTriagens();
+//         this.isChamando = false;
+//       },
+//       error: err => {
+//         console.error('Erro ao chamar próximo cliente', err);
+//         alert('Não foi possível chamar o próximo. Tente novamente.');
+//         this.isChamando = false;
+//       }
+//     });
+//   }
+// }
+
+ /** Chama o próximo cliente AGUARDANDO e navega para a tela dele */
+ onChamarProximo(): void {
+  this.isChamando = true;
+  this.triagemService.buscarProximaTriagem().subscribe({
+    next: updatedTriagem => {
+      this.isChamando = false;
+      
+      // A triagem foi atualizada no backend, agora navegamos para a tela de atendimento
+      // passando o ID da triagem que acabamos de chamar.
+      console.log(`Navegando para o atendimento da triagem: ${updatedTriagem.id}`);
+      this.router.navigate(['/menu-funcionario/cliente-atual', updatedTriagem.id]);
+    },
+    error: err => {
+      console.error('Erro ao chamar próximo cliente', err);
+      alert('Não foi possível chamar o próximo. Pode não haver clientes aguardando.');
+      this.isChamando = false;
+    }
+  });
+}
 }

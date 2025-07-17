@@ -3,7 +3,7 @@ import { DocumentoPendente } from './agendamento-api.service';
 export enum StatusTriagemFrontend {
   PENDENTE = 'PENDENTE',
   EM_ATENDIMENTO = 'EM_ATENDIMENTO',
-  CONCLUIDA = 'CONCLUIDA',
+  FINALIZADO = 'FINALIZADO',
   CANCELADA = 'CANCELADA'
 }
 
