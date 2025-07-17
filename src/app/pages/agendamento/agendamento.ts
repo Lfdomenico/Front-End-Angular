@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router'; // ActivatedRoute para ler parâmetros
 import { AgendamentoApiService } from '../../services/agendamento-api.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { ClienteService } from '../../services/cliente.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../components/confirmationmodal/confirmationmodal';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-agendamento',
@@ -28,8 +28,8 @@ export class AgendamentoComponent implements OnInit {
   servicoId: string | null = null;
   tempoEstimadoServico: number | null = null;
 
-  private clienteService = inject(ClienteService);
-  private usuarioId = this.clienteService.getId();
+  private loginService = inject(LoginService);
+  private usuarioId = this.loginService.getId();
 
   constructor(
     private agendamentoApiService: AgendamentoApiService,
