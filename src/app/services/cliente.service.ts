@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators'; 
+import { APP_CONFIG } from '../app.config';
 
 export interface LoginResponse{
   nome: string;
@@ -34,8 +35,8 @@ export interface LoginRequest {
 })
 export class ClienteService {
 
-  private readonly apiUrl = 'http://localhost:9000/api/cliente';
-  private readonly authUrl = 'http://localhost:9000/api/auth';
+  private readonly apiUrl = APP_CONFIG.apiUrl+'/cliente';
+  private readonly authUrl = APP_CONFIG.apiUrl+'/auth';
   
   constructor(private http: HttpClient) { }
 

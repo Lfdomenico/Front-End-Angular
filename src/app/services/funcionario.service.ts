@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { APP_CONFIG } from '../app.config';
 
 // 1. Interface de request (mesmos campos exigidos pelo back)
 export interface FuncionarioRequest {
@@ -38,7 +39,7 @@ export interface LoginRequest {
 })
 export class FuncionarioService {
   // a mesma baseUrl do ClienteService, mas apontando para /funcionario
-  private readonly apiUrl  = 'http://localhost:9000/api/funcionario';
+  private readonly apiUrl  = APP_CONFIG.apiUrl+'/funcionario';
 
   constructor(private http: HttpClient) {}
 

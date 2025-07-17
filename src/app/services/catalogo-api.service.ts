@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { APP_CONFIG } from '../app.config'; 
 
 export interface ServicoBackend {
   id: string; 
@@ -27,8 +28,8 @@ export interface SetorRequest {
   providedIn: 'root'
 })
 export class CatalogoApiService {
-  private apiUrl = 'http://localhost:9000/api/setor'; 
-  private triagemUrl = 'http://localhost:9000/api/triagens'; 
+  private apiUrl = APP_CONFIG.apiUrl+'/setor'; 
+  private triagemUrl = APP_CONFIG.apiUrl+'/triagens'; 
 
   constructor(private http: HttpClient) { }
 
