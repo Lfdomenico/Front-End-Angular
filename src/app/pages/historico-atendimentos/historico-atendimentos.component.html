@@ -1,0 +1,35 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-5 pt-5">
+  <div class="text-center mb-4">
+    <h1>Histórico de Atendimentos</h1>
+    <p class="lead">Lista de todos os atendimentos que já foram concluídos.</p>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center">
+    <p>Carregando histórico...</p>
+  </div>
+
+  <div *ngIf="!isLoading && historico.length === 0" class="alert alert-info">
+    Nenhum atendimento foi finalizado ainda.
+  </div>
+
+  <table *ngIf="!isLoading && historico.length > 0" class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>Cliente</th>
+        <th>Serviço Realizado</th>
+        <th>Status</th>
+        <th>Data da Solicitação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let h of historico">
+        <td>{{ h.nomeClienteSnapshot }}</td>
+        <td>{{ h.nomeServicoSnapshot }}</td>
+        <td>{{ h.status }}</td>
+        <td>{{ h.horarioSolicitacao | date:'dd/MM/yyyy HH:mm' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

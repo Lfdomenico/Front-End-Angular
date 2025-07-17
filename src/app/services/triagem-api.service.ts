@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
+import { TriagemCompleta } from './triagem.interface'; 
+
 
 export interface TriagemResponse {
   disponibilidade: Date;
@@ -47,6 +49,17 @@ export class TriagemApiService {
 
   getByClienteId(clienteId: string): Observable<Triagem[]> {
     return this.http.get<Triagem[]>(`${this.triagemUrl}/cliente/${clienteId}`);
+  }
+
+  getById(id: string): Observable<TriagemCompleta> {
+    return this.http.get<TriagemCompleta>(`${this.triagemUrl}/${id}`);
+  }
+
+  atualizarStatus(id: string, novoStatus: string): Observable<any>{
+    const url = `${this.triagemUrl}/${id}/status`;
+    const body = { novoStatus: novoStatus };
+    return this.http.patch(url, body);
+
   }
 }
 
