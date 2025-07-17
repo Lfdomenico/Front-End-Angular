@@ -29,4 +29,9 @@ export class CatalogoApiService {
   getHorarioDisponivel(): Observable<TriagemResponse> {
     return this.http.get<TriagemResponse>(`${this.triagemUrl}/disponibilidade`); 
   }
+
+  getServicoById(id: string): Observable<ServicoBackend> {
+    // Este endpoint precisa existir no CatalogoService do backend
+    return this.http.get<ServicoBackend>(`${this.apiUrl}/${id}`);
+  }
 }
