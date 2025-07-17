@@ -14,6 +14,15 @@ export interface ServicoBackend {
 export interface TriagemResponse {
   disponibilidade: Date;
 }
+export interface SetorRequest {
+  nome: string; // Alterado de nomeSetor para nome
+  descricao: string; // Alterado de descricaoSetor para descricao
+  isAtivo: boolean;
+  prioridade: number;
+  tempoMedioMinutos: number | null; // Pode ser null, então adicione | null
+  documentosObrigatoriosIds: string[]; // <<-- NOVO CAMPO ADICIONADO
+  icone: string; // Alterado de selectedSectorIcon para icone
+}
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +38,8 @@ export class CatalogoApiService {
   }
   getHorarioDisponivel(): Observable<TriagemResponse> {
     return this.http.get<TriagemResponse>(`${this.triagemUrl}/disponibilidade`); 
+  }
+  cadastrarSetor(dto: SetorRequest): Observable<SetorRequest> {
+    return this.http.post<SetorRequest>(this.apiUrl, dto)
   }
 }

@@ -15,6 +15,7 @@ import { RegisterFuncionarioComponent } from './pages/register/funcionario/regis
 import { TriagensFuncionarioComponent } from './pages/triagens-funcionario/triagens-funcionario.component';
 import { ClienteAtualComponent } from './pages/cliente-atual.component/cliente-atual.component';
 import { HistoricoAtendimentosComponent } from './pages/historico-atendimentos/historico-atendimentos.component';
+import { CadastroSetorComponent } from './pages/cadastro-setor.component/cadastro-setor.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -78,21 +79,27 @@ export const routes: Routes = [
     component: TriagensFuncionarioComponent,
     // canActivate: [AuthGuard]
   },
-  
+
   //   path: 'menu-funcionario/cliente-atual/:id', // Esta é a rota fixa que você mencionou
   //   component: ClienteAtualComponent
   //   // Opcional: canActivate: [AuthGuard]
   // }
-{
-     path: 'menu-funcionario/cliente-atual/:id', // Esta é a rota fixa que você mencionou
-     component: ClienteAtualComponent
-      // canActivate: [AuthGuard]
-},
+  {
+    path: 'menu-funcionario/cliente-atual/:id', // Esta é a rota fixa que você mencionou
+    component: ClienteAtualComponent
+    // canActivate: [AuthGuard]
+  },
 
-{
-  path: 'menu-funcionario/historico-atendimentos',
-  component: HistoricoAtendimentosComponent
-  // canActivate: [AuthGuard]
-}
+  {
+    path: 'menu-funcionario/historico-atendimentos',
+    component: HistoricoAtendimentosComponent
+    // canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'menu-funcionario/cadastro-setor',
+    component: CadastroSetorComponent
+    //canActivate: [AuthGuard]
+  }
 
 ];
