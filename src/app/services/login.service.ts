@@ -9,20 +9,6 @@ export interface LoginResponse{
   accessToken: string;
 }
 
-export interface ClienteRequest {
-  nome: string;
-  cpf: string;
-  telefone: string;
-  email: string;
-  agencia: string;
-  conta: string;
-  senha?: string;
-}
-
-export interface ClienteResponse {
-  id: number;
-  nome: string;
-}
 
 export interface LoginRequest {
     email: string;
@@ -32,16 +18,11 @@ export interface LoginRequest {
 @Injectable({
   providedIn: 'root'
 })
-export class ClienteService {
+export class LoginService {
 
-  private readonly apiUrl = 'http://localhost:9000/api/cliente';
   private readonly authUrl = 'http://localhost:9000/api/auth';
   
   constructor(private http: HttpClient) { }
-
-  cadastrar(cliente: ClienteRequest): Observable<ClienteResponse> {
-    return this.http.post<ClienteResponse>(this.apiUrl, cliente);
-  }
 
   login(credenciais: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.authUrl}/login`, credenciais)
@@ -55,6 +36,22 @@ export class ClienteService {
       );
   }
   
-  
+  getJwtToken(): string | null {
+    return localStorage.getItem('jwtToken');
+  }
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem('isLoggedIn') === 'true';
+  }
+
+  getId(): string | null {
+    return localStorage.getItem('userId');
+  }
+  logout(): void {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('jwtToken');
+  }
   
 }

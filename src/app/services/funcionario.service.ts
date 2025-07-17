@@ -21,7 +21,7 @@ export interface FuncionarioResponse {
 }
 
 // 3. Interface de response de login
-export interface FuncionarioLoginResponse {
+export interface LoginResponse{
   nome: string;
   email: string;
   accessToken: string;
@@ -39,7 +39,6 @@ export interface LoginRequest {
 export class FuncionarioService {
   // a mesma baseUrl do ClienteService, mas apontando para /funcionario
   private readonly apiUrl  = 'http://localhost:9000/api/funcionario';
-  private readonly authUrl = 'http://localhost:9000/api/auth'; 
 
   constructor(private http: HttpClient) {}
 
@@ -56,49 +55,24 @@ export class FuncionarioService {
    * { nome: string, email: string, accessToken: string }
    * e dispara o armazenamento em localStorage.
    */
-  login(credenciais: LoginRequest): Observable<string> {
-    return this.http.post(
-      `${this.apiUrl}/login`,
-      credenciais,
-      { responseType: 'text' }   // indica que a resposta vem como texto puro
-    );
-  }
+  // login(credenciais: LoginRequest): Observable<string> {
+  //   return this.http.post(
+  //     `${this.authUrl}/login`,
+  //     credenciais,
+  //     { responseType: 'text' }   // indica que a resposta vem como texto puro
+  //   );
+  // }
 
-  /**
-   * Desloga o funcionário, limpando o armazenamento local.
-   */
-  logout(): void {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('jwtToken');
-  }
+  // login(credenciais: LoginRequest): Observable<LoginResponse> {
+  //     return this.http.post<LoginResponse>(`${this.authUrl}/login`, credenciais)
+  //       .pipe(
+  //         tap(response => {
+  //           localStorage.setItem('isLoggedIn', 'true');
+  //           localStorage.setItem('userName', response.nome);
+  //           localStorage.setItem('userEmail', response.email);
+  //           localStorage.setItem('jwtToken', response.accessToken);
+  //         })
+  //       );
+  //   }
 
-  /**
-   * Retorna o token JWT (ou null se não existir).
-   */
-  getJwtToken(): string | null {
-    return localStorage.getItem('jwtToken');
-  }
-
-  /**
-   * Indica se o usuário está logado.
-   */
-  isLoggedIn(): boolean {
-    return localStorage.getItem('isLoggedIn') === 'true';
-  }
-
-  /**
-   * Nome do funcionário logado.
-   */
-  getUserName(): string | null {
-    return localStorage.getItem('userName');
-  }
-
-  /**
-   * E-mail do funcionário logado.
-   */
-  getUserEmail(): string | null {
-    return localStorage.getItem('userEmail');
-  }
 }
