@@ -1,18 +1,12 @@
-// src/app/pages/cadastro-setor/cadastro-setor.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { IconPickerModalComponent } from '../../components/icon-picker-modal.component/icon-picker-modal.component';
+import { CatalogoApiService, SetorRequest } from '../../services/catalogo-api.service'; 
 
-// Importe o serviço e a interface SetorRequest
-import { CatalogoApiService, SetorRequest } from '../../services/catalogo-api.service'; // <<-- Importe o serviço e a interface
-
-// Interface para o Documento (simulando a estrutura do banco de dados)
 interface Documento {
-  id: string; // Será o UUID
+  id: string; 
   nome: string;
 }
 
@@ -32,7 +26,7 @@ export class CadastroSetorComponent implements OnInit {
   // Propriedades existentes do formulário
   nomeSetor: string = '';
   descricaoSetor: string = '';
-  selectedSectorIcon: string = 'fa-solid fa-building-columns';
+  selectedSectorIcon: string = 'fa-solid fa-search';
   isAtivo: boolean = true;
   prioridade: number = 1;
   tempoMedioMinutos: number | null = null;
@@ -95,8 +89,7 @@ export class CadastroSetorComponent implements OnInit {
   }
 
   salvarSetor(): void {
-    // Constrói o objeto DTO conforme a interface SetorRequest
-    const setorDTO: SetorRequest = { // <<-- Garanta que o tipo é SetorRequest
+    const setorDTO: SetorRequest = { 
       nome: this.nomeSetor,
       descricao: this.descricaoSetor,
       isAtivo: this.isAtivo,
@@ -108,22 +101,17 @@ export class CadastroSetorComponent implements OnInit {
 
     console.log('DTO do Setor a ser enviado:', setorDTO);
 
-    // <<-- CHAMADA À API AQUI
     this.catalogoApiService.cadastrarSetor(setorDTO).subscribe({
       next: (response) => {
-        // Lógica para lidar com a resposta de sucesso da API
         console.log('Setor cadastrado com sucesso!', response);
         alert('Setor cadastrado com sucesso!');
-        // Opcional: Limpar o formulário ou redirecionar
-        // this.resetForm();
+        this.resetForm();
       },
       error: (error) => {
-        // Lógica para lidar com erros da API
         console.error('Erro ao cadastrar setor:', error);
         alert('Erro ao cadastrar setor. Verifique o console para mais detalhes.');
       },
       complete: () => {
-        // Opcional: Lógica a ser executada quando o Observable é concluído (sucesso ou erro)
         console.log('Requisição de cadastro de setor concluída.');
       }
     });
@@ -133,16 +121,13 @@ export class CadastroSetorComponent implements OnInit {
     return iconClass;
   }
 
-  // Opcional: Método para resetar o formulário após o sucesso
-  // resetForm(): void {
-  //   this.nomeSetor = '';
-  //   this.descricaoSetor = '';
-  //   this.isAtivo = true;
-  //   this.prioridade = 1;
-  //   this.tempoMedioMinutos = null;
-  //   this.selectedDocumentIds = [];
-  //   this.selectedSectorIcon = 'fa-solid fa-building-columns';
-  //   // Se estiver usando Template-driven Forms, você pode precisar de:
-  //   // this.setorForm.resetForm(); // Assumindo que você tem uma referência #setorForm no HTML
-  // }
+  resetForm(): void {
+    this.nomeSetor = '';
+    this.descricaoSetor = '';
+    this.isAtivo = true;
+    this.prioridade = 1;
+    this.tempoMedioMinutos = null;
+    this.selectedDocumentIds = [];
+    this.selectedSectorIcon = 'fa-solid fa-search';
+  }
 }
