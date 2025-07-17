@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
 import { TriagemCompleta } from './triagem.interface'; 
+import { APP_CONFIG } from '../app.config';
 
 
 export interface TriagemResponse {
@@ -27,7 +28,7 @@ export interface Triagem {
 export class TriagemApiService {
 
   
-  private triagemUrl = 'http://localhost:9000/api/triagens'; 
+  private triagemUrl = APP_CONFIG.apiUrl+'/triagens'; 
 
   constructor(private http: HttpClient) { }
 

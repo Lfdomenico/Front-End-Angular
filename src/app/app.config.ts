@@ -28,3 +28,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
   ]
 };
+
+export const APP_CONFIG = {
+  apiUrl: 'http://localhost:9000/api'
+};
