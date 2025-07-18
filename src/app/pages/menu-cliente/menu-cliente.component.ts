@@ -8,7 +8,6 @@ import { ConfirmationModalComponent } from '../../components/confirmationmodal/c
 import { TriagemApiService } from '../../services/triagem-api.service';
 
 interface ServicoDisplay extends ServicoBackend {
-  iconClass: string;
   rota: string;
 }
 
@@ -49,32 +48,13 @@ export class MenuClienteComponent implements OnInit {
   }
 
   private mapServicoToDisplay(servico: ServicoBackend): ServicoDisplay {
-    let iconClass = 'fa fa-question-circle';
     let rota = '/espera';
 
-    if (servico.nome.includes('Conta')) {
-      iconClass = 'fa fa-university';
+    if (servico.tempoMedioMinutos >= 15) {
       rota = '/agendamento';
-    } else if (servico.nome.includes('Cartão')) {
-      iconClass = 'fa fa-credit-card';
-      rota = '/espera';
-    } else if (servico.nome.includes('Fraude')) {
-      iconClass = 'fa fa-search';
-      rota = '/agendamento';
-    } else if (servico.nome.includes('Dívidas')) {
-      iconClass = 'fa fa-money-bill-alt';
-      rota = '/agendamento';
-    } else if (servico.nome.includes('App') || servico.nome.includes('Banking')) {
-      iconClass = 'fa fa-headset';
-      rota = '/espera';
-    } else if (servico.nome.includes('Informações')) {
-      iconClass = 'fa fa-info-circle';
-      rota = '/espera';
     }
-
     return {
       ...servico,
-      iconClass: iconClass,
       rota: rota
     };
   }
@@ -117,26 +97,30 @@ export class MenuClienteComponent implements OnInit {
   }
 
   private executarSelecaoSetor(setor: ServicoDisplay): void {
-    if (setor.rota === '/agendamento') {
-      this.router.navigate([setor.rota, setor.id], { queryParams: { tempo: setor.tempoMedioMinutos } });
-    } else {
-      const triagemData = {
-        servicoId: setor.id,
-        prioridade: 1
-      };
-      this.triagemApiService.salvarTriagem(triagemData).subscribe({
-      next: response => {
-        this.router.navigate(['/espera', setor.nome], { queryParams: { tempo: setor.tempoMedioMinutos } });
+  if (setor.rota === '/agendamento') {
+    this.router.navigate([setor.rota, setor.id], { queryParams: { tempo: setor.tempoMedioMinutos } });
+  } else {
+    const triagemData = {
+      servicoId: setor.id,
+      prioridade: 1
+    };
+    this.triagemApiService.salvarTriagem(triagemData).subscribe({
+      // MUDANÇA AQUI: Renomeie 'response' para 'triagemCriada' para clareza
+      next: (triagemCriada) => {
+        console.log('Triagem criada, redirecionando para a tela de espera com o ID:', triagemCriada.id);
+
+        // A NAVEGAÇÃO AGORA USA O ID DA TRIAGEM CRIADA
+        // O Angular vai gerar uma URL como: /espera/SEU_ID_AQUI
+        this.router.navigate(['/espera', triagemCriada.id]);
       },
       error: error => {
-        console.error('Erro ao agendar:', error);
+        console.error('Erro ao criar triagem:', error);
         const msg = error.error?.message
           ? `Erro ao entrar na fila: ${error.error.message}`
           : 'Erro ao entrar na fila. Tente novamente.';
         alert(msg);
       }
     });
-      
-    }
   }
+}
 }

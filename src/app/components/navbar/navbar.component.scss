@@ -79,6 +79,10 @@ $shadow:     rgba(0, 0, 0, 0.1);
   .dropdown-header {
     text-align: center;
 
+    .dropdown-user-photo .edit-icon{
+      cursor: pointer;
+    }
+
     .dropdown-user-photo img {
       width: 60px;
       height: 60px;
@@ -119,3 +123,43 @@ $shadow:     rgba(0, 0, 0, 0.1);
     transform: translateY(0);
   }
 }
+
+:host-context(.menu-funcionario-bg) {
+  .navbar {
+    background-color: #040f1d;  // seu tom de azul‐preto
+    color: #fff;                // textos brancos por padrão
+  }
+
+  // logo, todos os ícones e labels
+  .navbar-logo img{
+  filter: brightness(0) invert(1); 
+}
+
+  // .arrow-toggle i {
+  //   filter: brightness(0) invert(1); // inverte logo se precisar
+  // }
+
+  
+  .dropdown-menu {
+    background-color: #040f1d;
+    color: #fff;
+  }
+
+  .dropdown-header {
+    .greeting-text,
+    .userEmail-text {
+      color: #f1f1f1;
+    }
+  }
+
+  .user-icon{
+    border-color:  #0c2c55
+  }
+
+ 
+  .logout-button {
+    color: #1e90ff;     
+    font-weight: bold;
+  }
+}
+

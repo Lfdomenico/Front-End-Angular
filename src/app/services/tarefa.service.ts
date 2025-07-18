@@ -1,25 +1,52 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-// Interface para definir a estrutura da Tarefa que virá do backend
+// 1. Adicione a propriedade 'rota' aqui
 export interface Tarefa {
-  id: string; // O UUID virá como string
   nome: string;
   descricao: string;
+  rota: string; // <-- ADICIONAR ESTA LINHA
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class TarefaService {
-  // O caminho passa pelo Gateway, que redireciona para o tarefa-service
-  private apiUrl = 'http://localhost:9000/api/tarefa'; 
 
-  constructor(private http: HttpClient) { }
+  // 2. Certifique-se de que os dados retornados incluam a rota
+  private tarefas: Tarefa[] = [
+    {
+      nome: 'Cadastrar Novo Funcionário',
+      descricao: 'Adicionar novos usuários do tipo funcionário ao sistema.',
+      rota: '/menu-funcionario/register' 
+    },
+    {
+      nome: 'Consultar Agendamentos',
+      descricao: 'Visualizar a lista de agendamentos pendentes e confirmados.',
+      rota: '/menu-funcionario/agendamentos' 
+    },
+    {
+      nome: 'Acompanhamento de Triagens',
+      descricao: 'Visualizar filas e status das triagens em andamento.',
+       rota: '/menu-funcionario/triagens' // trocar essa rota para a de triagens.
+    },
 
-  // Método que busca a lista de todas as tarefas
+    {
+      nome: 'Verificação de Documentos',
+      descricao: 'Analisar de validar os documentos dos clientes.',
+       rota: '/menu-funcionario/verificar-documentos' // trocar essa rota para a de triagens.
+    },
+
+    {
+      nome: 'Adicionar um novo setor',
+      descricao: 'A.',
+       rota: '/menu-funcionario/cadastro-setor' // trocar essa rota para a de triagens.
+    },
+
+    
+  ];
+
   getTarefas(): Observable<Tarefa[]> {
-    return this.http.get<Tarefa[]>(this.apiUrl);
+    return of(this.tarefas);
   }
 }

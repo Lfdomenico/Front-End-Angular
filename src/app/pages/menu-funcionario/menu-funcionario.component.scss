@@ -1,75 +1,30 @@
-// Usando as variáveis de cor que definimos antes
-:host {
-  --accent: #2A7AE2;
-  --background: #1E293B;
-  --background-secondary: #334155;
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+.menu-funcionario-page {
+  // Aumentando o padding para dar mais respiro ao contêiner geral
+  padding: 120px 2rem; 
+  background: url('/assets/Background/darkBackground.png') center/cover no-repeat fixed;
+  min-height: 100vh;
 }
 
-.menu-container {
-  padding: 2rem 4rem;
+.card-custom {
+  background-color: rgba(30, 41, 59, 0.75); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  color: #f8f9fa;
+  min-height: 280px; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-h1 {
-  color: var(--accent);
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  margin-bottom: 3rem;
-}
-
-.tarefas-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.tarefa-card {
-  background-color: var(--background-secondary);
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  }
-
-  h2 {
-    color: var(--text-primary);
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-    border-left: 3px solid var(--accent);
-    padding-left: 1rem;
-  }
-
-  p {
-    color: var(--text-secondary);
-    flex-grow: 1; /* Faz a descrição ocupar o espaço disponível */
-    margin-bottom: 1.5rem;
+.card-link {
+  text-decoration: none; 
+  display: block; 
+  
+  &:hover .card-custom {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+    border-color: $primary; 
   }
 }
-
-.card-button {
-  background-color: var(--accent);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  align-self: flex-start; /* Alinha o botão no início */
-  transition: background-color 0.2s;
-
-  &:hover {
-    opacity: 0.9;
-  }
-}
-

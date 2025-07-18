@@ -1,0 +1,13 @@
+body{
+    height: 100%;
+    padding: 100px 20px;
+}
+
+.multi-select-container {
+    cursor: pointer;
+    position: relative; 
+}
+
+.dropdown-arrow.rotated {
+    transform: rotate(180deg);
+}

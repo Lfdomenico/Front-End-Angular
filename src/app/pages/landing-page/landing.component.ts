@@ -11,9 +11,6 @@ import { RouterLink } from '@angular/router';
 })
 export class LandingComponent {
 
-  /**
-   * Rola suavemente até a section com o ID passado
-   */
   scrollTo(sectionId: string): void {
     const el = document.getElementById(sectionId);
     if (!el) return;
