@@ -20,6 +20,7 @@ h1{
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.form-control:focus,
 label,
 input,
 textarea,
@@ -27,6 +28,10 @@ i,
 a {
     color: #f7f7f7;
 
+}
+
+.form-check input, .form-check .badge{
+    cursor: pointer;
 }
 
 .dropdown-menu {
