@@ -28,6 +28,9 @@ export class AgendamentoComponent implements OnInit {
   servicoId: string | null = null;
   tempoEstimadoServico: number | null = null;
 
+  // private clienteService = inject(ClienteService);
+  // private usuarioId = this.clienteService.getId();
+
   private loginService = inject(LoginService);
   private usuarioId = this.loginService.getId();
 

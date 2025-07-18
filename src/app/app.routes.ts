@@ -15,7 +15,8 @@ import { RegisterFuncionarioComponent } from './pages/register/funcionario/regis
 import { TriagensFuncionarioComponent } from './pages/triagens-funcionario/triagens-funcionario.component';
 import { ClienteAtualComponent } from './pages/cliente-atual.component/cliente-atual.component';
 import { HistoricoAtendimentosComponent } from './pages/historico-atendimentos/historico-atendimentos.component';
-import { CadastroSetorComponent } from './pages/cadastro-setor.component/cadastro-setor.component';
+import { VerificarDocumentosComponent } from './pages/verificar-documentos/verificar-documentos.component';
+import { CadastroSetorComponent } from './pages/cadastro-setor.component/cadastro-setor.component'; 
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -90,16 +91,27 @@ export const routes: Routes = [
     // canActivate: [AuthGuard]
   },
 
-  {
-    path: 'menu-funcionario/historico-atendimentos',
-    component: HistoricoAtendimentosComponent
-    // canActivate: [AuthGuard]
-  },
+{
+  path: 'menu-funcionario/historico-atendimentos',
+  component: HistoricoAtendimentosComponent
+  // canActivate: [AuthGuard]
+},
 
-  {
-    path: 'menu-funcionario/cadastro-setor',
-    component: CadastroSetorComponent
-    //canActivate: [AuthGuard]
-  }
+{
+  // Adicionamos uma nova rota que aceita o ID
+  path: 'menu-funcionario/cliente-atual/:id',
+  component: HistoricoAtendimentosComponent
+  // canActivate: [AuthGuard]
+},
+
+{
+  path: 'menu-funcionario/verificar-documentos',
+  component: VerificarDocumentosComponent
+},
+{
+  path: 'menu-funcionario/cadastro-setor',
+  component: CadastroSetorComponent
+  //canActivate: [AuthGuard]
+}
 
 ];

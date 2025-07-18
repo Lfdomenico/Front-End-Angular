@@ -117,30 +117,30 @@ export class MenuClienteComponent implements OnInit {
   }
 
   private executarSelecaoSetor(setor: ServicoDisplay): void {
-    if (setor.rota === '/agendamento') {
-      this.router.navigate([setor.rota, setor.id], { queryParams: { tempo: setor.tempoMedioMinutos } });
-    // } else {
-    //   this.router.navigate(['/espera', setor.nome], { queryParams: { tempo: setor.tempoMedioMinutos } });
-    // }
+  if (setor.rota === '/agendamento') {
+    this.router.navigate([setor.rota, setor.id], { queryParams: { tempo: setor.tempoMedioMinutos } });
   } else {
     const triagemData = {
-
       servicoId: setor.id,
       prioridade: 1
     };
     this.triagemApiService.salvarTriagem(triagemData).subscribe({
+      // MUDANÇA AQUI: Renomeie 'response' para 'triagemCriada' para clareza
+      next: (triagemCriada) => {
+        console.log('Triagem criada, redirecionando para a tela de espera com o ID:', triagemCriada.id);
 
-    next: response => {
-      this.router.navigate(['/espera', setor.nome], { queryParams: { tempo: setor.tempoMedioMinutos } });
-    },
-    error: error => {
-      console.error('Erro ao agendar:', error);
-      const msg = error.error?.message
-        ? `Erro ao entrar na fila: ${error.error.message}`
-        : 'Erro ao entrar na fila. Tente novamente.';
-      alert(msg);
-    }
-  });
+        // A NAVEGAÇÃO AGORA USA O ID DA TRIAGEM CRIADA
+        // O Angular vai gerar uma URL como: /espera/SEU_ID_AQUI
+        this.router.navigate(['/espera', triagemCriada.id]);
+      },
+      error: error => {
+        console.error('Erro ao criar triagem:', error);
+        const msg = error.error?.message
+          ? `Erro ao entrar na fila: ${error.error.message}`
+          : 'Erro ao entrar na fila. Tente novamente.';
+        alert(msg);
+      }
+    });
   }
-  }
+}
 }

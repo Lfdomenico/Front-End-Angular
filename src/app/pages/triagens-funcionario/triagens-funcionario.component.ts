@@ -135,4 +135,13 @@ export class TriagensFuncionarioComponent implements OnInit, OnDestroy {
     }
   });
 }
+
+irHistorico(): void{
+  this.router.navigate(['/menu-funcionario/historico-atendimentos']);
+}
+
+retornar(): void{
+  this.router.navigate(['/menu-funcionario']);
+}
+
 }

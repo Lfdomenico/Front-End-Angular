@@ -34,8 +34,16 @@ export class TarefaService {
     {
       nome: 'Verificação de Documentos',
       descricao: 'Analisar de validar os documentos dos clientes.',
-       rota: '/menu-funcionario/triagens' // trocar essa rota para a de triagens.
+       rota: '/menu-funcionario/verificar-documentos' // trocar essa rota para a de triagens.
     },
+
+    {
+      nome: 'Adicionar um novo setor',
+      descricao: 'A.',
+       rota: '/menu-funcionario/cadastro-setor' // trocar essa rota para a de triagens.
+    },
+
+    
   ];
 
   getTarefas(): Observable<Tarefa[]> {

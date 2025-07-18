@@ -1,30 +1,54 @@
-// .triagens-page {
-//   background: url('/assets/Background/darkBackground.png') center/cover no-repeat fixed;
-//   min-height: 100vh;
-// }
+// Importamos a cor primária definida no seu styles.scss
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
 
-// .triagens-container {
-//   padding: 80px 2rem 2rem;
-//   background: rgba(4,15,29,0.85);  // um tom escuro só 85% opaco
-//   color: #fff;
-// }
+:host {
+  display: block; 
+  background: url('/assets/Background/darkBackground.png') center/cover no-repeat fixed;
+  min-height: 100vh;
+  padding-top: 120px;
+}
 
-.triagens-page {
-    position: relative;
+.triagens-container {
+  width: 90%;
+  max-width: 1200px;
+  background: rgba(25, 35, 50, 0.6);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.empty-state {
+  padding: 4rem 2rem;
+  opacity: 0.7;
   
-    .chamar-btn {
-      position: fixed;       // ou absolute, conforme preferir
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 10;
-  
-      // deixa o botão retangular (sem ser circular)
-      padding: 0.5rem 1.5rem;
-      border-radius: 0.25rem; // use 0 para cantos 100% retos
-  
-      // opcional: remova width/height se tiver
-      width: auto;
-      height: auto;
-    }
+  i {
+    font-size: 4rem;
+    color: $primary; 
+    margin-bottom: 1rem;
   }
-  
+}
+
+.btn-custom-primary {
+  background-color: $primary; 
+  color: white;
+  border: 1px solid $primary;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: darken($primary, 10%); 
+    border-color: darken($primary, 10%);
+  }
+}
+
+.btn-custom-secondary-outline {
+  background-color: transparent;
+  color: #adb5bd; // Mesmo cinza claro do cabeçalho da tabela
+  border: 1px solid #adb5bd;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $primary;
+    color: white;
+    border-color: $primary;
+  }
+}

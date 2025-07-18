@@ -14,6 +14,11 @@ export interface UploadStatus {
 @Injectable({
   providedIn: 'root'
 })
+// export class DocumentoUploadApiService {
+//   private documentoServiceBaseUrl = 'http://localhost:9000/api/documentacao'; 
+//   private agendamentoServiceBaseUrl = 'http://localhost:9000/api/agendamentos'; 
+//   private triagemServiceBaseUrl = 'http://localhost:9000/api/triagens'; 
+//   private catalogoServiceBaseUrl = 'http://localhost:9000/api/documentos'; 
 export class DocumentoUploadApiService {
   private documentoServiceBaseUrl = APP_CONFIG.apiUrl+'/documentacao'; 
   private agendamentoServiceBaseUrl = APP_CONFIG.apiUrl+'/agendamentos'; 

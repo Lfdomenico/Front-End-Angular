@@ -28,6 +28,7 @@ export interface Triagem {
 export class TriagemApiService {
 
   
+  // private triagemUrl = 'http://localhost:9000/api/triagens'; 
   private triagemUrl = APP_CONFIG.apiUrl+'/triagens'; 
 
   constructor(private http: HttpClient) { }
@@ -43,6 +44,12 @@ export class TriagemApiService {
   getHorarioDisponivel(): Observable<TriagemResponse> {
       return this.http.get<TriagemResponse>(`${this.triagemUrl}/disponibilidade`); 
     }
+
+    getHistorico(): Observable<TriagemCompleta[]> {
+    const url = `${this.triagemUrl}/historico`; // <-- Aponta para o novo endpoint
+    const params = new HttpParams().set('cacheBuster', new Date().getTime().toString());
+    return this.http.get<TriagemCompleta[]>(url, { params });
+  }
 
   salvarTriagem(triagemData: any): Observable<any> {
     return this.http.post<any>(this.triagemUrl, triagemData);

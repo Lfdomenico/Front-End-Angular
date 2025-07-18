@@ -19,6 +19,13 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   hidePassword = true;
 
+  // constructor(
+  //   private fb: FormBuilder,
+  //   private clienteService: ClienteService,
+  //   private funcionarioService: FuncionarioService, // 2. INJETE O NOVO SERVIÇO
+  //   private router: Router
+  // ) {}
+
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
@@ -74,10 +81,73 @@ export class LoginComponent implements OnInit {
   //     });
   //   }
 
-  //   togglePasswordVisibility(): void {
-  //     this.hidePassword = !this.hidePassword;
-  //   }
-  // }
+//   togglePasswordVisibility(): void {
+//     this.hidePassword = !this.hidePassword;
+//   }
+// }
+
+// onSubmit(): void {
+//   if (this.loginForm.invalid) {
+//     this.loginForm.markAllAsTouched();
+//     return;
+//   }
+
+//   const credenciais: LoginRequest = this.loginForm.value;
+//   const email = credenciais.email;
+
+//   // 3. DECIDA QUAL API CHAMAR ANTES DE FAZER A REQUISIÇÃO
+//   if (email.endsWith('@bankflow.com')) {
+//     // É um funcionário, chame o FuncionarioService
+//     this.funcionarioService.login(credenciais).subscribe({
+//       next: (token: string) => {
+//         console.log('Resposta do login de funcionário:', token);
+//         localStorage.setItem('jwt_token', token); 
+//         localStorage.setItem('isLoggedIn', 'true');
+//         Swal.fire({
+//           icon: 'success',
+//         title: 'Login Realizado!',
+//         timer: 1500,
+//         showConfirmButton: false
+//       }).then(() => {
+//         this.router.navigate(['/menu-funcionario']);
+//       });
+//     },
+//     error: (err: any) => this.handleLoginError(err, 'funcionário')
+//     });
+
+//   } else {
+//     // É um cliente, chame o ClienteService
+//     this.clienteService.login(credenciais).subscribe({
+//       next: (response) => {
+//         console.log('Resposta do login de cliente:', response);
+//         localStorage.setItem('jwt_token', response.accessToken); 
+//         localStorage.setItem('isLoggedIn', 'true');
+//         Swal.fire({
+//           icon: 'success', title: 'Login Realizado!', timer: 1500, showConfirmButton: false
+//         }).then(() => {
+//           this.router.navigate(['/menu-cliente']);
+//         });
+//       },
+//       error: (err) => this.handleLoginError(err, 'cliente')
+//     });
+//   }
+// }
+
+// // 4. (Opcional) Crie um método para não repetir o código de erro
+// private handleLoginError(err: any, userType: string): void {
+//   console.error(`Erro no login de ${userType}:`, err);
+//   Swal.fire({
+//     icon: 'error',
+//     title: 'Falha no Login',
+//     text: 'E-mail ou senha incorretos. Verifique seus dados e tente novamente.',
+//     confirmButtonColor: '#c62828'
+//   });
+// }
+
+// togglePasswordVisibility(): void {
+//   this.hidePassword = !this.hidePassword;
+// }
+// }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -85,37 +155,37 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const credenciais: LoginRequest = this.loginForm.value;
-    const email = credenciais.email;
-    let rotaDestino = '/menu-cliente';
-    let userType;
+  const credenciais: LoginRequest = this.loginForm.value;
+  const email = credenciais.email;
+  let rotaDestino = '/menu-cliente';
+  let userType;
 
-    // 3. DECIDA QUAL API CHAMAR ANTES DE FAZER A REQUISIÇÃO
-    if (email.endsWith('@bankflow.com')) {
-      rotaDestino = '/menu-funcionario';
-      userType = 'funcionário';
-    } else {
-      // É um cliente, chame o ClienteService
-      rotaDestino = '/menu-cliente';
-      userType = 'cliente';
-    }
-    this.loginService.login(credenciais).subscribe({
-      next: (response) => {
-        console.log('Resposta do login de '+ userType+':', response);
-        localStorage.setItem('jwtToken', response.accessToken);
-        localStorage.setItem('isLoggedIn', 'true');
-        Swal.fire({
-          icon: 'success',
-          title: 'Login Realizado!',
-          timer: 1500,
-          showConfirmButton: false
-        }).then(() => {
-          this.router.navigate([rotaDestino]);
-        });
-      },
-      error: (err: any) => this.handleLoginError(err, userType)
-    });
+  // 3. DECIDA QUAL API CHAMAR ANTES DE FAZER A REQUISIÇÃO
+  if (email.endsWith('@bankflow.com')) {
+    rotaDestino = '/menu-funcionario';
+    userType = 'funcionário';
+  } else {
+    // É um cliente, chame o ClienteService
+    rotaDestino = '/menu-cliente';
+    userType = 'cliente';
   }
+  this.loginService.login(credenciais).subscribe({
+    next: (response) => {
+      console.log('Resposta do login de '+ userType+':', response);
+      localStorage.setItem('jwtToken', response.accessToken);
+      localStorage.setItem('isLoggedIn', 'true');
+      Swal.fire({
+        icon: 'success',
+        title: 'Login Realizado!',
+        timer: 1500,
+        showConfirmButton: false
+      }).then(() => {
+        this.router.navigate([rotaDestino]);
+      });
+    },
+    error: (err: any) => this.handleLoginError(err, userType)
+  });
+}
 
   // 4. (Opcional) Crie um método para não repetir o código de erro
   private handleLoginError(err: any, userType: string): void {
@@ -128,8 +198,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  togglePasswordVisibility(): void {
-    this.hidePassword = !this.hidePassword;
-  }
+togglePasswordVisibility(): void {
+  this.hidePassword = !this.hidePassword;
+}
 
 }
