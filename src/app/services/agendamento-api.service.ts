@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
+import { APP_CONFIG } from '../app.config'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AgendamentoApiService {
-  private apiUrl = 'http://localhost:9000/api/agendamentos'; 
+  private apiUrl = APP_CONFIG.apiUrl+'/agendamentos'; 
 
   constructor(private http: HttpClient) { }
 
