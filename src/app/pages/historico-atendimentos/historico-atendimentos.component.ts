@@ -4,6 +4,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { Triagem, TriagemApiService } from '../../services/triagem-api.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // <-- 1. IMPORTAR FormsModule
+import { TriagemCompleta } from '../../services/triagem.interface';
 
 @Component({
   selector: 'app-historico-atendimentos',
@@ -14,8 +15,8 @@ import { FormsModule } from '@angular/forms'; // <-- 1. IMPORTAR FormsModule
 })
 export class HistoricoAtendimentosComponent implements OnInit, OnDestroy {
 
-  private historicoCompleto: Triagem[] = [];
-  public historicoExibido: Triagem[] = [];
+  private historicoCompleto: TriagemCompleta[] = [];
+  public historicoExibido: TriagemCompleta[] = [];
   public termoBusca: string = '';
   public isLoading = true;
   public colunaOrdenada: string = 'horarioSolicitacao';
@@ -29,10 +30,11 @@ export class HistoricoAtendimentosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     document.body.classList.add('menu-funcionario-bg');
 
-    this.triagemService.getAll().subscribe({
-      next: (todasAsTriagens) => {
-        this.historicoCompleto = todasAsTriagens.filter(t => t.status === 'FINALIZADO');
+    this.triagemService.getHistorico().subscribe({
+      next: (triagensFinalizadas) => {
+        this.historicoCompleto = triagensFinalizadas;
         this.historicoExibido = [...this.historicoCompleto];
+        this.ordenarDados();
         this.isLoading = false;
       },
       error: (err) => {
