@@ -1,0 +1,15 @@
+body {
+    padding-top: 100px;
+}
+
+.form-label, .titulo {
+    color: #f7f7f7;
+}
+
+table thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+table thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
