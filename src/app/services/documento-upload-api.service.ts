@@ -4,6 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, delay } from 'rxjs/operators'; 
 import { Agendamento, DocumentoPendente, TipoDocumentoCatalogo  } from '../models/agendamento.model'; 
 import {  Triagem } from '../models/triagem.model';
+import { APP_CONFIG } from '../app.config';
 
 export interface UploadStatus {
   status: 'progress' | 'success' | 'idle';
@@ -13,11 +14,16 @@ export interface UploadStatus {
 @Injectable({
   providedIn: 'root'
 })
+// export class DocumentoUploadApiService {
+//   private documentoServiceBaseUrl = 'http://localhost:9000/api/documentacao'; 
+//   private agendamentoServiceBaseUrl = 'http://localhost:9000/api/agendamentos'; 
+//   private triagemServiceBaseUrl = 'http://localhost:9000/api/triagens'; 
+//   private catalogoServiceBaseUrl = 'http://localhost:9000/api/documentos'; 
 export class DocumentoUploadApiService {
-  private documentoServiceBaseUrl = 'http://localhost:9000/api/documentacao'; 
-  private agendamentoServiceBaseUrl = 'http://localhost:9000/api/agendamentos'; 
-  private triagemServiceBaseUrl = 'http://localhost:9000/api/triagens'; 
-  private catalogoServiceBaseUrl = 'http://localhost:9000/api/documentos'; 
+  private documentoServiceBaseUrl = APP_CONFIG.apiUrl+'/documentacao'; 
+  private agendamentoServiceBaseUrl = APP_CONFIG.apiUrl+'/agendamentos'; 
+  private triagemServiceBaseUrl = APP_CONFIG.apiUrl+'/triagens'; 
+  private catalogoServiceBaseUrl = APP_CONFIG.apiUrl+'/documentos'; 
 
 
   constructor(private http: HttpClient) { }

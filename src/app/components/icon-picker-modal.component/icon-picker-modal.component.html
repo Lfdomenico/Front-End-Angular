@@ -1,0 +1,25 @@
+<div class="icon-picker-container">
+    <div class="selected-icon-display">
+        <label for="selectedIconInput">Ícone Selecionado:</label>
+        <i *ngIf="selectedIcon" [class]="selectedIcon" class="fa-lg"></i> 
+        <input type="text" id="selectedIconInput" [value]="selectedIcon" readonly placeholder="Nenhum ícone selecionado">
+        <button (click)="openModal()">Selecionar Ícone</button>
+    </div>
+
+    <div *ngIf="isModalOpen" class="modal-overlay" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <span class="close-button" (click)="closeModal()">&times;</span>
+            <input type="text" [(ngModel)]="searchTerm" (input)="filterIcons()" placeholder="Buscar ícones..." id="iconSearch">
+            
+            <div class="icon-grid">
+                <div *ngFor="let icon of filteredIcons" class="icon-item" (click)="selectIcon(icon)">
+                    <i [class]="icon" class="fa-2x"></i>
+                    <span>{{ getIconName(icon) }}</span>
+                </div>
+                <div *ngIf="filteredIcons.length === 0" class="no-results">
+                    Nenhum ícone encontrado para "{{ searchTerm }}"
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,7 +16,8 @@ import { TriagensFuncionarioComponent } from './pages/triagens-funcionario/triag
 import { ClienteAtualComponent } from './pages/cliente-atual.component/cliente-atual.component';
 import { HistoricoAtendimentosComponent } from './pages/historico-atendimentos/historico-atendimentos.component';
 import { VerificarDocumentosComponent } from './pages/verificar-documentos/verificar-documentos.component';
- 
+import { CadastroSetorComponent } from './pages/cadastro-setor.component/cadastro-setor.component'; 
+
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: LandingComponent },
@@ -106,6 +107,11 @@ export const routes: Routes = [
 {
   path: 'menu-funcionario/verificar-documentos',
   component: VerificarDocumentosComponent
+},
+{
+  path: 'menu-funcionario/cadastro-setor',
+  component: CadastroSetorComponent
+  //canActivate: [AuthGuard]
 }
 
 ];

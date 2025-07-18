@@ -1,0 +1,87 @@
+<body class="menu-funcionario-bg">
+    <app-navbar></app-navbar>
+    <div class="cadastro-setor-container">
+        <h1>Registo de Setor</h1>
+    
+        <form #setorForm="ngForm" (ngSubmit)="salvarSetor()">
+    
+            <div class="form-group">
+                <label for="nomeSetor">Nome do Setor:</label>
+                <input type="text" id="nomeSetor" [(ngModel)]="nomeSetor" name="nomeSetor" placeholder="Ex: Financeiro, RH, TI" required>
+            </div>
+    
+            <div class="form-group">
+                <label for="descricaoSetor">Descrição do Setor:</label>
+                <textarea id="descricaoSetor" [(ngModel)]="descricaoSetor" name="descricaoSetor" rows="3"
+                    placeholder="Breve descrição do setor"></textarea>
+            </div>
+    
+            <!-- Campo: isAtivo (Checkbox) -->
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="isAtivo" [(ngModel)]="isAtivo" name="isAtivo">
+                <label for="isAtivo">Setor Ativo</label>
+            </div>
+    
+            <!-- Campo: Prioridade (Input Radio de 1 a 3) -->
+            <div class="form-group">
+                <label>Prioridade:</label>
+                <div class="radio-group">
+                    <input type="radio" id="prioridade1" name="prioridade" [(ngModel)]="prioridade" [value]="1" required>
+                    <label for="prioridade1">1 (Alta)</label>
+    
+                    <input type="radio" id="prioridade2" name="prioridade" [(ngModel)]="prioridade" [value]="2" required>
+                    <label for="prioridade2">2 (Média)</label>
+    
+                    <input type="radio" id="prioridade3" name="prioridade" [(ngModel)]="prioridade" [value]="3" required>
+                    <label for="prioridade3">3 (Baixa)</label>
+                </div>
+            </div>
+    
+            <!-- Campo: Tempo Médio em Minutos (Number Input) -->
+            <div class="form-group">
+                <label for="tempoMedioMinutos">Tempo Médio de Atendimento (minutos):</label>
+                <input type="number" id="tempoMedioMinutos" [(ngModel)]="tempoMedioMinutos" name="tempoMedioMinutos" placeholder="Ex: 30" min="0">
+            </div>
+    
+            <!-- NOVO CAMPO: Documentos Obrigatórios (Multi-Select Personalizado) -->
+            <div class="form-group">
+                <label>Documentos Obrigatórios:</label>
+                <div class="multi-select-container" (click)="toggleDocumentDropdown()">
+                    <div class="selected-items-display">
+                        <span *ngIf="selectedDocumentIds.length === 0" class="placeholder">Selecione documentos...</span>
+                        <span *ngFor="let docId of selectedDocumentIds" class="selected-item-tag">
+                            {{ getDocumentNameById(docId) }}
+                            <span class="remove-item" (click)="$event.stopPropagation(); removeDocument(docId)">&times;</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down dropdown-arrow" [class.rotated]="isDocumentDropdownOpen"></i>
+                </div>
+    
+                <div *ngIf="isDocumentDropdownOpen" class="dropdown-list">
+                    <div *ngFor="let doc of availableDocuments" class="dropdown-item" (click)="selectDocument(doc)">
+                        <input type="checkbox" [checked]="isDocumentSelected(doc.id)" (change)="$event.stopPropagation(); selectDocument(doc)">
+                        <span>{{ doc.nome }}</span>
+                    </div>
+                    <div *ngIf="availableDocuments.length === 0" class="no-documents">Nenhum documento disponível.</div>
+                </div>
+            </div>
+    
+            <!-- Campo existente: Ícone do Setor -->
+            <div class="form-group icon-selection-group">
+                <label>Ícone do Setor:</label>
+                <app-icon-picker-modal [selectedIcon]="selectedSectorIcon" (iconSelected)="onIconSelected($event)">
+                </app-icon-picker-modal>
+            </div>
+    
+            <!-- Prévia do ícone selecionado -->
+            <div *ngIf="selectedSectorIcon" class="selected-icon-preview">
+                <h3>Prévia do Ícone Selecionado:</h3>
+                <i [class]="selectedSectorIcon" class="fa-3x"></i>
+                <p>Classe: <code>{{ selectedSectorIcon }}</code></p>
+            </div>
+    
+            <button type="submit" class="save-button">Guardar Setor</button>
+    
+        </form>
+    </div>
+</body>
