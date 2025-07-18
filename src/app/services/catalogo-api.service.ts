@@ -75,7 +75,7 @@ export interface ServicoBackend {
   descricao: string;
   tempoMedioMinutos: number;
   documentosObrigatoriosIds: string[];
-  icon: string; 
+  icone: string; 
 }
 export interface TriagemResponse {
   disponibilidade: Date;

@@ -5,7 +5,7 @@
     <div class="menu-grid">
       <div *ngFor="let setor of setores" class="card-menu" (click)="confirmarSelecao(setor)">
         <div class="card-icon">
-          <i [ngClass]="setor.iconClass"></i>
+          <i [ngClass]="setor.icone"></i>
         </div>
         <div class="card-body">
           <h3 class="card-title">{{ setor.nome }}</h3>

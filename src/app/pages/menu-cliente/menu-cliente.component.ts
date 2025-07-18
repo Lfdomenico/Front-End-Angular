@@ -8,7 +8,6 @@ import { ConfirmationModalComponent } from '../../components/confirmationmodal/c
 import { TriagemApiService } from '../../services/triagem-api.service';
 
 interface ServicoDisplay extends ServicoBackend {
-  iconClass: string;
   rota: string;
 }
 
@@ -49,32 +48,13 @@ export class MenuClienteComponent implements OnInit {
   }
 
   private mapServicoToDisplay(servico: ServicoBackend): ServicoDisplay {
-    let iconClass = 'fa fa-question-circle';
     let rota = '/espera';
 
-    if (servico.nome.includes('Conta')) {
-      iconClass = 'fa fa-university';
+    if (servico.tempoMedioMinutos >= 15) {
       rota = '/agendamento';
-    } else if (servico.nome.includes('Cartão')) {
-      iconClass = 'fa fa-credit-card';
-      rota = '/espera';
-    } else if (servico.nome.includes('Fraude')) {
-      iconClass = 'fa fa-search';
-      rota = '/agendamento';
-    } else if (servico.nome.includes('Dívidas')) {
-      iconClass = 'fa fa-money-bill-alt';
-      rota = '/agendamento';
-    } else if (servico.nome.includes('App') || servico.nome.includes('Banking')) {
-      iconClass = 'fa fa-headset';
-      rota = '/espera';
-    } else if (servico.nome.includes('Informações')) {
-      iconClass = 'fa fa-info-circle';
-      rota = '/espera';
     }
-
     return {
       ...servico,
-      iconClass: iconClass,
       rota: rota
     };
   }
