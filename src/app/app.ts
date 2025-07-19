@@ -5,10 +5,14 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  standalone: true, 
-  imports: [RouterOutlet, CommonModule, FormsModule],
-  templateUrl: './app.component.html', 
-  styleUrls: ['./app.component.scss'] 
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    FormsModule
+  ],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'Projeto----a';

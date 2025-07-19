@@ -80,16 +80,16 @@ export const routes: Routes = [
     component: TriagensFuncionarioComponent,
     // canActivate: [AuthGuard]
   },
-  
+
   //   path: 'menu-funcionario/cliente-atual/:id', // Esta é a rota fixa que você mencionou
   //   component: ClienteAtualComponent
   //   // Opcional: canActivate: [AuthGuard]
   // }
-{
-     path: 'menu-funcionario/cliente-atual/:id', // Esta é a rota fixa que você mencionou
-     component: ClienteAtualComponent
-      // canActivate: [AuthGuard]
-},
+  {
+    path: 'menu-funcionario/cliente-atual/:id', // Esta é a rota fixa que você mencionou
+    component: ClienteAtualComponent
+    // canActivate: [AuthGuard]
+  },
 
 {
   path: 'menu-funcionario/historico-atendimentos',

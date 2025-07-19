@@ -75,7 +75,7 @@ export interface ServicoBackend {
   descricao: string;
   tempoMedioMinutos: number;
   documentosObrigatoriosIds: string[];
-  icon: string; 
+  icone: string; 
 }
 export interface TriagemResponse {
   disponibilidade: Date;
@@ -90,12 +90,18 @@ export interface SetorRequest {
   icone: string; // Alterado de selectedSectorIcon para icone
 }
 
+export interface DocumentoResponse {
+  id: string;
+  nome: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogoApiService {
   private apiUrl = APP_CONFIG.apiUrl+'/setor'; 
   private triagemUrl = APP_CONFIG.apiUrl+'/triagens'; 
+  private docUrl = APP_CONFIG.apiUrl+'/documentos';
 
   constructor(private http: HttpClient) { }
 
@@ -109,8 +115,9 @@ export class CatalogoApiService {
     return this.http.post<SetorRequest>(this.apiUrl, dto)
   }
   getServicoById(id: string): Observable<ServicoBackend> {
-    // Este endpoint precisa existir no CatalogoService do backend
     return this.http.get<ServicoBackend>(`${this.apiUrl}/${id}`);
  }
- 
+  getDocumentos(): Observable<DocumentoResponse[]> {
+    return this.http.get<DocumentoResponse[]>(this.docUrl);
+  }
 }

@@ -16,7 +16,7 @@ import { LoginService } from '../../services/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm!: FormGroup; 
+  loginForm!: FormGroup;
   hidePassword = true;
 
   // constructor(
@@ -39,47 +39,47 @@ export class LoginComponent implements OnInit {
     });
   }
 
-//   onSubmit(): void {
-//     if (this.loginForm.invalid) {
-//       this.loginForm.markAllAsTouched(); 
-//       return;
-//     }
+  //   onSubmit(): void {
+  //     if (this.loginForm.invalid) {
+  //       this.loginForm.markAllAsTouched(); 
+  //       return;
+  //     }
 
-//     const credenciais: LoginRequest = this.loginForm.value;
+  //     const credenciais: LoginRequest = this.loginForm.value;
 
-//     this.clienteService.login(credenciais).subscribe({
-// next: (response) => {
-//   console.log('Resposta do servidor:', response);
-  
-//   Swal.fire({
-//     icon: 'success',
-//     title: 'Login Realizado com Sucesso!',
-//     text: 'Redirecionando para o painel...',
-//     timer: 1500,
-//     showConfirmButton: false
-//   }).then(() => {
-//     // redirecionamento do funcionário
-//     const email = this.loginForm.get('email')?.value || '';
-//     if (email.endsWith('@bankflow')) {
-//       // Se for, redireciona para o menu do funcionário
-//       this.router.navigate(['/menu-funcionario']);
-//     }else{
-//       this.router.navigate(['/menu-cliente']);
-//     }
-    
-//   });
-// },
-//       error: (err) => {
-//         console.error('Erro no login:', err);
-//         Swal.fire({
-//           icon: 'error',
-//           title: 'Falha no Login',
-//           text: 'E-mail ou senha incorretos. Verifique seus dados e tente novamente.',
-//           confirmButtonColor: '#c62828'
-//         });
-//       }
-//     });
-//   }
+  //     this.clienteService.login(credenciais).subscribe({
+  // next: (response) => {
+  //   console.log('Resposta do servidor:', response);
+
+  //   Swal.fire({
+  //     icon: 'success',
+  //     title: 'Login Realizado com Sucesso!',
+  //     text: 'Redirecionando para o painel...',
+  //     timer: 1500,
+  //     showConfirmButton: false
+  //   }).then(() => {
+  //     // redirecionamento do funcionário
+  //     const email = this.loginForm.get('email')?.value || '';
+  //     if (email.endsWith('@bankflow')) {
+  //       // Se for, redireciona para o menu do funcionário
+  //       this.router.navigate(['/menu-funcionario']);
+  //     }else{
+  //       this.router.navigate(['/menu-cliente']);
+  //     }
+
+  //   });
+  // },
+  //       error: (err) => {
+  //         console.error('Erro no login:', err);
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: 'Falha no Login',
+  //           text: 'E-mail ou senha incorretos. Verifique seus dados e tente novamente.',
+  //           confirmButtonColor: '#c62828'
+  //         });
+  //       }
+  //     });
+  //   }
 
 //   togglePasswordVisibility(): void {
 //     this.hidePassword = !this.hidePassword;
@@ -149,11 +149,11 @@ export class LoginComponent implements OnInit {
 // }
 // }
 
-onSubmit(): void {
-  if (this.loginForm.invalid) {
-    this.loginForm.markAllAsTouched();
-    return;
-  }
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
 
   const credenciais: LoginRequest = this.loginForm.value;
   const email = credenciais.email;
@@ -187,16 +187,16 @@ onSubmit(): void {
   });
 }
 
-// 4. (Opcional) Crie um método para não repetir o código de erro
-private handleLoginError(err: any, userType: string): void {
-  console.error(`Erro no login de ${userType}:`, err);
-  Swal.fire({
-    icon: 'error',
-    title: 'Falha no Login',
-    text: 'E-mail ou senha incorretos. Verifique seus dados e tente novamente.',
-    confirmButtonColor: '#c62828'
-  });
-}
+  // 4. (Opcional) Crie um método para não repetir o código de erro
+  private handleLoginError(err: any, userType: string): void {
+    console.error(`Erro no login de ${userType}:`, err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Falha no Login',
+      text: 'E-mail ou senha incorretos. Verifique seus dados e tente novamente.',
+      confirmButtonColor: '#c62828'
+    });
+  }
 
 togglePasswordVisibility(): void {
   this.hidePassword = !this.hidePassword;

@@ -39,7 +39,7 @@ export class TarefaService {
 
     {
       nome: 'Adicionar um novo setor',
-      descricao: 'A.',
+      descricao: 'Permite adicionar um novo setor para a correta alocação de funcionários e gerenciamento de filas de atendimento.',
        rota: '/menu-funcionario/cadastro-setor' // trocar essa rota para a de triagens.
     },
 

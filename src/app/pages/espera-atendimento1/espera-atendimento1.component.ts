@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { TriagemApiService, Triagem } from '../../services/triagem-api.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
   selector: 'app-espera-atendimento',
   standalone: true,
-  imports: [CommonModule, NavbarComponent],
+  imports: [CommonModule, NavbarComponent, RouterLink],
   templateUrl: './espera-atendimento1.component.html',
   styleUrls: ['./espera-atendimento1.component.scss']
 })
@@ -86,6 +87,52 @@ export class EsperaAtendimentoComponent implements OnInit, OnDestroy {
     const displaySegundos = segundos < 10 ? '0' + segundos : segundos.toString();
 
     this.displayTempo = `${displayMinutos}:${displaySegundos}`;
+  }
+
+  confirmarCancelamento(): void {
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: "Sua solicitação de atendimento será removida e você sairá da fila.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sim, cancelar!',
+      cancelButtonText: 'Não'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Se o usuário confirmou, chama o método que realmente cancela
+        this.executarCancelamento();
+      }
+    });
+  }
+
+  private executarCancelamento(): void {
+    const triagemId = this.route.snapshot.paramMap.get('id');
+
+    if (triagemId) {
+      this.triagemService.cancelarTriagem(triagemId).subscribe({
+        next: () => {
+          Swal.fire(
+            'Cancelado!',
+            'Seu atendimento foi cancelado com sucesso.',
+            'success'
+          );
+          // Redireciona para o menu principal após o sucesso
+          this.router.navigate(['/menu-cliente']);
+        },
+        error: (err) => {
+          console.error('Erro ao cancelar a triagem', err);
+          Swal.fire(
+            'Erro!',
+            'Não foi possível cancelar o atendimento. Tente novamente.',
+            'error'
+          );
+        }
+      });
+    } else {
+      console.error('Não foi possível encontrar o ID da triagem para cancelar.');
+    }
   }
 
   ngOnDestroy(): void {

@@ -144,4 +144,10 @@ retornar(): void{
   this.router.navigate(['/menu-funcionario']);
 }
 
+verDetalhesCliente(triagem: Triagem): void{
+  console.log(`Navegando para detalhes da triagem ID: ${triagem.id}`);
+  this.router.navigate(['/menu-funcionario/cliente-atual', triagem.id]);
+
+}
+
 }
