@@ -38,8 +38,8 @@ export class TarefaService {
     },
 
     {
-      nome: 'Adicionar um novo setor',
-      descricao: 'A.',
+      nome: 'Gerenciar setores',
+      descricao: 'Adicione novos setores ou exclua do sistema.',
        rota: '/menu-funcionario/cadastro-setor' // trocar essa rota para a de triagens.
     },
 

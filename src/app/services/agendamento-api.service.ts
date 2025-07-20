@@ -49,7 +49,7 @@ export interface AgendamentoCompleto {
   nomeServicoSnapshot: string;
   dataHora: string; // Formato ISO 8601 (ex: "2025-07-09T10:00:00")
   atendidoEm: string | null; // Pode ser nulo
-  observacoes: string | null; // Pode ser nulo
+  observacoes: string; // Pode ser nulo
   criadoEm: string;
   status: string; // Ou um enum se você tiver um para status no frontend
   documentosPendentes: DocumentoPendente[]; // Adapte esta interface também se necessário
@@ -67,8 +67,9 @@ export interface DocumentoPendente {
 export interface AgendamentoRequest {
   usuarioId: string;
   servicoId: string;
-  atendenteId: string | null; 
-  dataHora: string; 
-  observacoes?: string | null;
+  atendenteId: string | null;
+  dataHora: string;
+  observacoes: string;
+  status: string;
+  atendidoEm: string | null;
 }
-

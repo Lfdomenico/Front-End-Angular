@@ -12,22 +12,24 @@ import { NavbarComponent } from "../../components/navbar/navbar.component";
     CommonModule,
     FormsModule,
     NavbarComponent
-],
+  ],
   templateUrl: './agendamento-editar.component.html',
   styleUrls: ['./agendamento-editar.component.scss']
 })
 export class AgendamentoEditarComponent implements OnInit {
-  agendamentoId: string | null = null; 
-  agendamento: AgendamentoCompleto | null = null; 
-  agendamentoEditavel: AgendamentoRequest = { 
+  agendamentoId: string | null = null;
+  agendamento: AgendamentoCompleto | null = null;
+  agendamentoEditavel: AgendamentoRequest = {
     usuarioId: '',
     servicoId: '',
     atendenteId: null,
     dataHora: '',
-    observacoes: ''
+    observacoes: '',
+    status: 'PENDENTE',
+    atendidoEm: null
   };
-  
-  minDate: string; 
+
+  minDate: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,7 +47,7 @@ export class AgendamentoEditarComponent implements OnInit {
         this.carregarAgendamento(this.agendamentoId);
       } else {
         alert('ID do agendamento não fornecido na URL.');
-        this.router.navigate(['/agendamentos-funcionario']); 
+        this.router.navigate(['/agendamentos-funcionario']);
       }
     });
   }
@@ -54,13 +56,14 @@ export class AgendamentoEditarComponent implements OnInit {
     this.agendamentoApiService.getAgendamentoPorId(id).subscribe({
       next: (data) => {
         this.agendamento = data;
-        
         this.agendamentoEditavel = {
           usuarioId: data.usuarioId,
           servicoId: data.servicoId,
           atendenteId: data.atendenteId,
-          dataHora: data.dataHora ? data.dataHora.substring(0, 16) : '', 
-          observacoes: data.observacoes 
+          dataHora: data.dataHora ? data.dataHora.substring(0, 16) : '',
+          observacoes: data.observacoes,
+          status: data.status,
+          atendidoEm: data.atendidoEm
         };
         console.log('Agendamento carregado para edição:', this.agendamento);
         console.log('Dados do formulário (agendamentoEditavel):', this.agendamentoEditavel);
@@ -84,18 +87,24 @@ export class AgendamentoEditarComponent implements OnInit {
       return;
     }
 
+    if (this.agendamentoEditavel.status === 'ATENDIDO') {
+      this.agendamentoEditavel.atendidoEm = new Date().toISOString();
+    } else {
+      this.agendamentoEditavel.atendidoEm = null;
+    }
+
     this.agendamentoApiService.atualizarAgendamento(this.agendamentoId, this.agendamentoEditavel).subscribe({
       next: (response) => {
         alert('Agendamento atualizado com sucesso!');
         console.log('Agendamento atualizado:', response);
-        this.router.navigate(['/menu-funcionario/agendamentos']); 
+        this.router.navigate(['/menu-funcionario/agendamentos']);
       },
       error: (err) => {
         console.error('Erro ao salvar alterações do agendamento:', err);
         let errorMessage = 'Erro ao salvar alterações. Tente novamente.';
         if (err.error && err.error.message) {
           errorMessage = `Erro: ${err.error.message}`;
-        } else if (typeof err.error === 'string') { 
+        } else if (typeof err.error === 'string') {
           errorMessage = `Erro: ${err.error}`;
         }
         alert(errorMessage);
@@ -104,7 +113,7 @@ export class AgendamentoEditarComponent implements OnInit {
   }
 
   retornar(): void {
-    this.router.navigate(['/menu-funcionario/agendamentos']); 
+    this.router.navigate(['/menu-funcionario/agendamentos']);
   }
 
   getFormattedDate(dateTimeString: string): string {

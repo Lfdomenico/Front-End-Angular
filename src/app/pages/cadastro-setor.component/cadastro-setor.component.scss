@@ -1,21 +1,14 @@
 body {
-    height: 100%;
-    padding: 100px 20px;
+    padding: 100px 20px 50px;
 }
 
 .card {
     background-color: rgba(25, 35, 50, 0.6);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
-
-h1{
-    color: #F8F9FA;
 }
 
 .form-control,
 .dropdown-menu {
-
     background-color: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -25,24 +18,21 @@ label,
 input,
 textarea,
 i,
-a {
+a,
+h1 {
     color: #f7f7f7;
 
 }
 
-.form-check input, .form-check .badge{
+.form-check input,
+.form-check .badge,
+.dropdown-menu a {
     cursor: pointer;
 }
 
-.dropdown-menu {
-    a {
-        cursor: pointer;
-    }
-
-    a:hover {
-        color: #f7f7f7;
-        background-color: rgba(255, 255, 255, 0.11);
-    }
+.dropdown-menu a:hover, span.dropdown-item:hover {
+    color: #f7f7f7;
+    background-color: rgba(255, 255, 255, 0.11);
 }
 
 ::placeholder,
