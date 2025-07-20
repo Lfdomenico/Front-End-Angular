@@ -203,6 +203,10 @@ export class AgendamentoComponent implements OnInit {
     );
   }
 
+  voltar(): void{
+    this.router.navigate(['/menu-cliente']); 
+  }
+
   getFormattedDate(slot: string): string {
     return new Date(slot).toLocaleDateString('pt-BR');
   }

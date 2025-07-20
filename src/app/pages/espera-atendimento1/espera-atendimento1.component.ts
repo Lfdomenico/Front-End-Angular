@@ -4,7 +4,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { TriagemApiService, Triagem } from '../../services/triagem-api.service';
 import Swal from 'sweetalert2';
-
+import { TriagemCompleta } from '../../services/triagem.interface'; 
+import { StatusTriagemFrontend } from '../../services/triagem.interface';
 
 @Component({
   selector: 'app-espera-atendimento',
@@ -21,6 +22,7 @@ export class EsperaAtendimentoComponent implements OnInit, OnDestroy {
   public isLoading: boolean = true; // MUDANÇA: Adicionamos o estado de loading
   private timerInterval: any;
   private horarioAlvo!: Date;
+  public statusTriagem: 'AGUARDANDO' | 'EM_ATENDIMENTO' | 'FINALIZADO' | 'ERRO' = 'AGUARDANDO';
 
   constructor(private route: ActivatedRoute,  private router: Router,
     private triagemService: TriagemApiService) {}
@@ -37,24 +39,83 @@ export class EsperaAtendimentoComponent implements OnInit, OnDestroy {
     }
   }
   
+  // private carregarDadosDaTriagem(id: string): void {
+  //   this.triagemService.getById(id).subscribe({
+  //     next: (triagem) => {
+  //       this.setorSelecionado = triagem.nomeServicoSnapshot;
+        
+  //       if (triagem.horarioEstimadoAtendimento) {
+  //         // 5. Definimos nosso horário-alvo
+  //         this.horarioAlvo = new Date(triagem.horarioEstimadoAtendimento);
+  //         this.startTimer(); // Inicia o contador apenas após receber os dados
+  //       } else {
+  //         this.displayTempo = "Aguarde"; // Fallback caso não haja horário
+  //       }
+  //       this.isLoading = false;
+  //     },
+  //     error: (err) => {
+  //       console.error("Erro ao buscar dados da triagem", err);
+  //       this.displayTempo = "Erro";
+  //     }
+  //   });
+  // }
+
   private carregarDadosDaTriagem(id: string): void {
     this.triagemService.getById(id).subscribe({
-      next: (triagem) => {
+      next: (triagem: TriagemCompleta) => {
         this.setorSelecionado = triagem.nomeServicoSnapshot;
         
-        if (triagem.horarioEstimadoAtendimento) {
-          // 5. Definimos nosso horário-alvo
-          this.horarioAlvo = new Date(triagem.horarioEstimadoAtendimento);
-          this.startTimer(); // Inicia o contador apenas após receber os dados
-        } else {
-          this.displayTempo = "Aguarde"; // Fallback caso não haja horário
+        switch (triagem.status) {
+
+          case StatusTriagemFrontend.AGUARDANDO:
+            this.statusTriagem = 'AGUARDANDO';
+            if (triagem.horarioEstimadoAtendimento) {
+              this.horarioAlvo = new Date(triagem.horarioEstimadoAtendimento);
+              this.startTimer();
+            } else {
+              this.displayTempo = "Aguarde";
+            }
+            break;
+
+          case StatusTriagemFrontend.EM_ATENDIMENTO:
+            this.statusTriagem = 'EM_ATENDIMENTO';
+            this.displayTempo = "Sua vez!";
+            if (this.timerInterval) {
+              clearInterval(this.timerInterval);
+            }
+            break;
+
+          case StatusTriagemFrontend.FINALIZADO:
+            this.statusTriagem = 'FINALIZADO';
+            this.mostrarMensagemDeConclusao();
+            break;
+            
+          default:
+            // Para outros status como CANCELADO, etc., apenas redireciona
+            this.router.navigate(['/menu-cliente']);
+            break;
         }
+
         this.isLoading = false;
       },
       error: (err) => {
         console.error("Erro ao buscar dados da triagem", err);
+        this.statusTriagem = 'ERRO';
         this.displayTempo = "Erro";
       }
+    });
+  }
+
+  private mostrarMensagemDeConclusao(): void {
+    Swal.fire({
+      icon: 'success',
+      title: 'Atendimento Concluído!',
+      text: 'Obrigado por utilizar o sistema BankFlow!',
+      timer: 3000,
+      showConfirmButton: false,
+      allowOutsideClick: false
+    }).then(() => {
+      this.router.navigate(['/menu-cliente']);
     });
   }
 

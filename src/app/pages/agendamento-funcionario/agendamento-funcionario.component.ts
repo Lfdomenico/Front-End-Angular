@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AgendamentoApiService, AgendamentoCompleto } from '../../services/agendamento-api.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agendamento-funcionario',
@@ -11,12 +12,13 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
   imports: [
     CommonModule,
     FormsModule,
-    NavbarComponent
+    NavbarComponent,
+    RouterLink
   ],
   templateUrl: './agendamento-funcionario.component.html',
   styleUrls: ['./agendamento-funcionario.component.scss']
 })
-export class AgendamentoFuncionarioComponent implements OnInit {
+export class AgendamentoFuncionarioComponent implements OnInit, OnDestroy {
   selectedDate: string = '';
   agendamentosDoDia: AgendamentoCompleto[] = [];
   minDate: string;
@@ -30,11 +32,20 @@ export class AgendamentoFuncionarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    document.body.classList.add('menu-funcionario-bg'); 
+
     if (!this.selectedDate) {
       this.selectedDate = this.minDate;
       this.carregarAgendamentos();
     }
   }
+
+   ngOnDestroy(): void {
+
+    document.body.classList.remove('menu-funcionario-bg');
+
+  } 
 
   onDateChange(): void {
     this.carregarAgendamentos();
@@ -75,20 +86,68 @@ export class AgendamentoFuncionarioComponent implements OnInit {
     this.router.navigate(['/menu-funcionario/agendamentos/editar', agendamento.id]); 
   }
 
+  // cancelarAgendamento(agendamento: AgendamentoCompleto): void {
+  //   if (confirm(`Tem certeza que deseja cancelar o agendamento de ${agendamento.nomeClienteSnapshot} para ${this.getFormattedTime(agendamento.dataHora)}?`)) {
+  //     this.agendamentoApiService.deletarAgendamento(agendamento.id).subscribe({
+  //       next: () => {
+  //         alert('Agendamento cancelado com sucesso!');
+  //         console.log('Agendamento cancelado:', agendamento.id);
+  //         this.carregarAgendamentos();
+  //       },
+  //       error: (err) => {
+  //         console.error('Erro ao cancelar agendamento:', agendamento.id, err);
+  //         alert('Erro ao cancelar agendamento. Verifique o console para detalhes.');
+  //       }
+  //     });
+  //   }
+  // }
+
   cancelarAgendamento(agendamento: AgendamentoCompleto): void {
-    if (confirm(`Tem certeza que deseja cancelar o agendamento de ${agendamento.nomeClienteSnapshot} para ${this.getFormattedTime(agendamento.dataHora)}?`)) {
-      this.agendamentoApiService.deletarAgendamento(agendamento.id).subscribe({
-        next: () => {
-          alert('Agendamento cancelado com sucesso!');
-          console.log('Agendamento cancelado:', agendamento.id);
-          this.carregarAgendamentos();
-        },
-        error: (err) => {
-          console.error('Erro ao cancelar agendamento:', agendamento.id, err);
-          alert('Erro ao cancelar agendamento. Verifique o console para detalhes.');
-        }
-      });
-    }
+    // 1. SUBSTITUÍMOS O 'confirm()' PADRÃO POR UM SWAL.FIRE()
+    Swal.fire({
+      title: 'Tem certeza?',
+      // Usamos 'html' para poder usar a tag <strong>
+      html: `Deseja realmente cancelar o agendamento de <strong>${agendamento.nomeClienteSnapshot}</strong> para as <strong>${this.getFormattedTime(agendamento.dataHora)}</strong>?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, cancelar!',
+      cancelButtonText: 'Não',
+      confirmButtonColor: '#d33', // Vermelho para ação destrutiva
+      cancelButtonColor: '#6c757d'  // Cinza para ação secundária
+    }).then((result) => {
+      // A lógica de cancelamento só é executada se o usuário clicar em "Sim, cancelar!"
+      if (result.isConfirmed) {
+        
+        this.agendamentoApiService.deletarAgendamento(agendamento.id).subscribe({
+          next: () => {
+            console.log('Agendamento cancelado:', agendamento.id);
+            
+            // 2. SUBSTITUÍMOS O 'alert()' DE SUCESSO
+            Swal.fire({
+              icon: 'success',
+              title: 'Cancelado!',
+              text: 'O agendamento foi cancelado com sucesso.',
+              timer: 2000,
+              showConfirmButton: false
+            });
+  
+            // Recarrega a lista de agendamentos para refletir a remoção
+            this.carregarAgendamentos(); 
+          },
+          error: (err) => {
+            console.error('Erro ao cancelar agendamento:', agendamento.id, err);
+            
+            // 3. SUBSTITUÍMOS O 'alert()' DE ERRO
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro!',
+              text: 'Não foi possível cancelar o agendamento. Tente novamente.',
+              confirmButtonColor: '#c62828'
+            });
+          }
+        });
+      }
+    });
   }
 
   getFormattedDate(dateTimeString: string): string {

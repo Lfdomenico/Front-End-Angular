@@ -5,6 +5,8 @@ import { tap } from 'rxjs/operators';
 import { APP_CONFIG } from '../app.config';
 
 export interface LoginResponse{
+  id: string;
+  role: string;
   nome: string;
   email: string;
   accessToken: string;
@@ -25,34 +27,59 @@ export class LoginService {
   
   constructor(private http: HttpClient) { }
 
+  // login(credenciais: LoginRequest): Observable<LoginResponse> {
+  //   return this.http.post<LoginResponse>(`${this.authUrl}/login`, credenciais)
+  //     .pipe(
+  //       tap(response => {
+  //         localStorage.setItem('isLoggedIn', 'true');
+  //         localStorage.setItem('userName', response.nome);
+  //         localStorage.setItem('userEmail', response.email);
+  //         localStorage.setItem('jwtToken', response.accessToken);
+  //       })
+  //     );
+  // }
+
   login(credenciais: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.authUrl}/login`, credenciais)
       .pipe(
         tap(response => {
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('userName', response.nome);
-          localStorage.setItem('userEmail', response.email);
-          localStorage.setItem('jwtToken', response.accessToken);
+          // 👇 TROCAR 'localStorage' POR 'sessionStorage' AQUI 👇
+          sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('userName', response.nome);
+          sessionStorage.setItem('userEmail', response.email);
+          sessionStorage.setItem('jwtToken', response.accessToken);
+          sessionStorage.setItem('userId', response.id);
+          sessionStorage.setItem('userRole', response.role);
         })
       );
   }
   
   getJwtToken(): string | null {
-    return localStorage.getItem('jwtToken');
+    // return localStorage.getItem('jwtToken');
+    return sessionStorage.getItem('jwtToken');
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('isLoggedIn') === 'true';
+    // return localStorage.getItem('isLoggedIn') === 'true';
+    return sessionStorage.getItem('isLoggedIn') === 'true';
   }
 
   getId(): string | null {
-    return localStorage.getItem('userId');
+    // return localStorage.getItem('userId');
+    return sessionStorage.getItem('userId');
   }
   logout(): void {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('jwtToken');
+    // localStorage.removeItem('isLoggedIn');
+    // localStorage.removeItem('userName');
+    // localStorage.removeItem('userEmail');
+    // localStorage.removeItem('jwtToken');
+
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('userName');
+    sessionStorage.removeItem('userEmail');
+    sessionStorage.removeItem('jwtToken');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('userRole');
   }
   
 }

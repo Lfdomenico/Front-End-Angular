@@ -5,6 +5,7 @@ import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { IconPickerModalComponent } from '../../components/icon-picker-modal.component/icon-picker-modal.component';
 import { CatalogoApiService, SetorRequest, DocumentoResponse } from '../../services/catalogo-api.service'; 
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cadastro-setor.component',
@@ -102,12 +103,25 @@ export class CadastroSetorComponent implements OnInit {
     this.catalogoApiService.cadastrarSetor(setorDTO).subscribe({
       next: (response) => {
         console.log('Setor cadastrado com sucesso!', response);
-        alert('Setor cadastrado com sucesso!');
-        this.resetForm();
+        // alert('Setor cadastrado com sucesso!');
+        Swal.fire({
+          icon: 'success',
+          title: 'Setor Cadastrado!',
+          text: `O setor "${response.nome}" foi criado com sucesso.`,
+          timer: 2000, // alert fecha sozinho após 2 segundos
+          showConfirmButton: false
+        }).then(() =>{
+          this.resetForm();
+        });
       },
       error: (error) => {
         console.error('Erro ao cadastrar setor:', error);
-        alert('Erro ao cadastrar setor. Verifique o console para mais detalhes.');
+        // alert('Erro ao cadastrar setor. Verifique o console para mais detalhes.');
+        Swal.fire({
+          icon: 'error',
+          text: error.error?.message || 'Não foi possível cadastrar o setor. Tente novamente.',
+          confirmButtonColor: '#d33' // Cor do botão de confirmação
+        });
       },
       complete: () => {
         console.log('Requisição de cadastro de setor concluída.');
@@ -131,5 +145,10 @@ export class CadastroSetorComponent implements OnInit {
 
   retornar(): void{
     this.router.navigate(['/menu-funcionario']);
+  }
+
+  irParaGerenciarSetores(): void {
+    // Navega para a rota do componente que lista/gerencia os setores
+    this.router.navigate(['/menu-funcionario/gerenciar-setores']);
   }
 }

@@ -98,7 +98,14 @@ export class ClienteService {
         })
       );
   }
-  
-  
+
+  uploadFoto(clienteId: string, foto: File): Observable<string> {
+    const formData = new FormData();
+    // A chave 'foto' deve ser a mesma definida no @RequestParam do seu controller do backend
+    formData.append('foto', foto); 
+    
+    // Faz a chamada POST para o endpoint: /api/cliente/{id}/foto
+    return this.http.post(`${this.apiUrl}/${clienteId}/foto`, formData, { responseType: 'text' });
+  }
   
 }

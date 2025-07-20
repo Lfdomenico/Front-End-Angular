@@ -3,6 +3,13 @@
 
     <div class="container my-5"> 
         <div class="card shadow-lg p-4 p-md-5"> 
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <button type="button" class="btn btn-outline-light btn-sm" (click)="irParaGerenciarSetores()">
+                    Ver Todos os Setores
+                    <i class="bi bi-list-ul ms-1"></i>
+                </button>
+            </div>
             <h1 class="text-center mb-4">Registro de Setor</h1> 
 
             <form #setorForm="ngForm" (ngSubmit)="salvarSetor()">

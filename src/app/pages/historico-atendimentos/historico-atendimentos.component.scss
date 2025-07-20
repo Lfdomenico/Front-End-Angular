@@ -106,3 +106,10 @@ thead th.sortable {
     margin-left: 0.5rem;
     font-size: 0.9rem;
   }
+
+  .linha-clicavel {
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+  }
+}
