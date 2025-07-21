@@ -39,6 +39,17 @@ export class AgendamentoApiService {
   atualizarAgendamento(id: string, agendamentoData: AgendamentoRequest): Observable<AgendamentoCompleto> {
     return this.http.put<AgendamentoCompleto>(`${this.apiUrl}/${id}`, agendamentoData);
   }
+
+  atualizarStatusDocumentoAgendamento(
+    agendamentoId: string,
+    documentoCatalogoId: string,
+    requestDTO: DocumentoPendente
+  ): Observable<DocumentoPendente> {
+    return this.http.put<DocumentoPendente>(
+      `${this.apiUrl}/${agendamentoId}/documentos/${documentoCatalogoId}/status`,
+      requestDTO
+    );
+  }
 }
 
 export interface AgendamentoCompleto {
@@ -60,7 +71,7 @@ export interface DocumentoPendente {
   id: string;
   documentoCatalogoId: string;
   nomeDocumentoSnapshot: string;
-  status: string; 
+  status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'ENVIADO'; 
   observacao: string | null;
   urlDocumento: string | null;
 }

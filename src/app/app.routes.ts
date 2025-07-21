@@ -105,7 +105,7 @@ export const routes: Routes = [
 },
 
 {
-  path: 'menu-funcionario/verificar-documentos',
+  path: 'menu-funcionario/agendamentos/verificar-documentos/:id',
   component: VerificarDocumentosComponent
 },
 {
