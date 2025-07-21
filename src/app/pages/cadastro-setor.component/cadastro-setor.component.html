@@ -1,16 +1,23 @@
-<body class="menu-funcionario-bg d-flex justify-content-center align-items-center vh-100">
+<body class="menu-funcionario-bg d-flex justify-content-center align-items-center">
     <app-navbar></app-navbar>
 
-    <div class="container ">
-        <div class="card shadow-lg p-4 p-md-4">
-            <h1 class="text-center mb-4">Registro de Setor</h1>
+    <div class="container my-5"> 
+        <div class="card shadow-lg p-4 p-md-5"> 
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <button type="button" class="btn btn-outline-light btn-sm" (click)="irParaGerenciarSetores()">
+                    Ver Todos os Setores
+                    <i class="bi bi-list-ul ms-1"></i>
+                </button>
+            </div>
+            <h1 class="text-center mb-4">Registro de Setor</h1> 
 
             <form #setorForm="ngForm" (ngSubmit)="salvarSetor()">
 
-                <div class="mb-3">
+                <div class="mb-3"> 
                     <label for="nomeSetor" class="form-label">Nome do Setor:</label>
-                    <input type="text" id="nomeSetor" [(ngModel)]="nomeSetor" name="nomeSetor" class="form-control"
-                        placeholder="Ex: Financeiro, RH, TI" required>
+                    <input type="text" id="nomeSetor" [(ngModel)]="nomeSetor" name="nomeSetor"
+                        class="form-control" placeholder="Ex: Financeiro, RH, TI" required>
                 </div>
 
                 <div class="mb-3">
@@ -19,15 +26,15 @@
                         class="form-control" placeholder="Breve descrição do setor" required></textarea>
                 </div>
 
-                <div class="form-check mb-3">
+                <div class="form-check mb-3"> 
                     <input type="checkbox" id="isAtivo" [(ngModel)]="isAtivo" name="isAtivo" class="form-check-input">
                     <label class="form-check-label" for="isAtivo">Setor Ativo</label>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label d-block mb-2">Prioridade:</label>
+                    <label class="form-label d-block mb-2">Prioridade:</label> 
                     <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <div class="form-check form-check-inline">
+                        <div class="form-check form-check-inline"> 
                             <input type="radio" id="prioridade1" name="prioridade" [(ngModel)]="prioridade" [value]="1"
                                 class="form-check-input" required>
                             <label class="badge bg-danger text-light" for="prioridade1">1 (Alta)</label>
@@ -56,30 +63,25 @@
                 <div class="mb-3">
                     <label class="form-label">Documentos Obrigatórios:</label>
 
-                    <div class="dropdown w-100">
+                    <div class="dropdown w-100"> 
                         <div class="form-control d-flex flex-wrap align-items-center justify-content-between"
                             (click)="toggleDocumentDropdown()" style="min-height: 44px; cursor: pointer;">
                             <div class="d-flex flex-wrap gap-2">
-                                <span *ngIf="selectedDocumentIds.length === 0" class="text-muted">Selecione
-                                    documentos...</span>
-                                <span *ngFor="let docId of selectedDocumentIds"
-                                    class="badge bg-primary d-flex align-items-center px-2 py-1">
+                                <span *ngIf="selectedDocumentIds.length === 0" class="text-muted">Selecione documentos...</span>
+                                <span *ngFor="let docId of selectedDocumentIds" class="badge bg-primary d-flex align-items-center px-2 py-1">
                                     {{ getDocumentNameById(docId) }}
                                     <i class="fas fa-times-circle ms-2" style="cursor: pointer;"
                                         (click)="$event.stopPropagation(); removeDocument(docId)"></i>
                                 </span>
                             </div>
-                            <i class="fas fa-chevron-down dropdown-arrow ms-auto"
-                                [class.rotated]="isDocumentDropdownOpen"></i>
+                            <i class="fas fa-chevron-down dropdown-arrow ms-auto" [class.rotated]="isDocumentDropdownOpen"></i>
                         </div>
 
-                        <ul *ngIf="isDocumentDropdownOpen" class="dropdown-menu show w-100 mt-1 shadow"
-                            style="position: relative;">
+                        <ul *ngIf="isDocumentDropdownOpen" class="dropdown-menu show w-100 mt-1 shadow" style="position: relative;">
                             <li *ngFor="let doc of availableDocuments">
                                 <a class="dropdown-item d-flex align-items-center" (click)="selectDocument(doc)">
                                     <input type="checkbox" [checked]="isDocumentSelected(doc.id)"
-                                        class="form-check-input me-2"
-                                        (change)="$event.stopPropagation(); selectDocument(doc)">
+                                        class="form-check-input me-2" (change)="$event.stopPropagation(); selectDocument(doc)">
                                     {{ doc.nome }}
                                 </a>
                             </li>
@@ -95,44 +97,29 @@
                     <app-icon-picker-modal [selectedIcon]="selectedSectorIcon" (iconSelected)="onIconSelected($event)">
                     </app-icon-picker-modal>
                 </div>
+                
 
-                <div class="d-flex justify-content-between mt-5 flex-wrap">
-                    <button type="button" class="btn btn-outline-secondary" (click)="retornar()">Voltar</button>
-                    <button type="button" class="btn btn-danger" (click)="abrirModalSetores()">Lista de Setores</button>
-                    <button type="submit" class="btn btn-primary">Salvar Setor</button>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-secondary btn-lg" (click)="retornar()">
+                        Voltar
+                      </button>
+                    <button type="submit" class="btn btn-primary btn-lg">Salvar Setor</button>
+                    
                 </div>
+
+                 <!-- <div class="d-flex justify-content-between mt-4">
+
+                    <button type="button" class="btn btn-secondary btn-lg" (click)="retornar()">
+                      Voltar
+                    </button>
+                  
+                    <button type="submit" class="btn btn-primary btn-lg">
+                      Salvar Setor
+                    </button>
+                    
+                  </div> -->
+
             </form>
-        </div>
-    </div>
-
-    <div class="modal fade show d-block" tabindex="-1" *ngIf="modalSetoresAberta" style="background:rgba(0,0,0,0.5)">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark text-light">
-                <div class="modal-header">
-                    <h5 class="modal-title">Setores Cadastrados</h5>
-                    <button type="button" class="btn-close btn-close-white" aria-label="Close"
-                        (click)="fecharModalSetores()"></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="list-group">
-                        <li *ngFor="let setor of setoresCadastrados"
-                            class="list-group-item d-flex justify-content-between align-items-center bg-transparent text-light border-secondary">
-                            <span>
-                                <i [class]="setor.icone"></i> {{ setor.nome }}
-                            </span>
-                            <button class="btn btn-sm btn-outline-danger" (click)="excluirSetor(setor.id)">
-                                Excluir
-                            </button>
-                        </li>
-                    </ul>
-                    <div *ngIf="setoresCadastrados.length === 0" class="text-center text-muted mt-3">
-                        Nenhum setor cadastrado.
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="fecharModalSetores()">Fechar</button>
-                </div>
-            </div>
         </div>
     </div>
 </body>

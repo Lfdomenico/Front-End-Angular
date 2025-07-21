@@ -96,4 +96,7 @@ export class HistoricoAtendimentosComponent implements OnInit, OnDestroy {
   retornar(): void {
     this.router.navigate(['/menu-funcionario/triagens']);
   }
+  verDetalhes(atendimento: TriagemCompleta): void {
+  this.router.navigate(['/menu-funcionario/historico-atendimentos', atendimento.id]);
+  }
 }

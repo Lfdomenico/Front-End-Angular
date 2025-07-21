@@ -59,7 +59,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let h of historicoExibido">
+          <tr *ngFor="let h of historicoExibido"
+          class="linha-clicavel"
+          (click)="verDetalhes(h)"
+          title="Clique para ver os detalhes deste atendimento">
             <td>{{ h.nomeClienteSnapshot || 'Cliente não identificado' }}</td>
             <td>{{ h.nomeServicoSnapshot }}</td>
             <td>

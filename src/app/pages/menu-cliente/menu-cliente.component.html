@@ -2,6 +2,21 @@
 
 <section class="menu-bg">
   <div class="menu-container">
+
+    <div *ngIf="triagemAtiva" 
+         class="notificacao-triagem" 
+         (click)="retornarParaEspera()" 
+         title="Clique para acompanhar seu atendimento">
+      
+      <div class="notificacao-icon">
+        <i class="fa-solid fa-ticket-alt fa-beat"></i>
+      </div>
+      <div class="notificacao-texto">
+        <strong>Você já está na fila!</strong>
+        <span>Acompanhe seu atendimento para {{ triagemAtiva.nomeServicoSnapshot }}.</span>
+      </div>
+    </div>
+
     <div class="menu-grid">
       <div *ngFor="let setor of setores" class="card-menu" (click)="confirmarSelecao(setor)">
         <div class="card-icon">
@@ -16,12 +31,14 @@
   </div>
 </section>
 
-<!-- <section class="menu-bg">
+<!-- <app-navbar></app-navbar>
+
+<section class="menu-bg">
   <div class="menu-container">
     <div class="menu-grid">
-      <div *ngFor="let setor of setores" class="card-menu" (click)="selecionarSetor(setor)">
+      <div *ngFor="let setor of setores" class="card-menu" (click)="confirmarSelecao(setor)">
         <div class="card-icon">
-          <i [ngClass]="setor.iconClass"></i>
+          <i [ngClass]="setor.icone"></i>
         </div>
         <div class="card-body">
           <h3 class="card-title">{{ setor.nome }}</h3>
@@ -29,4 +46,6 @@
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
+</section> -->
+

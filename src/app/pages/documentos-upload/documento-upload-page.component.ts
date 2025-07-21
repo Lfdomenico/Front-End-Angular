@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgIf, NgFor, DatePipe, TitleCasePipe } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { DocumentoUploadApiService, UploadStatus } from '../../services/documento-upload-api.service';
+import { DocumentoUploadApiService, UploadStatus } from '../../services/documento.service';
 import { Agendamento, DocumentoPendente, TipoDocumentoCatalogo } from '../../models/agendamento.model'; 
 import { Triagem } from '../../models/triagem.model'; 
 import { NavbarComponent } from '../../components/navbar/navbar.component';

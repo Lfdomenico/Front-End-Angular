@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { TriagemCompleta } from './triagem.interface'; 
 import { APP_CONFIG } from '../app.config';
 
@@ -69,5 +70,25 @@ export class TriagemApiService {
     return this.http.patch(url, body);
 
   }
+
+  cancelarTriagem(id: string): Observable<void> {
+    // Envia uma requisição DELETE para a URL: '.../api/triagens/{id}'
+    return this.http.delete<void>(`${this.triagemUrl}/${id}`);
+  }
+
+  verificarTriagemAtiva(): Observable<Triagem | null> {
+    const url = `${this.triagemUrl}/cliente/ativa`;
+    return this.http.get<Triagem>(url).pipe(
+      catchError(error => {
+        // Se o erro for 404 (Not Found), é um cenário esperado. Retornamos null.
+        if (error.status === 404) {
+          return of(null);
+        }
+        // Para outros erros, nós os relançamos.
+        throw error;
+      })
+    );
+  }
+
 }
 
