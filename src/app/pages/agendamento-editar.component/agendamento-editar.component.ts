@@ -25,7 +25,7 @@ export class AgendamentoEditarComponent implements OnInit {
     atendenteId: null,
     dataHora: '',
     observacoes: '',
-    status: 'PENDENTE',
+    status: 'EM_ATENDIMENTO',
     atendidoEm: null
   };
 
@@ -62,7 +62,7 @@ export class AgendamentoEditarComponent implements OnInit {
           atendenteId: data.atendenteId,
           dataHora: data.dataHora ? data.dataHora.substring(0, 16) : '',
           observacoes: data.observacoes,
-          status: data.status,
+          status: data.status === 'EM_ATENDIMENTO' ? 'EM_ATENDIMENTO' : data.status,
           atendidoEm: data.atendidoEm
         };
         console.log('Agendamento carregado para edição:', this.agendamento);
@@ -87,8 +87,11 @@ export class AgendamentoEditarComponent implements OnInit {
       return;
     }
 
-    if (this.agendamentoEditavel.status === 'ATENDIDO') {
-      this.agendamentoEditavel.atendidoEm = new Date().toISOString();
+    if (this.agendamentoEditavel.status === 'CONCLUIDO') {
+      const now = new Date();
+      const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
+      const adjustedDate = new Date(now.getTime() - timezoneOffsetMs);
+      this.agendamentoEditavel.atendidoEm = adjustedDate.toISOString();
     } else {
       this.agendamentoEditavel.atendidoEm = null;
     }
