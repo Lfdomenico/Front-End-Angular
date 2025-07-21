@@ -17,6 +17,23 @@
       </div>
     </div>
 
+    <div *ngIf="!triagemAtiva && agendamentoAtivo"
+         class="notificacao-triagem notificacao-agendamento" 
+         (click)="verDetalhesAgendamento()"
+         title="Clique para ver os detalhes do seu agendamento">
+      
+      <div class="notificacao-icon">
+        <i class="fa-solid fa-calendar-check"></i>
+      </div>
+      <div class="notificacao-texto">
+        <strong>Próximo Agendamento</strong>
+        <span>
+            {{ agendamentoAtivo.nomeServicoSnapshot }} em 
+            {{ agendamentoAtivo.dataHora | date:'short' }}
+        </span>
+      </div>
+    </div>
+
     <div class="menu-grid">
       <div *ngFor="let setor of setores" class="card-menu" (click)="confirmarSelecao(setor)">
         <div class="card-icon">

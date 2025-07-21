@@ -264,7 +264,15 @@ section.menu-bg {
   }
 }
 
-// A animação de pulsar continua a mesma
 .fa-beat {
     animation: fa-beat 1s ease-in-out infinite;
+}
+
+.notificacao-agendamento {
+  background-color: #cce5ff; 
+  border-color: #b8daff;
+
+  .notificacao-icon, .notificacao-texto {
+    color: #004085; // Azul escuro
+  }
 }

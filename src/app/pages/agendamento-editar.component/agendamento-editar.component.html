@@ -1,13 +1,12 @@
 <body class="menu-funcionario-bg">
     <app-navbar></app-navbar>
     <section class="container py-4">
-        <h2 class="mb-4">Editar Agendamento</h2>
-
         <div *ngIf="!agendamento" class="alert alert-info" role="alert">
             <p>Carregando agendamento ou agendamento não encontrado...</p>
         </div>
 
         <div *ngIf="agendamento" class="card p-4 shadow-sm">
+            <h1 class="mb-4">Editar Agendamento</h1>
             <form (ngSubmit)="salvarAlteracoes()">
                 <div class="mb-3">
                     <label for="agendamentoId" class="form-label fw-bold">ID do Agendamento:</label>
@@ -36,14 +35,17 @@
 
                 <div class="mb-3">
                     <label for="status" class="form-label fw-bold">Status:</label>
-                    <input type="text" id="status" class="form-control" [ngModel]="agendamento.status" name="status"
-                        disabled>
+                    <select id="status" class="form-control" [(ngModel)]="agendamentoEditavel.status" name="status" required>
+                        <option value="EM_ATENDIMENTO">EM ATENDIMENTO</option> 
+                        <option value="PENDENTE">PENDENTE</option>
+                        <option value="CONCLUIDO">CONCLUIDO</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
                     <label for="atendidoEm" class="form-label fw-bold">Atendido Em:</label>
                     <input type="text" id="atendidoEm" class="form-control"
-                        [ngModel]="agendamento.atendidoEm ? (getFormattedDate(agendamento.atendidoEm) + ' ' + getFormattedTime(agendamento.atendidoEm)) : 'Não atendido'"
+                        [ngModel]="agendamentoEditavel.atendidoEm ? (getFormattedDate(agendamentoEditavel.atendidoEm) + ' ' + getFormattedTime(agendamentoEditavel.atendidoEm)) : 'Não atendido'"
                         name="atendidoEm" disabled>
                 </div>
 

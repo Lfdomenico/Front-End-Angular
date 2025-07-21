@@ -33,6 +33,8 @@
             <td>
               <button class="btn btn-sm btn-outline-secondary m-1" (click)="alterarAgendamento(agendamento)"><i
                   class="fa-solid fa-pencil"></i> Editar</button>
+              <button class="btn btn-sm btn-outline-primary m-1" (click)="validarDocumentos(agendamento)"><i
+                  class="fa-solid bi-eye-fill"></i> Validar Dodumentos</button>
               <button class="btn btn-sm btn-danger m-1" (click)="cancelarAgendamento(agendamento)"><i
                   class="fa-solid fa-trash"></i> Excluir</button>
             </td>
@@ -51,7 +53,7 @@
 
 <app-navbar></app-navbar>
 
-<div class="d-flex justify-content-center align-items-center menu-funcionario-bg">
+<div class="d-flex justify-content-center menu-funcionario-bg">
 
   <div class="custom-container p-4 p-md-5 rounded-4 border border-white border-opacity-10 text-light">
     
@@ -92,6 +94,8 @@
               <button class="btn btn-sm btn-outline-light m-1" (click)="alterarAgendamento(agendamento)">
                 <i class="fa-solid fa-pencil me-1"></i> Editar
               </button>
+            <button class="btn btn-sm btn-outline-primary m-1" (click)="validarDocumentos(agendamento)"><i
+                  class="fa-solid bi-eye-fill"></i> Validar Dodumentos</button>
               <button class="btn btn-sm btn-outline-danger m-1" (click)="cancelarAgendamento(agendamento)">
                 <i class="fa-solid fa-trash me-1"></i> Excluir
               </button>

@@ -85,6 +85,12 @@ export class AgendamentoFuncionarioComponent implements OnInit, OnDestroy {
     // alert(`Funcionalidade de Alterar para agendamento ID: ${agendamento.id} será implementada.`); 
     this.router.navigate(['/menu-funcionario/agendamentos/editar', agendamento.id]); 
   }
+  validarDocumentos(agendamento: AgendamentoCompleto): void {
+    console.log('Redirecionando para editar agendamento com ID:', agendamento.id);
+    // REMOVA A LINHA ABAIXO:
+    // alert(`Funcionalidade de Alterar para agendamento ID: ${agendamento.id} será implementada.`); 
+    this.router.navigate(['/menu-funcionario/agendamentos/verificar-documentos', agendamento.id]); 
+  }
 
   // cancelarAgendamento(agendamento: AgendamentoCompleto): void {
   //   if (confirm(`Tem certeza que deseja cancelar o agendamento de ${agendamento.nomeClienteSnapshot} para ${this.getFormattedTime(agendamento.dataHora)}?`)) {

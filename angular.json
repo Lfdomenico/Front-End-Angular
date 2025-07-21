@@ -65,7 +65,16 @@
               "buildTarget": "Projeto----a:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+	  "options": { 
+            "host": "0.0.0.0", 
+            "port": 4200,
+            "allowedHosts": [ 
+              "localhost",
+              "bankflow.ddns-ip.net",
+              "137.131.243.1331" 
+            ]
+          }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
