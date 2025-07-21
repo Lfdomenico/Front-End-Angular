@@ -80,7 +80,7 @@
                         <ul *ngIf="isDocumentDropdownOpen" class="dropdown-menu show w-100 mt-1 shadow" style="position: relative;">
                             <li *ngFor="let doc of availableDocuments">
                                 <a class="dropdown-item d-flex align-items-center" (click)="selectDocument(doc)">
-                                    <input type="checkbox" [checked]="isDocumentSelected(doc.id)"
+                                    <input type="checkbox" (click)="selectDocument(doc)" [checked]="isDocumentSelected(doc.id)"
                                         class="form-check-input me-2" (change)="$event.stopPropagation(); selectDocument(doc)">
                                     {{ doc.nome }}
                                 </a>
