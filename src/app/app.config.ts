@@ -30,5 +30,5 @@ export const appConfig: ApplicationConfig = {
 };
 
 export const APP_CONFIG = {
-  apiUrl: 'http://localhost:9000/api'
+  apiUrl: 'https://bankflow.ddns-ip.net/api'
 };
