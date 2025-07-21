@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +21,7 @@ import { DocumentoUploadApiService, ValidacaoDocumentoRequestDTO, StatusDocument
   templateUrl: './verificar-documentos.component.html',
   styleUrls: ['./verificar-documentos.component.scss']
 })
-export class VerificarDocumentosComponent implements OnInit {
+export class VerificarDocumentosComponent implements OnInit, OnDestroy {
   agendamentoId: string | null = null;
   agendamento: AgendamentoCompleto | null = null;
   documentosParaValidar: DocumentoPendente[] = [];
@@ -32,6 +32,7 @@ export class VerificarDocumentosComponent implements OnInit {
   isConfirming: boolean = false;
   validationMessage: string | null = null;
   validationSuccess: boolean = false;
+  isLoading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +42,8 @@ export class VerificarDocumentosComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    document.body.classList.add('menu-funcionario-bg');
+
     this.route.paramMap.subscribe(params => {
       this.agendamentoId = params.get('id');
       if (this.agendamentoId) {
@@ -48,11 +51,17 @@ export class VerificarDocumentosComponent implements OnInit {
       } else {
         alert('ID do agendamento não fornecido na URL.');
         this.router.navigate(['/menu-funcionario/agendamentos']);
+        this.isLoading = false;
       }
     });
   }
 
+  ngOnDestroy(): void {
+    document.body.classList.remove('menu-funcionario-bg');
+  }
+
   carregarAgendamento(id: string): void {
+    this.isLoading = true;
     this.agendamentoApiService.getAgendamentoPorId(id).subscribe({
       next: (data) => {
         this.agendamento = data;
@@ -60,11 +69,13 @@ export class VerificarDocumentosComponent implements OnInit {
           ...doc,
           observacao: doc.observacao || ''
         }));
+        this.isLoading = false;
         console.log('Agendamento e documentos carregados:', this.agendamento);
       },
       error: (err) => {
         console.error('Erro ao carregar agendamento para validação:', err);
         alert('Erro ao carregar agendamento. Verifique o console.');
+        this.isLoading = false;
         this.router.navigate(['/menu-funcionario/agendamentos']);
       }
     });

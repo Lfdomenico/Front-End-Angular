@@ -6,6 +6,8 @@ import { DocumentoUploadApiService, UploadStatus } from '../../services/document
 import { Agendamento, DocumentoPendente, TipoDocumentoCatalogo } from '../../models/agendamento.model'; 
 import { Triagem } from '../../models/triagem.model'; 
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import Swal from 'sweetalert2'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-documento-upload-page',
@@ -35,11 +37,14 @@ export class DocumentoUploadPageComponent implements OnInit {
   isUploading: boolean = false;
   uploadError: string = '';
 
+  
+
   currentUserId: string = 'AD6AB5B0-D306-4F53-AEF5-E966971E89D9'; 
 
   constructor(
     private uploadService: DocumentoUploadApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -235,19 +240,31 @@ export class DocumentoUploadPageComponent implements OnInit {
     this.uploadError = '';
     this.uploadProgress = 0;
 
+    // if (!this.selectedFile) {
+    //   this.uploadError = 'Por favor, selecione um arquivo para upload.';
+    //   console.warn('[onUpload] Falha: Nenhum arquivo selecionado.');
+    //   return;
+    // }
     if (!this.selectedFile) {
-      this.uploadError = 'Por favor, selecione um arquivo para upload.';
-      console.warn('[onUpload] Falha: Nenhum arquivo selecionado.');
+      Swal.fire('Atenção', 'Por favor, selecione um arquivo para upload.', 'warning');
       return;
     }
+    // if (!this.documentoCatalogoId) {
+    //   this.uploadError = 'Por favor, selecione o tipo de documento.';
+    //   console.warn('[onUpload] Falha: Tipo de documento não selecionado.');
+    //   return;
+    // }
     if (!this.documentoCatalogoId) {
-      this.uploadError = 'Por favor, selecione o tipo de documento.';
-      console.warn('[onUpload] Falha: Tipo de documento não selecionado.');
+      Swal.fire('Atenção', 'Por favor, selecione o tipo de documento.', 'warning');
       return;
     }
+    // if (!this.agendamentoId && !this.triagemId) {
+    //   this.uploadError = 'Selecione um agendamento ou triagem para fazer o upload.';
+    //   console.warn('[onUpload] Falha: Nenhum agendamento ou triagem associado.');
+    //   return;
+    // }
     if (!this.agendamentoId && !this.triagemId) {
-      this.uploadError = 'Selecione um agendamento ou triagem para fazer o upload.';
-      console.warn('[onUpload] Falha: Nenhum agendamento ou triagem associado.');
+      Swal.fire('Atenção', 'Selecione um agendamento ou triagem para associar o documento.', 'warning');
       return;
     }
     if (this.agendamentoId && this.triagemId) {
@@ -263,30 +280,70 @@ export class DocumentoUploadPageComponent implements OnInit {
       this.documentoCatalogoId,
       this.selectedFile
     ).subscribe({
+      // next: (event: UploadStatus) => {
+      //   if (event.status === 'progress') {
+      //     this.uploadProgress = event.message as number;
+      //     this.uploadMessage = `Enviando: ${event.message}%`;
+      //   } else if (event.status === 'success') {
+      //     this.uploadMessage = 'Upload realizado com sucesso!';
+      //     this.uploadError = '';
+      //     this.isUploading = false;
+      //     this.resetForm();
+      //     if (this.agendamentoId) {
+      //       this.loadAgendamentoDetails(this.agendamentoId);
+      //     } else if (this.triagemId) {
+      //       this.loadTriagemDetails(this.triagemId);
+      //     }
+      //   }
+      // },
       next: (event: UploadStatus) => {
         if (event.status === 'progress') {
           this.uploadProgress = event.message as number;
-          this.uploadMessage = `Enviando: ${event.message}%`;
+          
         } else if (event.status === 'success') {
-          this.uploadMessage = 'Upload realizado com sucesso!';
-          this.uploadError = '';
           this.isUploading = false;
-          this.resetForm();
-          if (this.agendamentoId) {
-            this.loadAgendamentoDetails(this.agendamentoId);
-          } else if (this.triagemId) {
-            this.loadTriagemDetails(this.triagemId);
-          }
+          this.uploadProgress = 100; // Garante que a barra chegue a 100%
+  
+          // 👇 POP-UP DE SUCESSO 👇
+          Swal.fire({
+            icon: 'success',
+            title: 'Upload Realizado!',
+            text: 'Seu documento foi enviado com sucesso.',
+            timer: 2000,
+            showConfirmButton: false
+          }).then(() => {
+              // Após o pop-up fechar, reseta o formulário e recarrega os detalhes
+              this.resetForm();
+              if (this.agendamentoId) {
+                this.loadAgendamentoDetails(this.agendamentoId);
+              } else if (this.triagemId) {
+                this.loadTriagemDetails(this.triagemId);
+              }
+          });
         }
       },
-      error: (error: any) => {
-        console.error('Erro no upload:', error);
-        this.uploadError = `Erro ao fazer upload: ${error.message || 'Verifique o console para mais detalhes.'}`;
-        this.uploadMessage = '';
-        this.isUploading = false;
-      }
+  //     error: (error: any) => {
+  //       console.error('Erro no upload:', error);
+  //       this.uploadError = `Erro ao fazer upload: ${error.message || 'Verifique o console para mais detalhes.'}`;
+  //       this.uploadMessage = '';
+  //       this.isUploading = false;
+  //     }
+  //   });
+  // }
+  error: (error: any) => {
+    this.isUploading = false;
+    console.error('Erro no upload:', error);
+    
+    // 👇 POP-UP DE ERRO 👇
+    Swal.fire({
+      icon: 'error',
+      title: 'Falha no Upload',
+      text: error.error?.message || 'Não foi possível enviar o seu documento. Tente novamente.',
+      confirmButtonColor: '#c62828'
     });
   }
+});
+}
 
   resetForm(): void {
     this.selectedFile = null;
@@ -309,5 +366,9 @@ export class DocumentoUploadPageComponent implements OnInit {
       case 'ENVIADO': return 'status-enviado';
       default: return '';
     }
+  }
+
+  voltarParaMenu(): void {
+    this.router.navigate(['/menu-cliente']);
   }
 }

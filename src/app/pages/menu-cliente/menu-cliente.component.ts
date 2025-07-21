@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../components/confirmationmodal/confirmationmodal';
 import { Triagem, TriagemApiService } from '../../services/triagem-api.service';
 import Swal from 'sweetalert2';
-
+import { AgendamentoCompleto, AgendamentoApiService } from '../../services/agendamento-api.service';
 interface ServicoDisplay extends ServicoBackend {
   rota: string;
 }
@@ -24,11 +24,13 @@ export class MenuClienteComponent implements OnInit {
   private setorParaConfirmar: ServicoDisplay | null = null;
 
   public triagemAtiva: Triagem | null = null;
+  public agendamentoAtivo: AgendamentoCompleto | null = null;
 
   constructor(
     private router: Router,
     private catalogoApiService: CatalogoApiService,
     private triagemApiService: TriagemApiService,
+    private agendamentoApiService: AgendamentoApiService,
     private modalService: NgbModal
   ) { }
 
@@ -38,8 +40,22 @@ export class MenuClienteComponent implements OnInit {
     this.triagemApiService.verificarTriagemAtiva().subscribe(triagem => {
       this.triagemAtiva = triagem;
       // Depois de verificar, carrega os serviços normais
+      if (!this.triagemAtiva) {
+        this.agendamentoApiService.verificarAgendamentoAtivo().subscribe(agendamento => {
+          this.agendamentoAtivo = agendamento;
+        });
+      }
       this.carregarServicos();
     });
+  }
+
+  verDetalhesAgendamento(): void {
+    if (this.agendamentoAtivo) {
+        // Leva para a tela de upload, que já mostra os detalhes do agendamento
+        this.router.navigate(['/documentos/upload'], { 
+            queryParams: { agendamentoId: this.agendamentoAtivo.id }
+        });
+    }
   }
 
   carregarServicos(): void {

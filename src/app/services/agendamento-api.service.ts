@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
 import { APP_CONFIG } from '../app.config'; 
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +50,19 @@ export class AgendamentoApiService {
     return this.http.put<DocumentoPendente>(
       `${this.apiUrl}/${agendamentoId}/documentos/${documentoCatalogoId}/status`,
       requestDTO
+    );
+  }
+  verificarAgendamentoAtivo(): Observable<AgendamentoCompleto | null> {
+    const url = `${this.apiUrl}/cliente/ativo`;
+    return this.http.get<AgendamentoCompleto>(url).pipe(
+      catchError(error => {
+        // Se o erro for 404 (Not Found), significa que não há agendamento ativo.
+        // Retornamos null para não quebrar a aplicação.
+        if (error.status === 404) {
+          return of(null);
+        }
+        throw error;
+      })
     );
   }
 }
