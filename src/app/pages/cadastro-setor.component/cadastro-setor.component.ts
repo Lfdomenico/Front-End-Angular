@@ -87,6 +87,26 @@ export class CadastroSetorComponent implements OnInit {
   }
 
   salvarSetor(): void {
+    if (!this.nomeSetor.trim()) {
+      alert('Por favor, preencha o nome do setor.');
+      return;
+    }
+
+    if (this.tempoMedioMinutos !== null && this.tempoMedioMinutos < 0) {
+      alert('O tempo médio em minutos não pode ser negativo.');
+      return;
+    }
+
+    if (this.tempoMedioMinutos !== null && this.tempoMedioMinutos > 60) {
+      alert('O tempo médio em minutos não pode ultrapassar 60 minutos.');
+      return;
+    }
+
+    if (this.tempoMedioMinutos == null) {
+      alert('O tempo médio em minutos não pode ser vazio.')
+      return;
+    }
+    
     const setorDTO: SetorRequest = { 
       nome: this.nomeSetor,
       descricao: this.descricaoSetor,

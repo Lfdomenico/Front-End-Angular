@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AgendamentoApiService, AgendamentoCompleto, AgendamentoRequest } from '../../services/agendamento-api.service';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agendamento-editar',
@@ -26,7 +25,7 @@ export class AgendamentoEditarComponent implements OnInit {
     atendenteId: null,
     dataHora: '',
     observacoes: '',
-    status: 'PENDENTE',
+    status: 'EM_ATENDIMENTO',
     atendidoEm: null
   };
 
@@ -63,7 +62,7 @@ export class AgendamentoEditarComponent implements OnInit {
           atendenteId: data.atendenteId,
           dataHora: data.dataHora ? data.dataHora.substring(0, 16) : '',
           observacoes: data.observacoes,
-          status: data.status,
+          status: data.status === 'AGENDADO' ? 'EM_ATENDIMENTO' : data.status,
           atendidoEm: data.atendidoEm
         };
         console.log('Agendamento carregado para edição:', this.agendamento);
@@ -79,47 +78,30 @@ export class AgendamentoEditarComponent implements OnInit {
 
   salvarAlteracoes(): void {
     if (!this.agendamentoId) {
-      // alert('ID do agendamento não encontrado para salvar.');
-      Swal.fire({
-        icon: 'error',
-        title: 'Erro interno',
-        text: 'ID do agendamento não encontrado. Não é possível salvar.',
-        confirmButtonColor: '#c62828'
-      });
+      alert('ID do agendamento não encontrado para salvar.');
       return;
     }
 
     if (!this.agendamentoEditavel.usuarioId || !this.agendamentoEditavel.servicoId || !this.agendamentoEditavel.dataHora) {
-      // alert('Por favor, preencha todos os campos obrigatórios (Usuário, Serviço, Data/Hora).');
-      Swal.fire({
-        icon: 'warning',
-        title: 'Campos Obrigatórios',
-        text: 'Por favor, preencha todos os campos obrigatórios (Usuário, Serviço, Data/Hora).',
-        confirmButtonColor: '#c62828'
-      });
+      alert('Por favor, preencha todos os campos obrigatórios (Usuário, Serviço, Data/Hora).');
       return;
     }
 
-    if (this.agendamentoEditavel.status === 'ATENDIDO') {
-      this.agendamentoEditavel.atendidoEm = new Date().toISOString();
+    if (this.agendamentoEditavel.status === 'CONCLUIDO') {
+      const now = new Date();
+      const timezoneOffsetMs = now.getTimezoneOffset() * 60 * 1000;
+      const adjustedDate = new Date(now.getTime() - timezoneOffsetMs);
+      this.agendamentoEditavel.atendidoEm = adjustedDate.toISOString();
     } else {
       this.agendamentoEditavel.atendidoEm = null;
     }
 
     this.agendamentoApiService.atualizarAgendamento(this.agendamentoId, this.agendamentoEditavel).subscribe({
       next: (response) => {
-        // alert('Agendamento atualizado com sucesso!');
+        alert('Agendamento atualizado com sucesso!');
         console.log('Agendamento atualizado:', response);
-        Swal.fire({
-          icon: 'success',
-          title: 'Sucesso!',
-          text: 'Agendamento atualizado com sucesso.',
-          timer: 2000, // O pop-up fecha sozinho após 2 segundos
-          showConfirmButton: false
-        }).then(() => {
-        this.router.navigate(['/menu-funcionario/agendamentos']); 
-      });
-    },
+        this.router.navigate(['/menu-funcionario/agendamentos']);
+      },
       error: (err) => {
         console.error('Erro ao salvar alterações do agendamento:', err);
         let errorMessage = 'Erro ao salvar alterações. Tente novamente.';
@@ -128,13 +110,7 @@ export class AgendamentoEditarComponent implements OnInit {
         } else if (typeof err.error === 'string') {
           errorMessage = `Erro: ${err.error}`;
         }
-        // alert(errorMessage);
-        Swal.fire({
-          icon: 'error',
-          title: 'Falha ao Salvar',
-          text: errorMessage,
-          confirmButtonColor: '#c62828'
-        });
+        alert(errorMessage);
       }
     });
   }
