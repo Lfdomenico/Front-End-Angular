@@ -1,20 +1,11 @@
-// src/app/pages/cadastro-setor/cadastro-setor.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { IconPickerModalComponent } from '../../components/icon-picker-modal.component/icon-picker-modal.component';
-
-// Importe o serviço e a interface SetorRequest
-import { CatalogoApiService, SetorRequest } from '../../services/catalogo-api.service'; // <<-- Importe o serviço e a interface
-
-// Interface para o Documento (simulando a estrutura do banco de dados)
-interface Documento {
-  id: string; // Será o UUID
-  nome: string;
-}
+import { CatalogoApiService, SetorRequest, DocumentoResponse } from '../../services/catalogo-api.service'; 
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cadastro-setor.component',
@@ -29,35 +20,36 @@ interface Documento {
   styleUrl: './cadastro-setor.component.scss'
 })
 export class CadastroSetorComponent implements OnInit {
-  // Propriedades existentes do formulário
   nomeSetor: string = '';
   descricaoSetor: string = '';
-  selectedSectorIcon: string = 'fa-solid fa-building-columns';
+  selectedSectorIcon: string = 'fa-solid fa-search';
   isAtivo: boolean = true;
   prioridade: number = 1;
   tempoMedioMinutos: number | null = null;
 
   // NOVAS PROPRIEDADES PARA DOCUMENTOS
-  availableDocuments: Documento[] = [];
+  availableDocuments: DocumentoResponse[] = [];
   selectedDocumentIds: string[] = [];
   isDocumentDropdownOpen: boolean = false;
 
   // <<-- INJEÇÃO DO SERVIÇO AQUI
-  constructor(private catalogoApiService: CatalogoApiService) { }
+  constructor(private catalogoApiService: CatalogoApiService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchDocuments();
   }
 
   fetchDocuments(): void {
-    // Dados de exemplo (UUIDs simulados)
-    this.availableDocuments = [
-      { id: 'a1b2c3d4-e5f6-7890-1234-567890abcdef', nome: 'Comprovante de Residência' },
-      { id: 'b2c3d4e5-f6a7-8901-2345-67890abcdef0', nome: 'Documento de Identidade' },
-      { id: 'c3d4e5f6-a7b8-9012-3456-7890abcdef01', nome: 'Comprovante de Renda' },
-      { id: 'd4e5f6a7-b8c9-0123-4567-890abcdef012', nome: 'Extrato Bancário' },
-      { id: 'e5f6a7b8-c9d0-1234-5678-90abcdef0123', nome: 'Certidão de Nascimento/Casamento' }
-    ];
+    this.catalogoApiService.getDocumentos().subscribe({
+      next: (data: DocumentoResponse[]) => {
+        this.availableDocuments = data; 
+        console.log('Documentos carregados da API:', this.availableDocuments);
+      },
+      error: (error) => {
+        alert('erro');
+        console.error('Erro ao buscar documentos:', error);
+      }
+    });
   }
 
   toggleDocumentDropdown(): void {
@@ -68,7 +60,7 @@ export class CadastroSetorComponent implements OnInit {
     return this.selectedDocumentIds.includes(documentId);
   }
 
-  selectDocument(documento: Documento): void {
+  selectDocument(documento: DocumentoResponse): void {
     const index = this.selectedDocumentIds.indexOf(documento.id);
     if (index === -1) {
       this.selectedDocumentIds.push(documento.id);
@@ -95,8 +87,27 @@ export class CadastroSetorComponent implements OnInit {
   }
 
   salvarSetor(): void {
-    // Constrói o objeto DTO conforme a interface SetorRequest
-    const setorDTO: SetorRequest = { // <<-- Garanta que o tipo é SetorRequest
+    if (!this.nomeSetor.trim()) {
+      alert('Por favor, preencha o nome do setor.');
+      return;
+    }
+
+    if (this.tempoMedioMinutos !== null && this.tempoMedioMinutos < 0) {
+      alert('O tempo médio em minutos não pode ser negativo.');
+      return;
+    }
+
+    if (this.tempoMedioMinutos !== null && this.tempoMedioMinutos > 60) {
+      alert('O tempo médio em minutos não pode ultrapassar 60 minutos.');
+      return;
+    }
+
+    if (this.tempoMedioMinutos == null) {
+      alert('O tempo médio em minutos não pode ser vazio.')
+      return;
+    }
+    
+    const setorDTO: SetorRequest = { 
       nome: this.nomeSetor,
       descricao: this.descricaoSetor,
       isAtivo: this.isAtivo,
@@ -108,22 +119,30 @@ export class CadastroSetorComponent implements OnInit {
 
     console.log('DTO do Setor a ser enviado:', setorDTO);
 
-    // <<-- CHAMADA À API AQUI
     this.catalogoApiService.cadastrarSetor(setorDTO).subscribe({
       next: (response) => {
-        // Lógica para lidar com a resposta de sucesso da API
         console.log('Setor cadastrado com sucesso!', response);
-        alert('Setor cadastrado com sucesso!');
-        // Opcional: Limpar o formulário ou redirecionar
-        // this.resetForm();
+        // alert('Setor cadastrado com sucesso!');
+        Swal.fire({
+          icon: 'success',
+          title: 'Setor Cadastrado!',
+          text: `O setor "${response.nome}" foi criado com sucesso.`,
+          timer: 2000, // alert fecha sozinho após 2 segundos
+          showConfirmButton: false
+        }).then(() =>{
+          this.resetForm();
+        });
       },
       error: (error) => {
-        // Lógica para lidar com erros da API
         console.error('Erro ao cadastrar setor:', error);
-        alert('Erro ao cadastrar setor. Verifique o console para mais detalhes.');
+        // alert('Erro ao cadastrar setor. Verifique o console para mais detalhes.');
+        Swal.fire({
+          icon: 'error',
+          text: error.error?.message || 'Não foi possível cadastrar o setor. Tente novamente.',
+          confirmButtonColor: '#d33' // Cor do botão de confirmação
+        });
       },
       complete: () => {
-        // Opcional: Lógica a ser executada quando o Observable é concluído (sucesso ou erro)
         console.log('Requisição de cadastro de setor concluída.');
       }
     });
@@ -133,16 +152,22 @@ export class CadastroSetorComponent implements OnInit {
     return iconClass;
   }
 
-  // Opcional: Método para resetar o formulário após o sucesso
-  // resetForm(): void {
-  //   this.nomeSetor = '';
-  //   this.descricaoSetor = '';
-  //   this.isAtivo = true;
-  //   this.prioridade = 1;
-  //   this.tempoMedioMinutos = null;
-  //   this.selectedDocumentIds = [];
-  //   this.selectedSectorIcon = 'fa-solid fa-building-columns';
-  //   // Se estiver usando Template-driven Forms, você pode precisar de:
-  //   // this.setorForm.resetForm(); // Assumindo que você tem uma referência #setorForm no HTML
-  // }
+  resetForm(): void {
+    this.nomeSetor = '';
+    this.descricaoSetor = '';
+    this.isAtivo = true;
+    this.prioridade = 1;
+    this.tempoMedioMinutos = null;
+    this.selectedDocumentIds = [];
+    this.selectedSectorIcon = 'fa-solid fa-search';
+  }
+
+  retornar(): void{
+    this.router.navigate(['/menu-funcionario']);
+  }
+
+  irParaGerenciarSetores(): void {
+    // Navega para a rota do componente que lista/gerencia os setores
+    this.router.navigate(['/menu-funcionario/gerenciar-setores']);
+  }
 }

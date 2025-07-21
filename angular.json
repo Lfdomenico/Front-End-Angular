@@ -66,13 +66,13 @@
             }
           },
           "defaultConfiguration": "development",
-	  "options": { // <--- ADICIONE ESTE BLOCO 'options'
-            "host": "0.0.0.0", // Garante que o servidor escute em todas as interfaces
-            "port": 4200,     // Garante que a porta seja 4200
-            "allowedHosts": [ // <--- ADICIONE ESTA PROPRIEDADE
+	  "options": { 
+            "host": "0.0.0.0", 
+            "port": 4200,
+            "allowedHosts": [ 
               "localhost",
               "bankflow.ddns-ip.net",
-              "137.131.243.1331" // Substitua pelo IP público da sua VM (ex: 137.131.243.131)
+              "137.131.243.1331" 
             ]
           }
         },

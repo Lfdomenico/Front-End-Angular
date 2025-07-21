@@ -15,7 +15,10 @@ import { RegisterFuncionarioComponent } from './pages/register/funcionario/regis
 import { TriagensFuncionarioComponent } from './pages/triagens-funcionario/triagens-funcionario.component';
 import { ClienteAtualComponent } from './pages/cliente-atual.component/cliente-atual.component';
 import { HistoricoAtendimentosComponent } from './pages/historico-atendimentos/historico-atendimentos.component';
-import { CadastroSetorComponent } from './pages/cadastro-setor.component/cadastro-setor.component';
+import { VerificarDocumentosComponent } from './pages/verificar-documentos/verificar-documentos.component';
+import { CadastroSetorComponent } from './pages/cadastro-setor.component/cadastro-setor.component'; 
+import { DetalheAtendimentoComponent } from './pages/detalhe-atendimento/detalhe-atendimento.component';
+import { GerenciarSetoresComponent } from './pages/gerenciar-setores/gerenciar-setores.component'; // 1. IMPORTE O NOVO COMPONENTE
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -90,16 +93,38 @@ export const routes: Routes = [
     // canActivate: [AuthGuard]
   },
 
-  {
-    path: 'menu-funcionario/historico-atendimentos',
-    component: HistoricoAtendimentosComponent
-    // canActivate: [AuthGuard]
+{
+  path: 'menu-funcionario/historico-atendimentos',
+  component: HistoricoAtendimentosComponent
+  // canActivate: [AuthGuard]
+},
+
+{
+  // Adicionamos uma nova rota que aceita o ID
+  path: 'menu-funcionario/cliente-atual/:id',
+  component: HistoricoAtendimentosComponent
+  // canActivate: [AuthGuard]
+},
+
+{
+  path: 'menu-funcionario/agendamentos/verificar-documentos/:id',
+  component: VerificarDocumentosComponent
+},
+{
+  path: 'menu-funcionario/cadastro-setor',
+  component: CadastroSetorComponent
+  //canActivate: [AuthGuard]
+},
+
+{
+    path: 'menu-funcionario/historico-atendimentos/:id',
+    component: DetalheAtendimentoComponent
+    // canActivate: [AuthGuard] // Adicione o guard se necessário
   },
 
   {
-    path: 'menu-funcionario/cadastro-setor',
-    component: CadastroSetorComponent
-    //canActivate: [AuthGuard]
+    path: 'menu-funcionario/gerenciar-setores',
+    component: GerenciarSetoresComponent
   }
 
 ];

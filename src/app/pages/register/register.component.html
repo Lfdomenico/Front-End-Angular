@@ -53,9 +53,19 @@
       <div class="mb-3 form-group-custom">
         <input type="email" placeholder="E-mail" formControlName="email" class="form-control form-control-underline">
         <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors" class="text-danger small text-start mt-1">
+          
           <div *ngIf="registerForm.get('email')?.errors?.['required']">
-            E-mail no formato inválido.
+            O e-mail é obrigatório.
           </div>
+      
+          <div *ngIf="registerForm.get('email')?.errors?.['email']">
+            Formato de e-mail inválido.
+          </div>
+          
+          <div *ngIf="registerForm.get('email')?.errors?.['emailDeFuncionario']">
+            Não é permitido cadastrar um e-mail de funcionário.
+          </div>
+      
         </div>
       </div>
 

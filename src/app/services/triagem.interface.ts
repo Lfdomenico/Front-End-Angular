@@ -1,6 +1,7 @@
 import { DocumentoPendente } from './agendamento-api.service'; 
 
 export enum StatusTriagemFrontend {
+  AGUARDANDO = 'AGUARDANDO',
   PENDENTE = 'PENDENTE',
   EM_ATENDIMENTO = 'EM_ATENDIMENTO',
   FINALIZADO = 'FINALIZADO',

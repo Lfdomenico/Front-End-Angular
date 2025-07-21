@@ -196,3 +196,83 @@ section.menu-bg {
     }
   }
 }
+
+// .triagem-ativa-card {
+//   background: #fff3cd; // Um amarelo claro para chamar atenção
+//   border: 1px solid #ffeeba;
+//   cursor: pointer;
+//   margin-bottom: 2rem; // Espaçamento abaixo do card
+
+//   .card-icon i {
+//     color: #856404; // Cor do ícone
+//   }
+
+//   &:hover {
+//     background: #ffeeba; // Um pouco mais escuro ao passar o mouse
+//   }
+// }
+
+// .fa-beat {
+//     animation: fa-beat 1s ease-in-out infinite;
+// }
+
+.notificacao-triagem {
+  // Posicionamento
+  position: fixed; // Fica fixo na tela, mesmo com scroll
+  top: 100px;      // Distância do topo (abaixo do seu navbar)
+  right: 20px;     // Distância da direita
+  z-index: 1050;   // Garante que fique sobre outros elementos
+  
+  // Aparência
+  max-width: 350px; // Largura máxima
+  padding: 1rem 1.25rem;
+  background-color: #fff3cd; // O fundo amarelo que você gostou
+  border: 1px solid #ffeeba;
+  border-radius: 0.5rem; // Bordas mais suaves
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+
+  // Layout interno
+  display: flex;
+  align-items: center;
+  gap: 1rem; // Espaço entre o ícone e o texto
+
+  &:hover {
+    transform: translateY(-3px); // Leve elevação ao passar o mouse
+    background-color: #ffeeba;
+  }
+}
+
+.notificacao-icon {
+  font-size: 1.8rem;
+  color: #856404; // Cor do ícone
+}
+
+.notificacao-texto {
+  display: flex;
+  flex-direction: column;
+  color: #856404; // Cor do texto
+  
+  strong {
+    font-weight: 600;
+  }
+
+  span {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+}
+
+.fa-beat {
+    animation: fa-beat 1s ease-in-out infinite;
+}
+
+.notificacao-agendamento {
+  background-color: #cce5ff; 
+  border-color: #b8daff;
+
+  .notificacao-icon, .notificacao-texto {
+    color: #004085; // Azul escuro
+  }
+}

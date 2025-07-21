@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType, HttpParams, HttpProgressEvent } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs'; 
 import { map, delay } from 'rxjs/operators'; 
-import { Agendamento, DocumentoPendente, TipoDocumentoCatalogo  } from '../models/agendamento.model'; 
+import { Agendamento, TipoDocumentoCatalogo  } from '../models/agendamento.model'; 
 import {  Triagem } from '../models/triagem.model';
 import { APP_CONFIG } from '../app.config';
 
@@ -14,6 +14,11 @@ export interface UploadStatus {
 @Injectable({
   providedIn: 'root'
 })
+// export class DocumentoUploadApiService {
+//   private documentoServiceBaseUrl = 'http://localhost:9000/api/documentacao'; 
+//   private agendamentoServiceBaseUrl = 'http://localhost:9000/api/agendamentos'; 
+//   private triagemServiceBaseUrl = 'http://localhost:9000/api/triagens'; 
+//   private catalogoServiceBaseUrl = 'http://localhost:9000/api/documentos'; 
 export class DocumentoUploadApiService {
   private documentoServiceBaseUrl = APP_CONFIG.apiUrl+'/documentacao'; 
   private agendamentoServiceBaseUrl = APP_CONFIG.apiUrl+'/agendamentos'; 
@@ -104,4 +109,47 @@ export class DocumentoUploadApiService {
      
     );
   }
+
+  validarDocumento(validacaoDTO: ValidacaoDocumentoRequestDTO): Observable<DocumentoResponseDTO> {
+    return this.http.put<DocumentoResponseDTO>(`${this.documentoServiceBaseUrl}/validar`, validacaoDTO);
+  }
+}
+
+// src/app/shared/enums/status-documento.enum.ts (crie este arquivo)
+export enum StatusDocumento {
+  APROVADO = 'APROVADO',
+  REJEITADO = 'REJEITADO',
+  PENDENTE = 'PENDENTE',
+  ENVIADO = 'ENVIADO',
+  // Adicione outros status se existirem no seu backend
+}
+
+// src/app/services/documentacao-api.service.ts (ou onde você centraliza suas interfaces)
+
+// Esta é a interface que seu backend espera no body do PUT /documentos/{id}/validar
+export interface ValidacaoDocumentoRequestDTO {
+  novoStatus: StatusDocumento; // Ex: VALIDADO, REJEITADO
+  observacao?: string | null; // Motivo da validação/rejeição (opcional para VALIDADO, obrigatório para REJEITADO)
+  agendamentoId: string;
+  documentoCatalogoId: string;
+}
+
+// A interface DocumentoPendente (response do AgendamentoService) permanece como você forneceu:
+export interface DocumentoPendente {
+  id: string; // ID do documento no documentacao-service
+  documentoCatalogoId: string;
+  nomeDocumentoSnapshot: string;
+  status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'ENVIADO'; // Status atual do documento no AgendamentoService
+  observacao: string | null; // Observação existente
+  urlDocumento: string | null;
+}
+
+// DocumentoResponseDTO - Supondo que seja o retorno após a validação bem-sucedida
+// (Pode ser simples, só para tipagem do Observable)
+export interface DocumentoResponseDTO {
+  id: string;
+  status: StatusDocumento;
+  observacaoValidacao?: string;
+  urlVisualizacao?: string;
+  // Outros campos relevantes após a validação
 }

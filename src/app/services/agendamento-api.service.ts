@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
 import { APP_CONFIG } from '../app.config'; 
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +41,30 @@ export class AgendamentoApiService {
   atualizarAgendamento(id: string, agendamentoData: AgendamentoRequest): Observable<AgendamentoCompleto> {
     return this.http.put<AgendamentoCompleto>(`${this.apiUrl}/${id}`, agendamentoData);
   }
+
+  atualizarStatusDocumentoAgendamento(
+    agendamentoId: string,
+    documentoCatalogoId: string,
+    requestDTO: DocumentoPendente
+  ): Observable<DocumentoPendente> {
+    return this.http.put<DocumentoPendente>(
+      `${this.apiUrl}/${agendamentoId}/documentos/${documentoCatalogoId}/status`,
+      requestDTO
+    );
+  }
+  verificarAgendamentoAtivo(): Observable<AgendamentoCompleto | null> {
+    const url = `${this.apiUrl}/cliente/ativo`;
+    return this.http.get<AgendamentoCompleto>(url).pipe(
+      catchError(error => {
+        // Se o erro for 404 (Not Found), significa que não há agendamento ativo.
+        // Retornamos null para não quebrar a aplicação.
+        if (error.status === 404) {
+          return of(null);
+        }
+        throw error;
+      })
+    );
+  }
 }
 
 export interface AgendamentoCompleto {
@@ -50,7 +76,7 @@ export interface AgendamentoCompleto {
   nomeServicoSnapshot: string;
   dataHora: string; // Formato ISO 8601 (ex: "2025-07-09T10:00:00")
   atendidoEm: string | null; // Pode ser nulo
-  observacoes: string | null; // Pode ser nulo
+  observacoes: string; // Pode ser nulo
   criadoEm: string;
   status: string; // Ou um enum se você tiver um para status no frontend
   documentosPendentes: DocumentoPendente[]; // Adapte esta interface também se necessário
@@ -60,7 +86,7 @@ export interface DocumentoPendente {
   id: string;
   documentoCatalogoId: string;
   nomeDocumentoSnapshot: string;
-  status: string; 
+  status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'ENVIADO'; 
   observacao: string | null;
   urlDocumento: string | null;
 }
@@ -68,8 +94,9 @@ export interface DocumentoPendente {
 export interface AgendamentoRequest {
   usuarioId: string;
   servicoId: string;
-  atendenteId: string | null; 
-  dataHora: string; 
-  observacoes?: string | null;
+  atendenteId: string | null;
+  dataHora: string;
+  observacoes: string;
+  status: string;
+  atendidoEm: string | null;
 }
-
