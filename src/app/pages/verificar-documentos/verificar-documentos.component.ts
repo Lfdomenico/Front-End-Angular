@@ -107,13 +107,14 @@ export class VerificarDocumentosComponent implements OnInit {
 
       const validacaoDTO: ValidacaoDocumentoRequestDTO = {
         novoStatus: novoStatusBackend,
-        observacao: doc.observacao // A observação do frontend vai para a observação do DTO
+        observacao: doc.observacao, // A observação do frontend vai para a observação do DTO
+        agendamentoId: this.agendamentoId,
+        documentoCatalogoId: doc.documentoCatalogoId
       };
 
       try {
         // CHAMA O NOVO SERVIÇO DE DOCUMENTAÇÃO COM O ID DO DOCUMENTO
         await this.documentacaoApiService.validarDocumento(
-          doc.documentoCatalogoId, // O ID do documento é o 'id' da interface DocumentoPendente
           validacaoDTO
         ).toPromise();
         successfulDocuments.push(doc.nomeDocumentoSnapshot);

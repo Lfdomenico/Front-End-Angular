@@ -110,8 +110,8 @@ export class DocumentoUploadApiService {
     );
   }
 
-  validarDocumento(documentoId: string, validacaoDTO: ValidacaoDocumentoRequestDTO): Observable<DocumentoResponseDTO> {
-    return this.http.put<DocumentoResponseDTO>(`${this.documentoServiceBaseUrl}/${documentoId}/validar`, validacaoDTO);
+  validarDocumento(validacaoDTO: ValidacaoDocumentoRequestDTO): Observable<DocumentoResponseDTO> {
+    return this.http.put<DocumentoResponseDTO>(`${this.documentoServiceBaseUrl}/validar`, validacaoDTO);
   }
 }
 
@@ -130,6 +130,8 @@ export enum StatusDocumento {
 export interface ValidacaoDocumentoRequestDTO {
   novoStatus: StatusDocumento; // Ex: VALIDADO, REJEITADO
   observacao?: string | null; // Motivo da validação/rejeição (opcional para VALIDADO, obrigatório para REJEITADO)
+  agendamentoId: string;
+  documentoCatalogoId: string;
 }
 
 // A interface DocumentoPendente (response do AgendamentoService) permanece como você forneceu:
