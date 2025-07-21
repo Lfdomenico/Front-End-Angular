@@ -42,6 +42,16 @@ function contaValidator(control: AbstractControl): ValidationErrors | null {
   return digits.length === 9 ? null : { contaInvalida: true };
 }
 
+function emailDeFuncionarioValidator(control: AbstractControl): ValidationErrors | null {
+  const email = control.value as string;
+  if (email && email.toLowerCase().endsWith('@bankflow.com')) {
+    // Retorna um objeto de erro se o e-mail for de funcionário
+    return { emailDeFuncionario: true };
+  }
+  // Retorna null se a validação passar
+  return null;
+}
+
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -74,7 +84,7 @@ export class RegisterComponent implements OnInit {
       telefone:       ['', Validators.required],
       agencia:        ['', [ Validators.required, agenciaValidator ]],
       conta:          ['', [ Validators.required, contaValidator ]],
-      email:          ['', [ Validators.required, Validators.email ]],
+      email:          ['', [ Validators.required, Validators.email, emailDeFuncionarioValidator ]],
       senha:          ['', [ Validators.required, Validators.minLength(6) ]],
       confirmarSenha: ['', Validators.required]
     },{
@@ -87,7 +97,7 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.invalid) {
       Swal.fire({
         icon: 'error',
-        title: 'Atenção!',
+        title: 'Dados Inválidos!',
         html: this.getErrorMessage(),
         confirmButtonColor: '#c62828'
       });
@@ -149,4 +159,6 @@ export class RegisterComponent implements OnInit {
   toggleRegisterPasswordVisibility(): void {
     this.hideRegisterPassword = !this.hideRegisterPassword;
   }
+
+  
 }

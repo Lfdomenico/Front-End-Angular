@@ -17,6 +17,8 @@ import { ClienteAtualComponent } from './pages/cliente-atual.component/cliente-a
 import { HistoricoAtendimentosComponent } from './pages/historico-atendimentos/historico-atendimentos.component';
 import { VerificarDocumentosComponent } from './pages/verificar-documentos/verificar-documentos.component';
 import { CadastroSetorComponent } from './pages/cadastro-setor.component/cadastro-setor.component'; 
+import { DetalheAtendimentoComponent } from './pages/detalhe-atendimento/detalhe-atendimento.component';
+import { GerenciarSetoresComponent } from './pages/gerenciar-setores/gerenciar-setores.component'; // 1. IMPORTE O NOVO COMPONENTE
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -112,6 +114,17 @@ export const routes: Routes = [
   path: 'menu-funcionario/cadastro-setor',
   component: CadastroSetorComponent
   //canActivate: [AuthGuard]
-}
+},
+
+{
+    path: 'menu-funcionario/historico-atendimentos/:id',
+    component: DetalheAtendimentoComponent
+    // canActivate: [AuthGuard] // Adicione o guard se necessário
+  },
+
+  {
+    path: 'menu-funcionario/gerenciar-setores',
+    component: GerenciarSetoresComponent
+  }
 
 ];

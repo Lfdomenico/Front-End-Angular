@@ -22,7 +22,7 @@
       <p class="text-white-50">Todos os clientes foram atendidos. Bom trabalho!</p>
     </div>
 
-    <div *ngIf="!isLoading && triagens.length > 0" class="table-responsive">
+    <!-- <div *ngIf="!isLoading && triagens.length > 0" class="table-responsive">
       <table class="table table-dark table-hover align-middle mt-4">
         <thead>
           <tr class="text-uppercase">
@@ -34,6 +34,32 @@
         </thead>
         <tbody>
           <tr *ngFor="let t of triagens">
+            <td>{{ t.nomeClienteSnapshot || 'Cliente não identificado' }}</td>
+            <td>
+              <span class="badge rounded-pill" [ngClass]="{
+                'text-bg-danger': t.status === 'EM_ATENDIMENTO',
+                'text-bg-warning': t.status === 'AGUARDANDO'
+              }">
+                {{ t.status }}
+              </span>
+            </td>
+            <td>{{ t.nomeServicoSnapshot }}</td>
+            <td>{{ t.horarioSolicitacao | date:'shortTime' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+
+    <div *ngIf="!isLoading && triagens.length > 0" class="table-responsive">
+      <table class="table table-dark table-hover align-middle mt-4">
+        <thead>
+          </thead>
+        <tbody>
+          <tr *ngFor="let t of triagens" 
+              (click)="verDetalhesCliente(t)" 
+              class="linha-clicavel"
+              title="Clique para ver detalhes do atendimento">
+              
             <td>{{ t.nomeClienteSnapshot || 'Cliente não identificado' }}</td>
             <td>
               <span class="badge rounded-pill" [ngClass]="{

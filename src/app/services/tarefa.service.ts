@@ -28,20 +28,19 @@ export class TarefaService {
     {
       nome: 'Acompanhamento de Triagens',
       descricao: 'Visualizar filas e status das triagens em andamento.',
-       rota: '/menu-funcionario/triagens' // trocar essa rota para a de triagens.
+      rota: '/menu-funcionario/triagens' // trocar essa rota para a de triagens.
     },
 
-    {
-      nome: 'Verificação de Documentos',
-      descricao: 'Analisar de validar os documentos dos clientes.',
-       rota: '/menu-funcionario/verificar-documentos' // trocar essa rota para a de triagens.
-    },
-
+    // {
+    //   nome: 'Verificação de Documentos',
+    //   descricao: 'Analisar de validar os documentos dos clientes.',
+    //    rota: '/menu-funcionario/verificar-documentos' // trocar essa rota para a de triagens.
+    // },
     {
       nome: 'Gerenciar setores',
       descricao: 'Adicione novos setores ou exclua do sistema.',
-       rota: '/menu-funcionario/cadastro-setor' // trocar essa rota para a de triagens.
-    },
+      rota: '/menu-funcionario/cadastro-setor' // trocar essa rota para a de triagens.
+    }
 
     
   ];

@@ -120,7 +120,8 @@ export class CatalogoApiService {
   getDocumentos(): Observable<DocumentoResponse[]> {
     return this.http.get<DocumentoResponse[]>(this.docUrl);
   }
-  excluirSetor(id: string): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/${id}`);
-}
+
+  deletarSetor(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

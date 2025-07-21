@@ -52,3 +52,12 @@
     border-color: $primary;
   }
 }
+
+.linha-clicavel {
+  cursor: pointer; // Muda o cursor do mouse para uma "mãozinha"
+
+  &:hover {
+    // Escurece levemente o fundo da linha ao passar o mouse
+    background-color: rgba(255, 255, 255, 0.1); 
+  }
+}

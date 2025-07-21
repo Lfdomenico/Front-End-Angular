@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CatalogoApiService, ServicoBackend, TriagemResponse } from '../../services/catalogo-api.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationModalComponent } from '../../components/confirmationmodal/confirmationmodal';
-import { TriagemApiService } from '../../services/triagem-api.service';
+import { Triagem, TriagemApiService } from '../../services/triagem-api.service';
+import Swal from 'sweetalert2';
 
 interface ServicoDisplay extends ServicoBackend {
   rota: string;
@@ -14,13 +15,15 @@ interface ServicoDisplay extends ServicoBackend {
 @Component({
   selector: 'app-menu-cliente',
   standalone: true,
-  imports: [CommonModule, NavbarComponent],
+  imports: [CommonModule, NavbarComponent, RouterLink],
   templateUrl: './menu-cliente.component.html',
   styleUrls: ['./menu-cliente.component.scss']
 })
 export class MenuClienteComponent implements OnInit {
   setores: ServicoDisplay[] = [];
   private setorParaConfirmar: ServicoDisplay | null = null;
+
+  public triagemAtiva: Triagem | null = null;
 
   constructor(
     private router: Router,
@@ -30,7 +33,13 @@ export class MenuClienteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.carregarServicos();
+    // 👇 5. ATUALIZE O ngOnInit PARA VERIFICAR A TRIAGEM PRIMEIRO
+    // Primeiro, verifica se há uma triagem ativa
+    this.triagemApiService.verificarTriagemAtiva().subscribe(triagem => {
+      this.triagemAtiva = triagem;
+      // Depois de verificar, carrega os serviços normais
+      this.carregarServicos();
+    });
   }
 
   carregarServicos(): void {
@@ -60,6 +69,29 @@ export class MenuClienteComponent implements OnInit {
   }
 
   confirmarSelecao(setor: ServicoDisplay): void {
+    
+    if (this.triagemAtiva) {
+      // Em vez de abrir o modal de confirmação, abrimos um alerta informativo.
+      Swal.fire({
+        title: 'Você já está em uma Fila!',
+        html: `Você já tem um atendimento em andamento para <strong>${this.triagemAtiva.nomeServicoSnapshot}</strong>.<br><br>Cancele o atendimento atual antes de iniciar um novo.`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Ir para meu Atendimento',
+        cancelButtonText: 'Entendi',
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d'
+      }).then((result) => {
+        // Se o cliente clicar em "Ir para meu Atendimento", nós o redirecionamos.
+        if (result.isConfirmed) {
+          this.retornarParaEspera(); // Reutilizamos a função que já navega para a tela de espera!
+        }
+      });
+
+      // Importante: paramos a execução da função aqui para não continuar com o fluxo de criação.
+      return; 
+    }
+
     this.setorParaConfirmar = setor;
     let horario: TriagemResponse;
     this.triagemApiService.getHorarioDisponivel().subscribe((response: TriagemResponse) => {
@@ -121,6 +153,13 @@ export class MenuClienteComponent implements OnInit {
         alert(msg);
       }
     });
+  }
+}
+
+retornarParaEspera(): void {
+  if (this.triagemAtiva) {
+    // Navega para a rota de espera usando o ID da triagem ativa
+    this.router.navigate(['/espera', this.triagemAtiva.id]);
   }
 }
 }

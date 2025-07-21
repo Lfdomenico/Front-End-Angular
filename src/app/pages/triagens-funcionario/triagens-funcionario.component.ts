@@ -51,6 +51,7 @@ import { CommonModule }                  from '@angular/common';
 import { Triagem, TriagemApiService }    from '../../services/triagem-api.service';
 import { NavbarComponent }               from '../../components/navbar/navbar.component';
 import { Router } from '@angular/router'; 
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-triagens-funcionario',
@@ -129,11 +130,40 @@ export class TriagensFuncionarioComponent implements OnInit, OnDestroy {
       this.router.navigate(['/menu-funcionario/cliente-atual', updatedTriagem.id]);
     },
     error: err => {
-      console.error('Erro ao chamar próximo cliente', err);
-      alert('Não foi possível chamar o próximo. Pode não haver clientes aguardando.');
-      this.isChamando = false;
-    }
-  });
+        this.isChamando = false;
+        console.error('Erro ao chamar próximo cliente', err);
+
+        // Mensagem padrão para erros genéricos
+        let titulo = 'Erro ao Chamar';
+        let texto = 'Ocorreu um problema inesperado. Tente novamente.';
+        let icone: 'error' | 'info' = 'error';
+
+        if (err.status === 404) {
+          titulo = 'Fila Vazia';
+          icone = 'info';
+
+          if (typeof err.error === 'object' && err.error.message) {
+            texto = err.error.message;
+          } 
+          // Se for uma string simples, usamos diretamente
+          else if (typeof err.error === 'string') {
+            texto = err.error;
+          } 
+          // Se for qualquer outra coisa, usamos uma mensagem padrão
+          else {
+            texto = 'Não há mais clientes aguardando atendimento.';
+          }
+        
+        }
+
+        Swal.fire({
+          icon: icone,
+          title: titulo,
+          text: texto,
+          confirmButtonColor: '#c62828' // Cor do botão do seu tema
+        });
+      }
+    });
 }
 
 irHistorico(): void{
@@ -142,6 +172,12 @@ irHistorico(): void{
 
 retornar(): void{
   this.router.navigate(['/menu-funcionario']);
+}
+
+verDetalhesCliente(triagem: Triagem): void{
+  console.log(`Navegando para detalhes da triagem ID: ${triagem.id}`);
+  this.router.navigate(['/menu-funcionario/cliente-atual', triagem.id]);
+
 }
 
 }
