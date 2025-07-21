@@ -2,29 +2,24 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-// 1. IMPORTE O ACTIVATEDROUTE E O SERVIÇO DE API
 import { Router, ActivatedRoute } from '@angular/router';
-import { Triagem } from '../../services/triagem-api.service'; // Usaremos a interface Triagem
 import { TriagemApiService } from '../../services/triagem-api.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { TriagemCompleta } from '../../services/triagem.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationModalComponent } from '../../components/confirmationmodal/confirmationmodal';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cliente-atual',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent, ConfirmationModalComponent],
+  imports: [CommonModule, FormsModule, NavbarComponent],
   templateUrl: './cliente-atual.component.html',
   styleUrls: ['./cliente-atual.component.scss']
 })
 export class ClienteAtualComponent implements OnInit {
-  // A interface pode ser a Triagem simples por enquanto. Ajuste se precisar de mais dados.
   triagem: TriagemCompleta | null = null;
-  isLoading = true; // Adicionamos um estado de carregamento
+  isLoading = true; 
 
-  // 2. INJETE O ACTIVATEDROUTE E O SERVIÇO
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -58,10 +53,8 @@ export class ClienteAtualComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    // TROQUE O CÓDIGO ANTIGO POR ESTE:
-    // Vamos nos inscrever no paramMap para reagir a todas as mudanças de rota.
     this.route.paramMap.subscribe(params => {
-      const triagemId = params.get('id'); // Pegamos o 'id' do Observable
+      const triagemId = params.get('id'); 
 
       if (triagemId) {
         this.isLoading = true; // Mostra o "Carregando..." sempre que navegamos para cá

@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { IconPickerModalComponent } from '../../components/icon-picker-modal.component/icon-picker-modal.component';
-import { CatalogoApiService, SetorRequest, DocumentoResponse } from '../../services/catalogo-api.service'; 
+import { CatalogoApiService, SetorRequest, DocumentoResponse } from '../../services/catalogo-api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-setor.component',
@@ -18,7 +19,6 @@ import { CatalogoApiService, SetorRequest, DocumentoResponse } from '../../servi
   styleUrl: './cadastro-setor.component.scss'
 })
 export class CadastroSetorComponent implements OnInit {
-  // Propriedades existentes do formulário
   nomeSetor: string = '';
   descricaoSetor: string = '';
   selectedSectorIcon: string = 'fa-solid fa-search';
@@ -26,13 +26,14 @@ export class CadastroSetorComponent implements OnInit {
   prioridade: number = 1;
   tempoMedioMinutos: number | null = null;
 
-  // NOVAS PROPRIEDADES PARA DOCUMENTOS
   availableDocuments: DocumentoResponse[] = [];
   selectedDocumentIds: string[] = [];
   isDocumentDropdownOpen: boolean = false;
 
-  // <<-- INJEÇÃO DO SERVIÇO AQUI
-  constructor(private catalogoApiService: CatalogoApiService) { }
+  modalSetoresAberta = false;
+  setoresCadastrados: any[] = [];
+
+  constructor(private catalogoApiService: CatalogoApiService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchDocuments();
@@ -41,11 +42,11 @@ export class CadastroSetorComponent implements OnInit {
   fetchDocuments(): void {
     this.catalogoApiService.getDocumentos().subscribe({
       next: (data: DocumentoResponse[]) => {
-        this.availableDocuments = data; 
+        this.availableDocuments = data;
         console.log('Documentos carregados da API:', this.availableDocuments);
       },
       error: (error) => {
-        alert('erro');
+        alert('Erro ao buscar documentos. Por favor, tente novamente mais tarde.');
         console.error('Erro ao buscar documentos:', error);
       }
     });
@@ -86,7 +87,22 @@ export class CadastroSetorComponent implements OnInit {
   }
 
   salvarSetor(): void {
-    const setorDTO: SetorRequest = { 
+    if (!this.nomeSetor.trim()) {
+      alert('Por favor, preencha o nome do setor.');
+      return;
+    }
+
+    if (this.tempoMedioMinutos !== null && this.tempoMedioMinutos < 0) {
+      alert('O tempo médio em minutos não pode ser negativo.');
+      return;
+    }
+
+    if (this.tempoMedioMinutos !== null && this.tempoMedioMinutos > 60) {
+      alert('O tempo médio em minutos não pode ultrapassar 60 minutos.');
+      return;
+    }
+
+    const setorDTO: SetorRequest = {
       nome: this.nomeSetor,
       descricao: this.descricaoSetor,
       isAtivo: this.isAtivo,
@@ -96,8 +112,6 @@ export class CadastroSetorComponent implements OnInit {
       icone: this.selectedSectorIcon
     };
 
-    console.log('DTO do Setor a ser enviado:', setorDTO);
-
     this.catalogoApiService.cadastrarSetor(setorDTO).subscribe({
       next: (response) => {
         console.log('Setor cadastrado com sucesso!', response);
@@ -106,7 +120,7 @@ export class CadastroSetorComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erro ao cadastrar setor:', error);
-        alert('Erro ao cadastrar setor. Verifique o console para mais detalhes.');
+        alert('Erro ao cadastrar setor.');
       },
       complete: () => {
         console.log('Requisição de cadastro de setor concluída.');
@@ -126,5 +140,33 @@ export class CadastroSetorComponent implements OnInit {
     this.tempoMedioMinutos = null;
     this.selectedDocumentIds = [];
     this.selectedSectorIcon = 'fa-solid fa-search';
+  }
+
+  retornar(): void {
+    this.router.navigate(['/menu-funcionario']);
+  }
+
+  abrirModalSetores() {
+    this.modalSetoresAberta = true;
+    this.catalogoApiService.getTodosOsServicos().subscribe({
+      next: (data) => this.setoresCadastrados = data,
+      error: () => alert('Erro ao buscar setores.')
+    });
+  }
+
+  fecharModalSetores() {
+    this.modalSetoresAberta = false;
+  }
+
+  excluirSetor(id: string) {
+    if (confirm('Tem certeza que deseja excluir este setor?')) {
+      this.catalogoApiService.excluirSetor(id).subscribe({
+        next: () => {
+          this.setoresCadastrados = this.setoresCadastrados.filter(s => s.id !== id);
+          alert('Setor excluído com sucesso!');
+        },
+        error: () => alert('Erro ao excluir setor.')
+      });
+    }
   }
 }
