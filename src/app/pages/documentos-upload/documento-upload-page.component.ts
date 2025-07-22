@@ -112,7 +112,7 @@ export class DocumentoUploadPageComponent implements OnInit {
           observacao: doc.observacao || '',
           tempImageUrl: null // Inicializa a nova propriedade
         })) || [];
-
+        this.documentosNecessarios = data.documentosPendentes || []; 
         this.processDocumentsForDisplay(tempDocs); // Chame o novo método de processamento
         this.filterAvailableDocumentTypes();
         this.uploadError = '';
