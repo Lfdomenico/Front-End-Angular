@@ -14,18 +14,13 @@
       </div>
     </div>
 
-    <div *ngIf="documentosNecessarios.length > 0 && (agendamentoDetails || triagemDetails)" class="mb-4">
+    <div *ngIf="documentosNecessarios.length > 0 && (agendamentoDetails || triagemDetails)" class="card mb-4 border-secundary border-start-5 rounded-3">
       <h3 class="fs-6 text-dark mb-3">Documentos Necessários:</h3>
       <ul class="list-group list-group-flush">
         <li *ngFor="let doc of documentosNecessarios" class="list-group-item d-flex align-items-center py-2 px-0">
           <span class="fw-medium text-dark flex-grow-1">{{ doc.nomeDocumentoSnapshot }}</span>
           <span [ngClass]="getStatusClass(doc.status)" class="badge text-uppercase ms-2">{{ doc.status | titlecase }}</span>
-          
           <button type="button" *ngIf="doc.tempImageUrl" (click)="openImagePopup(doc)" class="btn btn-link btn-sm ms-3 p-0">Ver Documento</button>
-          
-          <span *ngIf="doc.urlDocumento && !doc.tempImageUrl" class="text-danger small ms-2">Erro ao carregar imagem.</span>
-          <span *ngIf="!doc.urlDocumento" class="text-info small ms-2">Documento não enviado.</span>
-
           <p *ngIf="doc.observacao" class="text-muted small mt-1 w-100 ps-0 pe-0 mb-0">Obs: {{ doc.observacao }}</p>
         </li>
       </ul>
@@ -84,7 +79,7 @@
 
       <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="progress mt-3" style="height: 25px;">
         <div class="progress-bar bg-success" role="progressbar" [style.width.%]="uploadProgress"
-              [attr.aria-valuenow]="uploadProgress" aria-valuemin="0" aria-valuemax="100">
+             [attr.aria-valuenow]="uploadProgress" aria-valuemin="0" aria-valuemax="100">
           {{ uploadProgress }}%
         </div>
       </div>
@@ -100,6 +95,5 @@
     <hr class="my-4">
     <div class="d-flex justify-content-end">
       <button type="button" class="btn btn-secondary" (click)="voltarParaMenu()">Voltar ao Menu</button>
-    </div>
   </div>
 </div>
