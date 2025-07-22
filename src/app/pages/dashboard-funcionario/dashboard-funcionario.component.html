@@ -34,34 +34,52 @@
     </div>
   </div>
 </div> -->
-<div class="container py-5">
-  <h1 class="text-center mb-5">Dashboard de Atendimentos</h1>
-  
-  <div class="row g-4">
-    <div class="col-lg-6">
-      <div class="card card-custom h-100">
-        <div class="card-body">
-          <h3 class="text-center mb-3">Serviços Mais Utilizados (Triagem)</h3>
-          <div class="chart-container">
-            <canvas baseChart [data]="triagemChartData" type="doughnut" [options]="chartOptions"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-lg-6">
-      <div class="card card-custom h-100">
-        <div class="card-body">
-          <h3 class="text-center mb-3">Serviços Mais Utilizados (Agendamento)</h3>
-          <div class="chart-container">
-            <canvas baseChart [data]="agendamentoChartData" type="pie" [options]="chartOptions"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<app-navbar></app-navbar>
 
-  <div class="d-flex justify-content-end mt-4">
+<div class="d-flex justify-content-center menu-funcionario-bg">
+  <div class="custom-container p-4 p-md-5 rounded-4 text-light">
+    
+    <h1 class="text-center mb-5">Dashboard de Atendimentos</h1>
+    
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card card-custom h-100">
+          <div class="card-body">
+            <h3 class="text-center mb-3">Serviços Mais Utilizados (Triagem)</h3>
+            <div class="chart-container">
+              <canvas baseChart #triagemChart
+                      [data]="triagemChartData" 
+                      type="doughnut" 
+                      [options]="chartOptions">
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-6">
+        <div class="card card-custom h-100">
+          <div class="card-body">
+            <h3 class="text-center mb-3">Serviços Mais Utilizados (Agendamento)</h3>
+            <div class="chart-container">
+              <canvas baseChart #agendamentoChart
+                      [data]="agendamentoChartData" 
+                      type="pie" 
+                      [options]="chartOptions">
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+      
+
       <button class="btn btn-secondary" routerLink="/menu-funcionario">Voltar</button>
+    </div>
+
   </div>
 </div>
+
+

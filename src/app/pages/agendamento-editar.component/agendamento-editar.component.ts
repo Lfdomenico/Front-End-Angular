@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AgendamentoApiService, AgendamentoCompleto, AgendamentoRequest } from '../../services/agendamento-api.service';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agendamento-editar',
@@ -98,10 +99,18 @@ export class AgendamentoEditarComponent implements OnInit {
 
     this.agendamentoApiService.atualizarAgendamento(this.agendamentoId, this.agendamentoEditavel).subscribe({
       next: (response) => {
-        alert('Agendamento atualizado com sucesso!');
+        // alert('Agendamento atualizado com sucesso!');
         console.log('Agendamento atualizado:', response);
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucesso!',
+          text: 'O agendamento foi atualizado com sucesso.',
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
         this.router.navigate(['/menu-funcionario/agendamentos']);
-      },
+      });
+    },
       error: (err) => {
         console.error('Erro ao salvar alterações do agendamento:', err);
         let errorMessage = 'Erro ao salvar alterações. Tente novamente.';
