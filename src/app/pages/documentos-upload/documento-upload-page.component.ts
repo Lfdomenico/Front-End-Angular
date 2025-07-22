@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule, NgIf, NgFor, DatePipe, TitleCasePipe } from '@angular/common'; 
+import { Component, OnInit, OnDestroy } from '@angular/core'; // Adicione OnDestroy
+import { CommonModule, NgIf, NgFor, DatePipe, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentoUploadApiService, UploadStatus } from '../../services/documento.service';
-import { Agendamento, DocumentoPendente, TipoDocumentoCatalogo } from '../../models/agendamento.model'; 
-import { Triagem } from '../../models/triagem.model'; 
+import { Agendamento, DocumentoPendente, TipoDocumentoCatalogo } from '../../models/agendamento.model';
+import { Triagem } from '../../models/triagem.model';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
+import { of, forkJoin } from 'rxjs'; // Importe forkJoin e of
+import { catchError, map } from 'rxjs/operators'; // Importe map
 
 @Component({
   selector: 'app-documento-upload-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, DatePipe, TitleCasePipe,NavbarComponent], 
+  imports: [CommonModule, FormsModule, DatePipe, TitleCasePipe, NavbarComponent],
   templateUrl: './documento-upload-page.component.html',
   styleUrls: ['./documento-upload-page.component.scss']
 })
-export class DocumentoUploadPageComponent implements OnInit {
+export class DocumentoUploadPageComponent implements OnInit, OnDestroy { // Implemente OnDestroy
 
   selectedFile: File | null = null;
   agendamentoId: string | null = null;
@@ -25,21 +27,20 @@ export class DocumentoUploadPageComponent implements OnInit {
 
   agendamentoDetails: Agendamento | null = null;
   triagemDetails: Triagem | null = null;
-  documentosNecessarios: DocumentoPendente[] = []; 
+  documentosNecessarios: DocumentoPendente[] = [];
 
-  agendamentosDisponiveis: Agendamento[] = []; 
+  agendamentosDisponiveis: Agendamento[] = [];
   triagensDisponiveis: Triagem[] = [];
-  tiposDocumentoDisponiveisParaUpload: TipoDocumentoCatalogo[] = []; 
-  todosOsTiposDeDocumentoDoCatalogo: TipoDocumentoCatalogo[] = []; 
+  tiposDocumentoDisponiveisParaUpload: TipoDocumentoCatalogo[] = [];
+  todosOsTiposDeDocumentoDoCatalogo: TipoDocumentoCatalogo[] = [];
 
   uploadProgress: number = 0;
   uploadMessage: string = '';
   isUploading: boolean = false;
   uploadError: string = '';
 
-  
-
-  currentUserId: string = 'AD6AB5B0-D306-4F53-AEF5-E966971E89D9'; 
+  // Conjunto para rastrear URLs de objeto que precisam ser revogadas
+  private objectUrls: Set<string> = new Set<string>();
 
   constructor(
     private uploadService: DocumentoUploadApiService,
@@ -48,7 +49,6 @@ export class DocumentoUploadPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.loadTiposDocumento();
 
     this.route.queryParams.subscribe(params => {
@@ -62,15 +62,21 @@ export class DocumentoUploadPageComponent implements OnInit {
       } else {
         this.loadAgendamentosDoUsuario();
         this.loadTriagensDoUsuario();
-        this.documentosNecessarios = []; 
+        this.documentosNecessarios = [];
         this.uploadError = 'Por favor, selecione um agendamento ou triagem para fazer o upload de documentos.';
       }
     });
   }
 
+  ngOnDestroy(): void {
+    // Revoga todas as URLs de objeto para evitar vazamentos de memória
+    this.objectUrls.forEach(url => URL.revokeObjectURL(url));
+    this.objectUrls.clear();
+  }
+
   loadAgendamentosDoUsuario(): void {
     if (!this.agendamentoId && !this.triagemId) {
-      this.uploadService.getAgendamentosDoUsuario(this.currentUserId).subscribe({
+      this.uploadService.getAgendamentosDoUsuario().subscribe({
         next: (data: Agendamento[]) => {
           this.agendamentosDisponiveis = data;
           if (data.length === 0) {
@@ -89,7 +95,7 @@ export class DocumentoUploadPageComponent implements OnInit {
 
   loadTriagensDoUsuario(): void {
     if (!this.agendamentoId && !this.triagemId) {
-      this.uploadService.getTriagensEmAbertoDoUsuario(this.currentUserId).subscribe({
+      this.uploadService.getTriagensEmAbertoDoUsuario().subscribe({
         next: (data: Triagem[]) => {
           this.triagensDisponiveis = data;
         },
@@ -104,8 +110,14 @@ export class DocumentoUploadPageComponent implements OnInit {
     this.uploadService.getAgendamentoDetails(id).subscribe({
       next: (data: Agendamento) => {
         this.agendamentoDetails = data;
-        this.documentosNecessarios = data.documentosPendentes || []; 
-        this.filterAvailableDocumentTypes(); 
+        const tempDocs: DocumentoPendente[] = data.documentosPendentes?.map(doc => ({
+          ...doc,
+          observacao: doc.observacao || '',
+          tempImageUrl: null // Inicializa a nova propriedade
+        })) || [];
+
+        this.processDocumentsForDisplay(tempDocs); // Chame o novo método de processamento
+        this.filterAvailableDocumentTypes();
         this.uploadError = '';
       },
       error: (err: any) => {
@@ -113,18 +125,23 @@ export class DocumentoUploadPageComponent implements OnInit {
         this.agendamentoDetails = null;
         this.documentosNecessarios = [];
         this.uploadError = 'Erro ao carregar detalhes do agendamento. Pode não existir ou o servidor está fora.';
-        this.filterAvailableDocumentTypes(); 
+        this.filterAvailableDocumentTypes();
       }
     });
   }
 
- 
   loadTriagemDetails(id: string): void {
     this.uploadService.getTriagemDetails(id).subscribe({
       next: (data: Triagem) => {
         this.triagemDetails = data;
-        this.documentosNecessarios = data.documentosPendentes || []; 
-        this.filterAvailableDocumentTypes(); 
+        const tempDocs: DocumentoPendente[] = data.documentosPendentes?.map(doc => ({
+          ...doc,
+          observacao: doc.observacao || '',
+          tempImageUrl: null // Inicializa a nova propriedade
+        })) || [];
+
+        this.processDocumentsForDisplay(tempDocs); // Chame o novo método de processamento
+        this.filterAvailableDocumentTypes();
         this.uploadError = '';
       },
       error: (err: any) => {
@@ -132,13 +149,56 @@ export class DocumentoUploadPageComponent implements OnInit {
         this.triagemDetails = null;
         this.documentosNecessarios = [];
         this.uploadError = 'Erro ao carregar detalhes da triagem. Pode não existir ou o servidor está fora.';
-        this.filterAvailableDocumentTypes(); 
+        this.filterAvailableDocumentTypes();
       }
     });
   }
 
+  // NOVO MÉTODO: Processa os documentos para download e cria URLs temporárias
+  private processDocumentsForDisplay(docs: DocumentoPendente[]): void {
+    // Revoga URLs antigas antes de criar novas
+    this.objectUrls.forEach(url => URL.revokeObjectURL(url));
+    this.objectUrls.clear();
+
+    const downloadObservables = docs.map(doc => {
+      if (doc.urlDocumento) {
+        return this.uploadService.downloadDocumentoAsBlob(doc.urlDocumento).pipe(
+          map(blob => {
+            const url = URL.createObjectURL(blob);
+            this.objectUrls.add(url); // Adiciona a URL para revogação futura
+            doc.tempImageUrl = url; // Atribui a URL temporária
+            return doc;
+          }),
+          catchError(err => {
+            console.error(`Erro ao baixar documento ${doc.nomeDocumentoSnapshot}:`, err);
+            doc.tempImageUrl = null; // Em caso de erro, não exibe imagem
+            // doc.tempImageUrl = 'assets/placeholder-error.png'; // Opcional: imagem de placeholder
+            return of(doc); // Retorna o documento original para que o forkJoin não falhe
+          })
+        );
+      } else {
+        return of(doc); // Se não houver URL, retorna o documento original
+      }
+    });
+
+    if (downloadObservables.length > 0) {
+      forkJoin(downloadObservables).subscribe({
+        next: (resolvedDocs) => {
+          this.documentosNecessarios = resolvedDocs;
+          console.log('Documentos processados (com URLs de imagem):', this.documentosNecessarios);
+        },
+        error: (err) => {
+          console.error('Erro ao processar downloads de documentos em forkJoin:', err);
+          this.documentosNecessarios = docs; // Exibe os documentos mesmo sem as imagens
+        }
+      });
+    } else {
+      this.documentosNecessarios = docs;
+    }
+  }
+
+
   loadTiposDocumento(): void {
-    
     this.uploadService.getTiposDocumento().subscribe({
       next: (data: TipoDocumentoCatalogo[]) => {
         this.todosOsTiposDeDocumentoDoCatalogo = data.filter(tipo => tipo.isAtivo);
@@ -149,19 +209,19 @@ export class DocumentoUploadPageComponent implements OnInit {
       error: (err: any) => {
         console.error('Erro ao carregar tipos de documento do catálogo:', err);
         this.uploadError = 'Erro ao carregar tipos de documento. Verifique o backend e a rede.';
-        this.tiposDocumentoDisponiveisParaUpload = []; 
+        this.tiposDocumentoDisponiveisParaUpload = [];
       }
     });
   }
 
-  
+
   filterAvailableDocumentTypes(): void {
 
 
     if (!this.todosOsTiposDeDocumentoDoCatalogo || this.todosOsTiposDeDocumentoDoCatalogo.length === 0) {
       this.tiposDocumentoDisponiveisParaUpload = [];
       console.warn('[filterAvailableDocumentTypes] Catálogo de tipos de documento ainda não carregado ou vazio. Dropdown de tipos de upload ficará vazio.');
-      return; 
+      return;
     }
 
     if (!this.agendamentoDetails && !this.triagemDetails) {
@@ -181,10 +241,10 @@ export class DocumentoUploadPageComponent implements OnInit {
       );
 
     } else {
-      this.tiposDocumentoDisponiveisParaUpload = []; 
+      this.tiposDocumentoDisponiveisParaUpload = [];
     }
   }
-  
+
   onAgendamentoSelected(agendamentoId: string): void {
     console.log('[onAgendamentoSelected] Agendamento selecionado:', agendamentoId);
     this.triagemId = null;
@@ -200,9 +260,9 @@ export class DocumentoUploadPageComponent implements OnInit {
     }
   }
 
-  onTriagemSelectedDropdown(triagemId: string): void { 
+  onTriagemSelectedDropdown(triagemId: string): void {
     console.log('[onTriagemSelectedDropdown] Triagem selecionada (dropdown):', triagemId);
-    this.agendamentoId = null; 
+    this.agendamentoId = null;
     this.triagemId = triagemId;
 
     if (triagemId) {
@@ -216,7 +276,7 @@ export class DocumentoUploadPageComponent implements OnInit {
   }
 
   onTriagemSelected(triagemId: string): void {
-    this.agendamentoId = null; 
+    this.agendamentoId = null;
     this.triagemId = triagemId;
 
     if (triagemId) {
@@ -224,7 +284,7 @@ export class DocumentoUploadPageComponent implements OnInit {
     } else {
       this.triagemDetails = null;
       this.documentosNecessarios = [];
-      this.filterAvailableDocumentTypes(); 
+      this.filterAvailableDocumentTypes();
       this.uploadError = 'Por favor, selecione um agendamento ou triagem para fazer o upload de documentos.';
     }
   }
@@ -240,37 +300,22 @@ export class DocumentoUploadPageComponent implements OnInit {
     this.uploadError = '';
     this.uploadProgress = 0;
 
-    // if (!this.selectedFile) {
-    //   this.uploadError = 'Por favor, selecione um arquivo para upload.';
-    //   console.warn('[onUpload] Falha: Nenhum arquivo selecionado.');
-    //   return;
-    // }
     if (!this.selectedFile) {
       Swal.fire('Atenção', 'Por favor, selecione um arquivo para upload.', 'warning');
       return;
     }
-    // if (!this.documentoCatalogoId) {
-    //   this.uploadError = 'Por favor, selecione o tipo de documento.';
-    //   console.warn('[onUpload] Falha: Tipo de documento não selecionado.');
-    //   return;
-    // }
     if (!this.documentoCatalogoId) {
       Swal.fire('Atenção', 'Por favor, selecione o tipo de documento.', 'warning');
       return;
     }
-    // if (!this.agendamentoId && !this.triagemId) {
-    //   this.uploadError = 'Selecione um agendamento ou triagem para fazer o upload.';
-    //   console.warn('[onUpload] Falha: Nenhum agendamento ou triagem associado.');
-    //   return;
-    // }
     if (!this.agendamentoId && !this.triagemId) {
       Swal.fire('Atenção', 'Selecione um agendamento ou triagem para associar o documento.', 'warning');
       return;
     }
     if (this.agendamentoId && this.triagemId) {
-        this.uploadError = 'O documento não pode estar associado a um ID de Triagem E a um ID de Agendamento simultaneamente.';
-        console.warn('[onUpload] Falha: Agendamento e Triagem IDs preenchidos simultaneamente.');
-        return;
+      this.uploadError = 'O documento não pode estar associado a um ID de Triagem E a um ID de Agendamento simultaneamente.';
+      console.warn('[onUpload] Falha: Agendamento e Triagem IDs preenchidos simultaneamente.');
+      return;
     }
 
     this.isUploading = true;
@@ -280,31 +325,14 @@ export class DocumentoUploadPageComponent implements OnInit {
       this.documentoCatalogoId,
       this.selectedFile
     ).subscribe({
-      // next: (event: UploadStatus) => {
-      //   if (event.status === 'progress') {
-      //     this.uploadProgress = event.message as number;
-      //     this.uploadMessage = `Enviando: ${event.message}%`;
-      //   } else if (event.status === 'success') {
-      //     this.uploadMessage = 'Upload realizado com sucesso!';
-      //     this.uploadError = '';
-      //     this.isUploading = false;
-      //     this.resetForm();
-      //     if (this.agendamentoId) {
-      //       this.loadAgendamentoDetails(this.agendamentoId);
-      //     } else if (this.triagemId) {
-      //       this.loadTriagemDetails(this.triagemId);
-      //     }
-      //   }
-      // },
       next: (event: UploadStatus) => {
         if (event.status === 'progress') {
           this.uploadProgress = event.message as number;
-          
+
         } else if (event.status === 'success') {
           this.isUploading = false;
           this.uploadProgress = 100; // Garante que a barra chegue a 100%
-  
-          // 👇 POP-UP DE SUCESSO 👇
+
           Swal.fire({
             icon: 'success',
             title: 'Upload Realizado!',
@@ -312,38 +340,28 @@ export class DocumentoUploadPageComponent implements OnInit {
             timer: 2000,
             showConfirmButton: false
           }).then(() => {
-              // Após o pop-up fechar, reseta o formulário e recarrega os detalhes
-              this.resetForm();
-              if (this.agendamentoId) {
-                this.loadAgendamentoDetails(this.agendamentoId);
-              } else if (this.triagemId) {
-                this.loadTriagemDetails(this.triagemId);
-              }
+            this.resetForm();
+            if (this.agendamentoId) {
+              this.loadAgendamentoDetails(this.agendamentoId);
+            } else if (this.triagemId) {
+              this.loadTriagemDetails(this.triagemId);
+            }
           });
         }
       },
-  //     error: (error: any) => {
-  //       console.error('Erro no upload:', error);
-  //       this.uploadError = `Erro ao fazer upload: ${error.message || 'Verifique o console para mais detalhes.'}`;
-  //       this.uploadMessage = '';
-  //       this.isUploading = false;
-  //     }
-  //   });
-  // }
-  error: (error: any) => {
-    this.isUploading = false;
-    console.error('Erro no upload:', error);
-    
-    // 👇 POP-UP DE ERRO 👇
-    Swal.fire({
-      icon: 'error',
-      title: 'Falha no Upload',
-      text: error.error?.message || 'Não foi possível enviar o seu documento. Tente novamente.',
-      confirmButtonColor: '#c62828'
+      error: (error: any) => {
+        this.isUploading = false;
+        console.error('Erro no upload:', error);
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Falha no Upload',
+          text: error.error?.message || 'Não foi possível enviar o seu documento. Tente novamente.',
+          confirmButtonColor: '#c62828'
+        });
+      }
     });
   }
-});
-}
 
   resetForm(): void {
     this.selectedFile = null;
@@ -353,7 +371,7 @@ export class DocumentoUploadPageComponent implements OnInit {
     this.uploadError = '';
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     if (fileInput) {
-        fileInput.value = ''; 
+      fileInput.value = '';
     }
   }
 
@@ -370,5 +388,42 @@ export class DocumentoUploadPageComponent implements OnInit {
 
   voltarParaMenu(): void {
     this.router.navigate(['/menu-cliente']);
+  }
+
+  // NOVO MÉTODO: Abrir o popup da imagem
+  openImagePopup(doc: DocumentoPendente): void {
+    if (doc.tempImageUrl) {
+      Swal.fire({
+        title: doc.nomeDocumentoSnapshot,
+        html: `<div class="text-center">
+                 <img src="${doc.tempImageUrl}" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 8px;">
+               </div>`,
+        width: '80%', // Ajuste a largura do popup
+        showCloseButton: true,
+        showConfirmButton: false, // Não precisa de botão de confirmação se for só para visualização
+        customClass: {
+          container: 'custom-swal-container', // Opcional: para estilos CSS customizados
+          popup: 'custom-swal-popup',
+          title: 'custom-swal-title',
+          htmlContainer: 'custom-swal-html-container'
+        },
+        focusConfirm: false,
+        didOpen: () => {
+          // Opcional: se quiser fazer algo quando o modal abrir
+          // Ex: carregar imagem em alta resolução, se doc.tempImageUrl for thumbnail
+        },
+        willClose: () => {
+          // Opcional: se precisar revogar a URL imediatamente após o fechamento do popup
+          // Isso já é feito no ngOnDestroy, mas pode ser útil para popups mais isolados
+        }
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro ao Visualizar',
+        text: 'Não foi possível carregar a imagem deste documento. Tente novamente mais tarde.',
+        confirmButtonColor: '#c62828'
+      });
+    }
   }
 }

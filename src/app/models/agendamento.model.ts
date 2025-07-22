@@ -20,6 +20,7 @@ export interface DocumentoPendente {
   status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'ENVIADO' | 'AGUARDANDO_VALIDACAO'; 
   observacao: string | null;
   urlDocumento: string | null; 
+  tempImageUrl?: string | null;
 }
 
 

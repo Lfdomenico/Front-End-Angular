@@ -76,7 +76,7 @@ export class DocumentoUploadApiService {
   }
 
 
-  getAgendamentosDoUsuario(clienteId: string): Observable<Agendamento[]> {
+  getAgendamentosDoUsuario(): Observable<Agendamento[]> {
     const url = `${this.agendamentoServiceBaseUrl}/cliente`;
     return this.http.get<Agendamento[]>(url);
   }
@@ -96,7 +96,7 @@ export class DocumentoUploadApiService {
     return this.http.get<TipoDocumentoCatalogo[]>(url);
   }
 
-  getTriagensEmAbertoDoUsuario(clienteId: string): Observable<Triagem[]> {
+  getTriagensEmAbertoDoUsuario(): Observable<Triagem[]> {
     const url = `${this.triagemServiceBaseUrl}/cliente`;
     console.log(`[DocumentoUploadApiService] Buscando triagem ÚNICA para cliente em: ${url}`);
     return this.http.get<Triagem>(url).pipe( 
@@ -117,6 +117,7 @@ export class DocumentoUploadApiService {
   downloadDocumentoAsBlob(documentUrl: string): Observable<Blob> {
     return this.http.get(documentUrl, { responseType: 'blob' });
   }
+  
 }
 
 // src/app/shared/enums/status-documento.enum.ts (crie este arquivo)
