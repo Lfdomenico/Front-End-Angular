@@ -100,8 +100,16 @@ export class AgendamentoEditarComponent implements OnInit {
       next: (response) => {
         alert('Agendamento atualizado com sucesso!');
         console.log('Agendamento atualizado:', response);
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucesso!',
+          text: 'O agendamento foi atualizado com sucesso.',
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
         this.router.navigate(['/menu-funcionario/agendamentos']);
-      },
+      });
+    },
       error: (err) => {
         console.error('Erro ao salvar alterações do agendamento:', err);
         let errorMessage = 'Erro ao salvar alterações. Tente novamente.';

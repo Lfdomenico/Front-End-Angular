@@ -19,6 +19,7 @@ import { VerificarDocumentosComponent } from './pages/verificar-documentos/verif
 import { CadastroSetorComponent } from './pages/cadastro-setor.component/cadastro-setor.component'; 
 import { DetalheAtendimentoComponent } from './pages/detalhe-atendimento/detalhe-atendimento.component';
 import { GerenciarSetoresComponent } from './pages/gerenciar-setores/gerenciar-setores.component'; // 1. IMPORTE O NOVO COMPONENTE
+import { DashboardFuncionarioComponent } from './pages/dashboard-funcionario/dashboard-funcionario.component'; // 1. IMPORTE O NOVO COMPONENTE
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -125,6 +126,12 @@ export const routes: Routes = [
   {
     path: 'menu-funcionario/gerenciar-setores',
     component: GerenciarSetoresComponent
+  },
+
+  {
+    path: 'menu-funcionario/dashboard', // 2. ADICIONE A ROTA AQUI
+    component: DashboardFuncionarioComponent,
+    // canActivate: [AuthGuard]
   }
 
 ];

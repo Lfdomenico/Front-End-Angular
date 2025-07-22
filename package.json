@@ -30,11 +30,17 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.7",
     "bootstrap-icons": "^1.13.1",
+    "chart.js": "^4.5.0",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "jwt-decode": "^4.0.0",
+    "ng2-charts": "^8.0.0",
     "ngx-mask": "^19.0.7",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.22.2",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
