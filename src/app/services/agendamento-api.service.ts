@@ -89,6 +89,7 @@ export interface DocumentoPendente {
   status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'ENVIADO'; 
   observacao: string | null;
   urlDocumento: string | null;
+  tempImageUrl?: string | null;
 }
 
 export interface AgendamentoRequest {

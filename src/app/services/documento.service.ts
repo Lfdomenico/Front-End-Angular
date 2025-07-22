@@ -113,6 +113,10 @@ export class DocumentoUploadApiService {
   validarDocumento(validacaoDTO: ValidacaoDocumentoRequestDTO): Observable<DocumentoResponseDTO> {
     return this.http.put<DocumentoResponseDTO>(`${this.documentoServiceBaseUrl}/validar`, validacaoDTO);
   }
+
+  downloadDocumentoAsBlob(documentUrl: string): Observable<Blob> {
+    return this.http.get(documentUrl, { responseType: 'blob' });
+  }
 }
 
 // src/app/shared/enums/status-documento.enum.ts (crie este arquivo)
@@ -142,6 +146,7 @@ export interface DocumentoPendente {
   status: 'PENDENTE' | 'APROVADO' | 'REJEITADO' | 'ENVIADO'; // Status atual do documento no AgendamentoService
   observacao: string | null; // Observação existente
   urlDocumento: string | null;
+  tempImageUrl?: string | null;
 }
 
 // DocumentoResponseDTO - Supondo que seja o retorno após a validação bem-sucedida

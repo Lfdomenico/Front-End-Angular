@@ -6,8 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AgendamentoApiService, AgendamentoCompleto, DocumentoPendente } from '../../services/agendamento-api.service';
 // Importe o novo serviço de documentação e seus DTOs/Enums
 import { NavbarComponent } from "../../components/navbar/navbar.component";
-import { of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { DocumentoUploadApiService, ValidacaoDocumentoRequestDTO, StatusDocumento } from '../../services/documento.service';
 
 @Component({
@@ -33,6 +33,8 @@ export class VerificarDocumentosComponent implements OnInit, OnDestroy {
   validationMessage: string | null = null;
   validationSuccess: boolean = false;
   isLoading: boolean = true;
+
+  private objectUrls: Set<string> = new Set<string>();
 
   constructor(
     private route: ActivatedRoute,
@@ -65,10 +67,48 @@ export class VerificarDocumentosComponent implements OnInit, OnDestroy {
     this.agendamentoApiService.getAgendamentoPorId(id).subscribe({
       next: (data) => {
         this.agendamento = data;
-        this.documentosParaValidar = data.documentosPendentes.map(doc => ({
+        const tempDocs: DocumentoPendente[] = data.documentosPendentes.map(doc => ({
           ...doc,
-          observacao: doc.observacao || ''
+          observacao: doc.observacao || '',
+          tempImageUrl: null // Inicializa a nova propriedade
         }));
+        const downloadObservables = tempDocs.map(doc => {
+          if (doc.urlDocumento) {
+            // Chama o serviço para baixar o documento como Blob
+            return this.documentacaoApiService.downloadDocumentoAsBlob(doc.urlDocumento).pipe(
+              map(blob => {
+                const url = URL.createObjectURL(blob);
+                this.objectUrls.add(url); // Adiciona a URL para revogação futura
+                doc.tempImageUrl = url; // Atribui a URL temporária
+                return doc;
+              }),
+              catchError(err => {
+                console.error(`Erro ao baixar documento ${doc.nomeDocumentoSnapshot}:`, err);
+                doc.tempImageUrl = null; // Em caso de erro, não exibe imagem
+                // Você pode atribuir uma imagem de placeholder aqui se quiser
+                // doc.tempImageUrl = 'assets/placeholder-error.png';
+                return of(doc); // Retorna o documento original para que o forkJoin não falhe
+              })
+            );
+          } else {
+            return of(doc); // Se não houver URL, retorna o documento original
+          }
+        });
+
+        // Use forkJoin para esperar que todos os downloads de imagem sejam concluídos
+        forkJoin(downloadObservables).subscribe({
+          next: (resolvedDocs) => {
+            this.documentosParaValidar = resolvedDocs;
+            this.isLoading = false;
+            console.log('Agendamento e documentos carregados (com URLs de imagem):', this.agendamento);
+          },
+          error: (err) => {
+            console.error('Erro ao processar downloads de documentos:', err);
+            // Este erro aqui significa que algo falhou no pipe do forkJoin
+            this.documentosParaValidar = tempDocs; // Pelo menos exibe os documentos sem imagens
+            this.isLoading = false;
+          }
+        });
         this.isLoading = false;
         console.log('Agendamento e documentos carregados:', this.agendamento);
       },
