@@ -1,5 +1,5 @@
 :host {
-//deixar vazio
+  //deixar vazio
 }
 
 .upload-container-custom {
@@ -8,6 +8,13 @@
   background-color: rgba(255, 255, 255, 0.9); 
   border-radius: 8px; 
   margin-top: 100px; 
+
+  .list-group-item {
+    // Adicione esta linha aqui para permitir que os itens quebrem a linha
+    flex-wrap: wrap;
+    // As classes 'd-flex' e 'align-items-center' já vêm do HTML,
+    // mas se precisar de mais customização, adicione aqui.
+  }
 
   .badge {
     padding: 0.3em 0.6em; 
@@ -28,15 +35,27 @@
       background-color: var(--bs-danger);
       color: var(--bs-white);
     }
-    &.status-aguardando {
+    &.status-enviado {
       background-color: var(--bs-info);
       color: var(--bs-white);
     }
   }
 
-  .text-muted.small {
-    margin-left: auto; 
+  // Seletor mais específico para a observação dentro do item da lista
+  .list-group-item .text-muted.small {
+    // Remove o margin-left: auto que alinhava à direita
+    margin-left: 0; 
+    // Garante que ocupe 100% da largura disponível na nova linha
     flex-basis: 100%; 
     padding-right: 0; 
+    // O 'mt-1' do HTML já dará um pequeno espaçamento superior.
+  }
+
+  // Opcional: Ajuste para as mensagens de status da imagem (erro/não enviado)
+  // Se elas também estiverem quebrando a linha, pode ser necessário ajustar o white-space
+  .list-group-item .text-danger.small.ms-2,
+  .list-group-item .text-info.small.ms-2 {
+    white-space: nowrap; // Garante que a mensagem não quebre a própria linha
+    // Não precisa de flex-basis: 100% se elas devem continuar na mesma linha dos botões/badges
   }
 }
