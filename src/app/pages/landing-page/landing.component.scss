@@ -121,3 +121,9 @@ section[id] {
 .metricas-section {
   padding-bottom: 120px !important; 
 }
+
+@media (max-width: 999px) { 
+  .hero-gradient{
+    background: #f8f9fa;
+  }
+}
