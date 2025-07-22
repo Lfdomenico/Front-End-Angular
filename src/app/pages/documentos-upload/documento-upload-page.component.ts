@@ -430,7 +430,7 @@ export class DocumentoUploadPageComponent implements OnInit {
         html: `<div class="text-center">
                  <img src="${doc.tempImageUrl}" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 8px;">
                </div>`,
-        width: '80%', // Ajuste a largura do popup
+        width: '95%', // Ajuste a largura do popup
         showCloseButton: true,
         showConfirmButton: false, // Não precisa de botão de confirmação se for só para visualização
         customClass: {
