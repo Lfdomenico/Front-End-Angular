@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AgendamentoApiService, AgendamentoCompleto, AgendamentoRequest } from '../../services/agendamento-api.service';
 import { NavbarComponent } from "../../components/navbar/navbar.component";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-agendamento-editar',
